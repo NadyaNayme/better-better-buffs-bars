@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '../store';
@@ -29,10 +29,11 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     a1lib.once('alt1pressed', alt1Listener);
   
     while (!alt1Pressed) {
-      const pos = a1lib.getMousePosition();
+      const pos = a1lib.getMousePosition() ?? undefined;
   
-      updateGroup(group.id, { overlayPosition: { x: pos.x, y: pos.y } });
-  
+      if (pos !== undefined && pos.x !== undefined && pos.y !== undefined) {
+        updateGroup(group.id, { overlayPosition: { x: pos.x, y: pos.y } });
+      }
       await new Promise(r => setTimeout(r, 20));
     }
   
@@ -45,9 +46,22 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     console.log(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
   };
 
+  const formatTime = (seconds: number) => {
+    if (seconds <= 0) return '';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return mins > 0 ? `${mins}m` : `${secs}s`;
+  };
+
   useEffect(() => {
     if (!alt1Ready || !a1lib || !window.alt1) return;
-    if (!group.enabled) return;
+    if (!group.enabled) {
+      window.alt1.overLayClearGroup(`region${group.id}`);
+      group.buffs.forEach(buff => {
+        window.alt1.overLayClearGroup(`${group.id}-${buff.name}-text`);
+      });
+      return;
+    }
   
     const overlayPosition = group.overlayPosition;
     const x = overlayPosition?.x ?? 15;
@@ -58,29 +72,53 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     const spacing = baseSize + 1;
     const cols = group.buffsPerRow || 8;
 
-    group.buffs.forEach((buff, index) => {
+    group.buffs.map((buff) => {
+      if (!buff.isActive && !group.explicitInactive) {
+        window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
+        window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
+      }
+    })
+
+    const buffsToDraw = group.buffs.filter(buff => {
+      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
+      return (group.explicitInactive || buff.isActive) || isOnCooldown;
+    });
+
+    window.alt1.overLaySetGroup(`region${region}`);
+    window.alt1.overLayFreezeGroup(`region${region}`);
+    window.alt1.overLayClearGroup(`region${region}`);
+
+    buffsToDraw.forEach((buff, index) => {
+      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
       const col = index % cols;
       const row = Math.floor(index / cols);
       const drawX = x + col * spacing;
       const drawY = y + row * spacing;
-
+    
       window.alt1.overLaySetGroup(`${region}-${buff.name}-text`);
       window.alt1.overLayFreezeGroup(`${region}-${buff.name}-text`);
+
       window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
       window.alt1.overLaySetGroupZIndex(`${region}-${buff.name}-text`, 3);
+
+      const timeToDisplay = isOnCooldown ? buff.cooldownRemaining : (buff.timeRemaining ?? '');
+      const textColor = isOnCooldown 
+      ? a1lib.mixColor(255, 255, 0) // Yellow for cooldown
+      : a1lib.mixColor(255, 255, 255); // White for active
       window.alt1.overLayTextEx(
-        `${buff.timeRemaining}`,
-        a1lib.mixColor(255, 255, 255),
+        formatTime(timeToDisplay),
+        textColor,
         Math.floor(10 * (group.scale / 100)),
-        Math.floor(drawX + 21),
-        Math.floor(drawY + 21),
-        10000,
+        Math.floor(drawX + ((group.scale / 100) * 21)),
+        Math.floor(drawY + ((group.scale / 100) * 21)),
+        100,
         '',
         true,                     
         true
-       );
-       window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
+      );
+      window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
     });
+
   
     window.alt1.overLaySetGroup(`region${region}`);
     window.alt1.overLayFreezeGroup(`region${region}`);
@@ -95,9 +133,14 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       }
     };
   
-    group.buffs.forEach((buff, index) => {
+    buffsToDraw.forEach((buff, index) => {
       const img = new Image();
-      const imageDataBase64 = buff.isActive ? buff.imageData : buff.desaturatedImageData;
+      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
+      const useDesaturatedImage = isOnCooldown || (group.explicitInactive && !buff.isActive);
+      const activeImageData = buff.scaledImageData || buff.imageData;
+      const inactiveImageData = buff.scaledDesaturatedImageData || buff.desaturatedImageData;
+      const imageDataBase64 = useDesaturatedImage ? inactiveImageData : activeImageData;
+
       const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
 
       if (!rawBase64) {
@@ -183,23 +226,13 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
             '--buff-rows': `${group.buffsPerRow}`
             }}>
             {group.buffs
-              .filter((buff) => {
-                const isActive = !!buff.activeDuration && Number(buff.activeDuration) > 0;
-                return group.explicitInactive || isActive;
-              })
               .map((buff, index, filteredBuffs) => {
-                const isBigHead =
-                  group.bigHeadMode &&
-                  ((group.bigHeadModeFirst && index === 0) ||
-                    (!group.bigHeadModeFirst && index === filteredBuffs.length - 1));
-
-                const isInactive = !buff.activeDuration || Number(buff.activeDuration) <= 0;
+                const isInactive = !buff.isActive;
 
                 return (
                   <Buff
                     key={buff.id}
                     buff={buff}
-                    isBigHead={isBigHead}
                     scale={group.scale}
                     desaturated={group.explicitInactive && isInactive}
                     onRemove={() => handleRemoveBuff(buff.id)}

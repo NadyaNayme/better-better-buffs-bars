@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 // @ts-ignore
 import useStore from './store';
 // @ts-ignore
-import useHasHydrated from './store';
-// @ts-ignore
 import Group from './components/Group';
 // @ts-ignore
 import ProfileManager from './components/ProfileManager';
@@ -14,6 +12,7 @@ import { isAlt1Available } from "./lib/alt1Utils";
 import PopupModal from './components/PopupModal';
 import a1lib from 'alt1';
 import { BuffReaderComponent } from './components/BuffReaderComponent';
+import { CooldownTimer } from './components/CooldownTimer';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -24,17 +23,13 @@ function App() {
   const groups = useStore((state: any) => state.groups);
   const createGroup = useStore((state: any) => state.createGroup);
   const createProfile = useStore((state: any) => state.createProfile);
-  const setAllBuffsInactive = useStore((state: any) => state.setAllBuffsInactive);
-  const updateBuffByName = useStore((state: any) => state.updateBuffByName);
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
+  const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
+  const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
 
-  const handleDataRead = useCallback((detectedBuffs: any[]) => {
-    // setAllBuffsInactive();
-    // for (const detectedBuff of detectedBuffs) {
-    //   console.log(detectedBuff);
-    //   updateBuffByName(detectedBuff.name, detectedBuff.time);
-    // }
-  }, [setAllBuffsInactive, updateBuffByName]);
+  const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
+    syncIdentifiedBuffs(foundBuffsMap);
+  }, [syncIdentifiedBuffs]);
 
   const openModalForGroup = () => {
     setModalContext('group');
@@ -58,6 +53,10 @@ function App() {
     console.log('window.alt1 at mount:', window.alt1);
     console.log('a1lib at mount:', a1lib);
   }, []);
+
+  useEffect(() => {
+    rescaleAllGroupsOnLoad();
+  }, [rescaleAllGroupsOnLoad]);
 
   useEffect(() => {
     if (isAlt1Available()) {
@@ -117,13 +116,14 @@ function App() {
         placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
       />
       <Debug />
-        <BuffReaderComponent 
-              onDataRead={handleDataRead} 
-            />
-        <BuffReaderComponent 
-          isDebuff={true} 
-          onDataRead={handleDataRead} 
-        />
+      <BuffReaderComponent 
+            onBuffsIdentified={handleBuffsIdentified}
+          />
+      <BuffReaderComponent 
+        isDebuff={true} 
+        onBuffsIdentified={handleBuffsIdentified} 
+      />
+      <CooldownTimer/>
     </div>
   );
 }

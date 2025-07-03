@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
+import alt1Plugin from './vite-alt1-plugin.js'
 import tailwindcss from '@tailwindcss/vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 // https://vite.dev/config/
@@ -11,6 +12,7 @@ export default defineConfig({
       },
     plugins: [
         react(),
+        alt1Plugin(),
         tailwindcss(),
         viteStaticCopy({
           targets: [
@@ -19,4 +21,9 @@ export default defineConfig({
           ]
         })
     ],
+    build: {
+      rollupOptions: {
+        external: ['sharp', 'canvas', 'electron/common'],
+      }
+    }
 });

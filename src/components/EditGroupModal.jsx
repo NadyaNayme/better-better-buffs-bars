@@ -8,15 +8,13 @@ const EditGroupModal = ({ group, onClose }) => {
   const { updateGroup, deleteGroup } = useStore();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [name, setName] = useState(group.name);
-  const [bigHeadMode, setBigHeadMode] = useState(group.bigHeadMode);
-  const [bigHeadModeFirst, setBigHeadModeFirst] = useState(group.bigHeadModeFirst);
   const [buffsPerRow, setBuffsPerRow] = useState(group.buffsPerRow);
   const [explicitInactive, setExplicitInactive] = useState(group.explicitInactive ?? false);
   const [scale, setScale] = useState(group.scale || 100);
   const [enabled, setEnabled] = useState(group.enabled);
 
   const handleSave = () => {
-    updateGroup(group.id, { name, bigHeadMode, bigHeadModeFirst, buffsPerRow: Number(buffsPerRow), explicitInactive, scale: Number(scale), enabled });
+    updateGroup(group.id, { name, buffsPerRow: Number(buffsPerRow), explicitInactive, scale: Number(scale), enabled });
     onClose();
   };
 
@@ -39,28 +37,6 @@ const EditGroupModal = ({ group, onClose }) => {
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              checked={bigHeadMode}
-              onChange={(e) => setBigHeadMode(e.target.checked)}
-              className="mr-2"
-            />
-            <label>Enable Big Head Mode</label>
-          </div>
-          {bigHeadMode && (
-            <div>
-              <label className="block mb-1">Big Head Position</label>
-              <select
-                value={bigHeadModeFirst ? 'first' : 'last'}
-                onChange={(e) => setBigHeadModeFirst(e.target.value === 'first')}
-                className="w-full p-2 border border-gray-300 rounded text-red"
-              >
-                <option value="first">First Buff</option>
-                <option value="last">Last Buff</option>
-              </select>
-            </div>
-          )}
           <div className="flex items-center">
             <input
               type="number"

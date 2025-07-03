@@ -6,10 +6,10 @@ const formatTime = (seconds) => {
   if (seconds <= 0) return '0s';
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
-  return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+  return mins > 0 ? `${mins}m` : `${secs}s`;
 };
 
-const Buff = ({ buff, isBigHead, scale = 100, onRemove  }) => {
+const Buff = ({ buff, scale = 100, onRemove  }) => {
   const {
     attributes,
     listeners,
@@ -29,15 +29,15 @@ const Buff = ({ buff, isBigHead, scale = 100, onRemove  }) => {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    gridColumn: isBigHead ? 'span 2' : 'span 1',
-    gridRow: isBigHead ? 'span 2' : 'span 1',
+    gridColumn: 'span 1',
+    gridRow: 'span 1',
   };
 
   const fontStyle = {
     fontSize:  'calc(10px * ' + sizePercent + ')'
   }
 
-  const imageUrl = buff.isActive ? buff.imageData : buff.desaturatedImageData;
+  const imageUrl = buff.isActive ? buff.imageData : buff.imageData;
 
   const [highlighted, setHighlighted] = useState(false);
 

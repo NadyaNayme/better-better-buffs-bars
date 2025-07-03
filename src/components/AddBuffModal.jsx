@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import useStore from '../store';
 
 const AddBuffModal = ({ groupId, onClose }) => {
-  const { buffs, groups, addBuffToGroup } = useStore();
+  const { buffs, addBuffToGroup } = useStore();
+  const currentGroup = useStore(state => 
+    state.groups.find(g => g.id === groupId)
+  );
   const [selectedBuff, setSelectedBuff] = useState('');
 
-  const group = groups.find(g => g.id === groupId);
-  const existingBuffIds = group ? group.buffs.map(b => b.id) : [];
+  const existingBuffIds = useMemo(() => {
+    if (!currentGroup) return new Set();
+    return new Set(currentGroup.buffs.map(b => b.id));
+  }, [currentGroup]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,26 +32,25 @@ const AddBuffModal = ({ groupId, onClose }) => {
             className="w-full p-2 border border-gray-300 rounded mb-4"
           >
             <option value="" disabled>Select a buff</option>
-            {buffs
-              .filter(buff => !existingBuffIds.includes(buff.id))
-              .map(buff => (
-                <option key={buff.id} value={buff.id}>{buff.name}</option>
-              ))
-            }
+            {buffs.map(buff => {
+              const isAlreadyInGroup = existingBuffIds.has(buff.id);
+              return (
+                <option
+                  key={buff.id}
+                  value={buff.id}
+                  disabled={isAlreadyInGroup}
+                  className={isAlreadyInGroup ? 'text-gray-500' : ''}
+                >
+                  {buff.name} {isAlreadyInGroup && '(Already in group)'}
+                </option>
+              );
+            })}
           </select>
           <div className="flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            >
+            <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
               Cancel
             </button>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              disabled={!selectedBuff}
-            >
+            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Add Buff
             </button>
           </div>
