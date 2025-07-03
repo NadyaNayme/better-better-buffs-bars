@@ -1,7 +1,10 @@
 {
-  "files": [],
+  "files": ["src/declarations.d.ts"],
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+  },
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
 }

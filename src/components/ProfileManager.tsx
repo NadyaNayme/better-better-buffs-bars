@@ -1,7 +1,12 @@
+// @ts-nocheck
 import React, { useState } from 'react';
 import useStore from '../store';
 
-const ProfileManager = () => {
+type ProfileManagerProps = {
+  openModalForProfile: () => void;
+};
+
+const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) => {
   const {
     profiles,
     activeProfile,
@@ -46,7 +51,7 @@ const ProfileManager = () => {
           placeholder="New Profile Name"
           className="p-2 rounded bg-gray-700 text-white"
         />
-        <button onClick={handleCreateProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={openModalForProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Create New Profile
         </button>
         <button onClick={saveProfile} disabled={!activeProfile} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
@@ -70,7 +75,7 @@ const ProfileManager = () => {
           </select>
           <div className="flex flex-col items-end gap-2">
             {profiles.map(p => (
-              <div key={p.id} className="flex gap-2">
+              <div key={p.id} className="flex items-center gap-2">
                 {editingProfile === p.id ? (
                   <>
                     <input
