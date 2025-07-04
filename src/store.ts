@@ -13,6 +13,7 @@ interface Buff {
   scaledImageData?: string;
   desaturatedImageData: string;
   scaledDesaturatedImageData?: string;
+  defaultImageData?: string;
   duration?: number;
   cooldown?: number;
   cooldownRemaining?: number;
@@ -161,8 +162,7 @@ const useStore = create(
                           isActive: false,
                           timeRemaining: 0,
                           inactiveCount: 0,
-                          imageData: '',
-                          desaturatedImageData: '',
+                          imageData: buff.defaultImageData,
                           lastUpdated: now,
                         };
                       } 
