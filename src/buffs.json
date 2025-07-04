@@ -10,6 +10,7 @@
         "Deflect Magic",
         "Deflect Ranged",
         "Deflect Melee",
+        "Deflect Necromancy",
         "Protect From Magic",
         "Protect From Ranged",
         "Protect From Melee",
@@ -28,14 +29,14 @@
       "name": "DPS Prayers",
       "buffType": "Meta",
       "childBuffNames": [
-        "Turmoil",
-        "Anguish",
-        "Torment",
-        "Sorrow",
-        "Malevolence",
+        "Ruination",
         "Desolation",
         "Affliction",
-        "Ruination"
+        "Malevolence",
+        "Sorrow",
+        "Torment",
+        "Anguish",
+        "Turmoil"
       ],
       "isActive": false,
       "alwaysActive": true,
