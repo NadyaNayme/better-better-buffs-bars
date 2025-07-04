@@ -22,6 +22,8 @@ interface Buff {
   buffType?: string;
   isActive: boolean;
   alwaysActive?: boolean;
+  lastUpdated?: Date;
+  inactiveCount?: number;
 }
 
 interface Group {
@@ -119,86 +121,132 @@ const useStore = create(
           console.log(`Buffs updated to version ${jsonVersion}`);
         }
       },
-      syncIdentifiedBuffs: (identifiedActiveBuffs) => {    
-        set((state) => ({
-          groups: state.groups.map(group => ({
-            ...group,
-            buffs: group.buffs.map(buffInGroup => {
-              
-              const activeInfo = identifiedActiveBuffs.get(buffInGroup.name);
-
-              // --- META BUFF LOGIC ---
-              if (buffInGroup.buffType === "Meta") {
-                // Case 1a: The meta buff has an active child. Update it.
+      syncIdentifiedBuffs: (identifiedActiveBuffs) => {
+        set((state) => {
+          let didChange = false;
+          const now = Date.now();
+      
+          const updatedGroups = state.groups.map(group => {
+            const updatedBuffs = group.buffs.map(buff => {
+              const activeInfo = identifiedActiveBuffs.get(buff.name);
+      
+              if (buff.buffType === "Meta") {
+                // Case 1: An active child WAS found on this tick.
                 if (activeInfo && activeInfo.foundChild) {
+                  didChange = true;
                   return {
-                    ...buffInGroup,
+                    ...buff,
                     isActive: true,
                     timeRemaining: activeInfo.time,
                     imageData: activeInfo.foundChild.imageData,
                     desaturatedImageData: activeInfo.foundChild.desaturatedImageData,
                     scaledImageData: '',
                     scaledDesaturatedImageData: '',
-                  };
-                }
-                // Case 1b: The meta buff has NO active child. It must be made inactive.
-                else {
-                  return {
-                    ...buffInGroup,
-                    imageData: '',
-                    desaturatedImageData: '',
-                    scaledImageData: '',
-                    scaledDesaturatedImageData: '',
-                  };
-                }
-              }
-
-              // --- NORMAL BUFF LOGIC ---
-              else {
-                // Case 2a: A normal buff is active.
-                if (activeInfo) {
-                  return {
-                    ...buffInGroup,
-                    timeRemaining: activeInfo.time,
-                    isActive: true,
+                    inactiveCount: 0,
+                    lastUpdated: now,
                   };
                 }
                 
-                // Case 2b: A normal buff is NOT active. Handle decay/cooldown.
-                else if (buffInGroup.isActive) {
-
-                  // This decay logic now only applies to normal buffs.
-                  if (buffInGroup.timeRemaining === 1) {
+                // Case 2: No active child was found on this tick.
+                else {
+                  if (buff.isActive) {
+                    const timeSinceLastUpdate = now - (buff.lastUpdated ?? 0);
+                    if (timeSinceLastUpdate > 400) {
+                      const newInactiveCount = (buff.inactiveCount ?? 0) + 1;
+                      if (newInactiveCount >= 3) {
+                        console.log(`Buff is inactive after 1.2s ${buff.inactiveCount}`);
+                        didChange = true;
+                        return {
+                          ...buff,
+                          isActive: false,
+                          timeRemaining: 0,
+                          inactiveCount: 0,
+                          imageData: '',
+                          desaturatedImageData: '',
+                          lastUpdated: now,
+                        };
+                      } 
+                      else {
+                        console.log(`Buff's inactive count will be incrementing: ${buff.inactiveCount}`);
+                        didChange = true;
+                        return {
+                          ...buff,
+                          isActive: true,
+                          inactiveCount: newInactiveCount,
+                          lastUpdated: now,
+                        };
+                      }
+                    }
+                  return buff;
+                  }
+                }
+              }
+      
+              if (activeInfo) {
+                if (
+                  !buff.isActive ||
+                  buff.timeRemaining !== activeInfo.time
+                ) {
+                  didChange = true;
+                  return {
+                    ...buff,
+                    isActive: true,
+                    timeRemaining: activeInfo.time,
+                    cooldownRemaining: 0,
+                    lastUpdated: now,
+                  };
+                }
+                return buff;
+              }
+      
+              // If buff is active but not detected, decay timeRemaining based on elapsed time:
+              if (buff.isActive) {
+                const elapsedMs = now - (buff.lastUpdated ?? now);
+                // Calculate how many full seconds passed:
+                const elapsedSeconds = Math.floor(elapsedMs / 1000);
+      
+                if (elapsedSeconds > 0) {
+                  const timeLeft = buff.timeRemaining ?? 0;
+                  const newTime = Math.max(0, timeLeft - elapsedSeconds);
+      
+                  if (newTime === 0) {
+                    didChange = true;
                     return {
-                      ...buffInGroup,
-                      timeRemaining: 0,
+                      ...buff,
                       isActive: false,
-                      cooldownRemaining: buffInGroup.cooldown ?? 0,
+                      timeRemaining: 0,
+                      cooldownRemaining: buff.cooldown ?? 0,
+                      lastUpdated: now,
+                    };
+                  } else if (newTime !== timeLeft) {
+                    didChange = true;
+                    return {
+                      ...buff,
+                      timeRemaining: newTime,
+                      isActive: newTime > 0 || !!buff.alwaysActive,
+                      lastUpdated: now,
                     };
                   }
-                  const newTime = Math.max(0, (buffInGroup.timeRemaining ?? 0) - 1);
-                  return {
-                    ...buffInGroup,
-                    timeRemaining: newTime,
-                    isActive: newTime > 0 || !!buffInGroup.alwaysActive,
-                  };
-                }
-
-                
-                else {
-                  // Case 2d: A normal buff is already inactive. Do nothing.
-                  return buffInGroup;
                 }
               }
-            }),
-          })),
-        }));
+      
+              return buff;
+            });
+      
+            return didChange ? { ...group, buffs: updatedBuffs } : group;
+          });
+      
+          return didChange ? { groups: updatedGroups } : {};
+        });
       },
       tickCooldownTimers: () => {
+        const now = Date.now();
         set((state) => ({
           groups: state.groups.map(group => ({
             ...group,
             buffs: group.buffs.map(buff => {
+              const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
+              if (recentlyUpdated) return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0) {
                  return {
                   ...buff,

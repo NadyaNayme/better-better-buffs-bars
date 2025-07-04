@@ -1,5 +1,5 @@
 {
-  "version": 18,
+  "version": 19,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -19,7 +19,8 @@
       "alwaysActive": false,
       "timeRemaining": 0,
       "imageData": "",
-      "desaturatedImageData": ""
+      "desaturatedImageData": "",
+      "inactiveCount": 0
     },
     {
       "id": "meta-dps-prayers",
@@ -39,7 +40,8 @@
       "alwaysActive": true,
       "timeRemaining": 0,
       "imageData": "",
-      "desaturatedImageData": ""
+      "desaturatedImageData": "",
+      "inactiveCount": 0
     },
     {
       "id": "meta-quiver",
@@ -52,7 +54,8 @@
       "alwaysActive": true,
       "timeRemaining": 0,
       "imageData": "",
-      "desaturatedImageData": ""
+      "desaturatedImageData": "",
+      "inactiveCount": 0
     },
     {
       "name": "Adrenaline Potion",

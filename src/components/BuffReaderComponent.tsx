@@ -223,7 +223,7 @@ type ComponentStatus = "IDLE" | "LOADING_IMAGES" | "FINDING_BAR" | "READING" | "
 export function BuffReaderComponent({ 
   isDebuff = false, 
   onBuffsIdentified,
-  readInterval = 150,
+  readInterval = 325,
 }: BuffReaderProps) {
   const [status, setStatus] = useState<ComponentStatus>("IDLE");
 
@@ -234,65 +234,61 @@ export function BuffReaderComponent({
 
   const processReaderData = useCallback((detectedBuffs: any[]) => {
     if (!resolvedImagesRef.current) return;
-    
+  
     const groups = useStore.getState().groups;
     const allBuffs = useStore.getState().buffs;
-    const uniqueTrackedBuffs = new Map(groups.flatMap(g => g.buffs).map(b => [b.name, b]));
-
+  
+    const trackedBuffMap = new Map(groups.flatMap(g => g.buffs).map(b => [b.name, b]));
     const finalPayloadMap = new Map<string, any>();
-
-    // --- First Pass: Find active buffs and UPDATE their payload in the map ---
-    for (const detectedBuff of detectedBuffs) {
-      for (const [trackedBuffName, trackedBuffData] of uniqueTrackedBuffs.entries()) {
-        
-        let referenceImage;
-        let childBuffNameToTest = null;
-
-        if (trackedBuffData.buffType === "Meta" && trackedBuffData.childBuffNames) {
-          // For meta buffs, we need to find which child, if any, matches
-          for (const childName of trackedBuffData.childBuffNames) {
-            const tempRefImg = resolvedImagesRef.current.get(childName);
-            const matchResult = detectedBuff.countMatch(tempRefImg, false);
-            const passThreshold = (trackedBuffData as any).passThreshold ?? 10;
-            const failThreshold = (trackedBuffData as any).failThreshold ?? 50;
-
-            if (matchResult.passed >= passThreshold && matchResult.failed <= failThreshold) {
-              referenceImage = tempRefImg;
-              childBuffNameToTest = childName;
-              break;
+  
+    for (const detected of detectedBuffs) {
+      for (const [name, trackedBuff] of trackedBuffMap.entries()) {
+        if (!trackedBuff) continue;
+  
+        const passThreshold = trackedBuff.passThreshold ?? 10;
+        const failThreshold = trackedBuff.failThreshold ?? 50;
+  
+        // Meta buff logic
+        if (trackedBuff.buffType === 'Meta' && trackedBuff.childBuffNames) {
+          for (const childName of trackedBuff.childBuffNames) {
+            const img = resolvedImagesRef.current.get(childName);
+            if (!img) continue;
+  
+            const match = detected.countMatch(img, false);
+            if (match.passed >= passThreshold && match.failed <= failThreshold) {
+              const time = '';
+              const childData = allBuffs.find(b => b.name === childName);
+              if (childData) {
+                finalPayloadMap.set(name, {
+                  name,
+                  time,
+                  foundChild: {
+                    imageData: childData.imageData,
+                    desaturatedImageData: childData.desaturatedImageData,
+                  }
+                });
+              }
+              break; // stop after first match
             }
           }
-        } else {
-          referenceImage = resolvedImagesRef.current.get(trackedBuffName);
         }
-
-        if (!referenceImage) continue;
-
-        const passThreshold = (trackedBuffData as any).passThreshold ?? 10;
-        const failThreshold = (trackedBuffData as any).failThreshold ?? 50;
-        const matchResult = detectedBuff.countMatch(referenceImage, false);
-
-        if (matchResult.passed >= passThreshold && matchResult.failed <= failThreshold) {
-          const time = detectedBuff.readTime ? detectedBuff.readTime() : detectedBuff.time;
-
-          if (trackedBuffData.buffType === "Meta" && childBuffNameToTest) {
-            const originalChildData = allBuffs.find(b => b.name === childBuffNameToTest);
-            if(originalChildData) {
-              finalPayloadMap.set(trackedBuffName, {
-                name: trackedBuffName, 
-                time: time,
-                foundChild: {
-                  imageData: originalChildData.imageData,
-                  desaturatedImageData: originalChildData.desaturatedImageData
-                }
-              });
-            }
-          } else if (trackedBuffData.buffType !== "Meta") {
-            finalPayloadMap.set(trackedBuffName, { name: trackedBuffName, time: time });
+  
+        // Normal buff logic
+        else {
+          const refImg = resolvedImagesRef.current.get(name);
+          if (!refImg) continue;
+  
+          const match = detected.countMatch(refImg, false);
+          if (match.passed >= passThreshold && match.failed <= failThreshold) {
+            finalPayloadMap.set(name, {
+              name,
+              time: detected.readTime ? detected.readTime() : detected.time,
+            });
           }
         }
       }
     }
+  
     onBuffsIdentified(finalPayloadMap);
   }, [onBuffsIdentified]);
 

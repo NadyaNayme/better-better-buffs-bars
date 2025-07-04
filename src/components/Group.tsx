@@ -7,6 +7,8 @@ import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
 
+const imageCache = new Map<string, HTMLCanvasElement>();
+
 const Group = ({ group, a1lib, alt1Ready  }) => {
   const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
@@ -50,15 +52,17 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     if (seconds <= 0) return '';
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return mins > 0 ? `${mins}m` : `${secs}s`;
+    return mins > 0 ? `${mins}m` : `${secs}`;
   };
 
   useEffect(() => {
     if (!alt1Ready || !a1lib || !window.alt1) return;
     if (!group.enabled) {
       window.alt1.overLayClearGroup(`region${group.id}`);
+      window.alt1.overLayRefreshGroup(`region${group.id}`);
       group.buffs.forEach(buff => {
         window.alt1.overLayClearGroup(`${group.id}-${buff.name}-text`);
+        window.alt1.overLayRefreshGroup(`${group.id}-${buff.name}-text`);
       });
       return;
     }
@@ -73,15 +77,18 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     const cols = group.buffsPerRow || 8;
 
     group.buffs.map((buff) => {
-      if (!buff.isActive && !group.explicitInactive) {
+      if (!buff.isActive && !group.explicitInactive && !(buff.buffType === "Meta")) {
         window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
         window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
       }
     })
 
     const buffsToDraw = group.buffs.filter(buff => {
+      if (buff.buffType === "Meta" || group.explicitInactive) {
+        return true;
+      }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      return (group.explicitInactive || buff.isActive) || isOnCooldown;
+      return buff.isActive || isOnCooldown;
     });
 
     window.alt1.overLaySetGroup(`region${region}`);
@@ -105,17 +112,31 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       const textColor = isOnCooldown 
       ? a1lib.mixColor(255, 255, 0) // Yellow for cooldown
       : a1lib.mixColor(255, 255, 255); // White for active
-      window.alt1.overLayTextEx(
-        formatTime(timeToDisplay),
-        textColor,
-        Math.floor(10 * (group.scale / 100)),
-        Math.floor(drawX + ((group.scale / 100) * 21)),
-        Math.floor(drawY + ((group.scale / 100) * 21)),
-        100,
-        '',
-        true,                     
-        true
-      );
+      if (buff.buffType === "Meta") {
+        window.alt1.overLayTextEx(
+          buff.Name,
+          textColor,
+          Math.floor(10 * (group.scale / 100)),
+          Math.floor(drawX + ((group.scale / 100) * 19)),
+          Math.floor(drawY + ((group.scale / 100) * 19)),
+          100,
+          '',
+          true,                     
+          true
+        );
+      } else {
+        window.alt1.overLayTextEx(
+          formatTime(timeToDisplay),
+          textColor,
+          Math.floor(10 * (group.scale / 100)),
+          Math.floor(drawX + ((group.scale / 100) * 19)),
+          Math.floor(drawY + ((group.scale / 100) * 19)),
+          100,
+          '',
+          true,                     
+          true
+        );
+      }
       window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
     });
 
@@ -134,6 +155,13 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     };
   
     buffsToDraw.forEach((buff, index) => {
+
+      if (buff.buffType === "Meta" && !buff.imageData) {
+        loadedCount++;
+        checkAndRefresh();
+        return;
+      }
+
       const img = new Image();
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
       const useDesaturatedImage = isOnCooldown || (group.explicitInactive && !buff.isActive);
@@ -164,7 +192,7 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
         const imageData = ctx.getImageData(0, 0, img.width, img.height);
         const encoded = a1lib.encodeImageString(imageData);
   
-        window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 10000);
+        window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 1200);
         
         loadedCount++;
         checkAndRefresh();
