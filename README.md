@@ -8,7 +8,7 @@ Track only the buffs that actually matter.
 ## How to Install & Required Settings
 
 To install Better Buff Bar copy & paste this link into Alt1's browser app:
-`alt1://addapp/https://nadyanayme.github.io/better-better-buffs-bars/dist/appconfig.json`
+`alt1://addapp/https://nadyanayme.github.io/better-better-buffs-bars/appconfig.json`
 
 If you do not have Alt1 Toolkit installed already you can [download it from runeapps.org](https://runeapps.org/alt1). In order for Better Buff Bar to work make sure your Runescape settings for buff bar size is set to `small` and that your Game and UI Scale settings are set to `100%` as these settings are required for Alt1 to be able to read your game screen.
 
