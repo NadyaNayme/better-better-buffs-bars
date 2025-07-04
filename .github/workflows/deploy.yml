@@ -31,11 +31,10 @@ jobs:
           path: ./dist
 
   deploy:
-    if: "contains(github.event.head_commit.message, 'release')"
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Download artifact
