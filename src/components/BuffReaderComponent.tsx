@@ -256,7 +256,7 @@ export function BuffReaderComponent({
   
             const match = detected.countMatch(img, false);
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
-              const time = '';
+              const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
               if (childData) {
                 finalPayloadMap.set(name, {

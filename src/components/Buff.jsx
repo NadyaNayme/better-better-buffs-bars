@@ -20,8 +20,8 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
   } = useSortable({ id: buff.id });
 
   const sizePercent = Math.max(50, Math.min(scale, 500)) / 100;
-  const baseSize = 27; // or whatever your standard buff size is
-  const sizePx = baseSize * sizePercent;
+  const baseSize = 27;
+  const sizePx = baseSize;
 
   const style = {
     width: `${sizePx}px`,
@@ -56,7 +56,7 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
     >
       <img src={imageUrl} alt={buff.name} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
       {buff.timeRemaining != null && (
-        <div className="absolute bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1" style={fontStyle}>
+        <div className="absolute bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
           {formatTime(buff.timeRemaining)}
         </div>
       )}

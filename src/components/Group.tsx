@@ -114,7 +114,7 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       : a1lib.mixColor(255, 255, 255); // White for active
       if (buff.buffType === "Meta") {
         window.alt1.overLayTextEx(
-          buff.Name,
+          formatTime(timeToDisplay),
           textColor,
           Math.floor(10 * (group.scale / 100)),
           Math.floor(drawX + ((group.scale / 100) * 19)),
@@ -222,7 +222,7 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
   };
 
   const scale = group.scale ?? 100;
-  const minWidth = 27 * (scale / 100); // scale 100 = 27px
+  const minWidth = 27;
 
   return (
     <div className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
