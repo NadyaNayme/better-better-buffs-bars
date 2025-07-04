@@ -1,7 +1,7 @@
 {
 	"appName": "BetterBuffBar",
 	"description": "Track the buffs that matter",
-	"appUrl": "http://localhost:4173",
+	"appUrl": "https://nadyanayme.github.io/better-better-buffs-bars/",
 	"configUrl": "./appconfig.json",
 	"iconUrl": "./icon.png",
 	"defaultWidth": 400,
