@@ -25,7 +25,7 @@ import ChronicleAttraction from '../assets/data/Chronicle_Attraction.data.png';
 import CrystalMask from '../assets/data/Crystal_Mask.data.png';
 import CrystalRain from '../assets/data/Crystal_Rain-minimal.data.png';
 import Darkness from '../assets/data/Darkness.data.png';
-import DeathGuard from '../assets/data/Death_guard_special-top.data.png';
+import DeathGuard from '../assets/data/Death_Guard_Special-top.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
 import DeathSpark from '../assets/data/Death_Spark.data.png';
 import DeathsSwiftness from '../assets/data/Deaths_Swiftness-top.data.png';
