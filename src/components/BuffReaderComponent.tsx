@@ -85,7 +85,7 @@ import ResidualSoul from '../assets/data/Residual_Soul.data.png';
 import Resonance from '../assets/data/Resonance.data.png';
 import RubyBakBolts from '../assets/data/ruby_bak_bolts.data.png';
 import Ruination from '../assets/data/Ruination.data.png';
-import SerenGodbow from '../assets/data/Seren_godbow_Special-top.data.png';
+import SerenGodbow from '../assets/data/Seren_Godbow_Special-top.data.png';
 import SignOfLife from '../assets/data/Sign_of_Life-top.data.png';
 import SkeletonWarrior from '../assets/data/skeleton_warrior-top.data.png';
 import Sorrow from '../assets/data/Sorrow.data.png';
