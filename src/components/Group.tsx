@@ -112,6 +112,12 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       const textColor = isOnCooldown 
       ? a1lib.mixColor(255, 255, 0) // Yellow for cooldown
       : a1lib.mixColor(255, 255, 255); // White for active
+
+      // These buffs do not have time or stacks
+      if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark") {
+        return;
+      }
+
       if (buff.buffType === "Meta") {
         window.alt1.overLayTextEx(
           formatTime(timeToDisplay),
