@@ -44,13 +44,6 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
     <div className="bg-gray-800 text-white p-4 rounded-lg mb-4">
       <h2 className="text-xl font-bold mb-4">Profiles</h2>
       <div className="flex gap-4 mb-4">
-        <input
-          type="text"
-          value={newProfileName}
-          onChange={(e) => setNewProfileName(e.target.value)}
-          placeholder="New Profile Name"
-          className="p-2 rounded bg-gray-700 text-white"
-        />
         <button onClick={openModalForProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Create New Profile
         </button>
