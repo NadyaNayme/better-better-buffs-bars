@@ -6,9 +6,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/better-better-buffs-bars/',
   server: {
-    host: true, // listen on all addresses
+    host: true,
     cors: true,
   },
   plugins: [
