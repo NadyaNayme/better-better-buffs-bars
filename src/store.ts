@@ -420,7 +420,7 @@ const useStore = create(
       cooldownColor: { r: 255, g: 255, b: 0 },
       timeRemainingColor: { r: 255, g: 255, b: 255 },
       setCooldownColor: (color) => set({ cooldownColor: color }),
-      settimeRemainingColor: (color) => set({ timeRemainingColor: color }),
+      setTimeRemainingColor: (color) => set({ timeRemainingColor: color }),
     }),
     {
       name: 'buff-tracker-storage',
