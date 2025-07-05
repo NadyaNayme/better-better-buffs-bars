@@ -202,7 +202,6 @@ const useStore = create(
               // If buff is active but not detected, decay timeRemaining based on elapsed time:
               if (buff.isActive) {
                 const elapsedMs = now - (buff.lastUpdated ?? now);
-                // Calculate how many full seconds passed:
                 const elapsedSeconds = Math.floor(elapsedMs / 1000);
       
                 if (elapsedSeconds > 0) {
@@ -218,7 +217,7 @@ const useStore = create(
                       cooldownRemaining: buff.cooldown ?? 0,
                       lastUpdated: now,
                     };
-                  } else if (newTime !== timeLeft) {
+                  } else if (newTime !== timeLeft && timeLeft < 60) {
                     didChange = true;
                     return {
                       ...buff,
@@ -247,7 +246,6 @@ const useStore = create(
             buffs: group.buffs.map(buff => {
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
-              // Only tick down buffs that have <60s durations
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                  return {
                   ...buff,
