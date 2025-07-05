@@ -263,8 +263,8 @@ export function BuffReaderComponent({
                   name,
                   time,
                   foundChild: {
-                    imageData: childData.imageData,
-                    desaturatedImageData: childData.desaturatedImageData,
+                    imageData: childData.scaledImageData ?? childData.imageData,
+                    desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
                   }
                 });
               }
