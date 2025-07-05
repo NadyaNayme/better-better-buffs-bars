@@ -1,5 +1,5 @@
 {
-  "version": 36,
+  "version": 37,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -59,7 +59,8 @@
       "defaultImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGmWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDMgNzkuOTY5MGE4NywgMjAyNS8wMy8wNi0xOToxMjowMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjUtMDctMDRUMTA6NTY6MjAtMDc6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTY0ZTdlYjYtM2RkYS02OTRkLTg5MzktZWZjMTE4YTE2OTYxIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6ZWFhNTY4ZmYtOGVkMS0xMjQwLWFmNmYtZGFhYjQ1YTIxMmQ5IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBzdEV2dDp3aGVuPSIyMDI1LTA3LTA0VDEwOjU2OjIwLTA3OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjYuOCAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjU2NGU3ZWI2LTNkZGEtNjk0ZC04OTM5LWVmYzExOGExNjk2MSIgc3RFdnQ6d2hlbj0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8cGhvdG9zaG9wOlRleHRMYXllcnM+IDxyZGY6QmFnPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IkxvcmVtIElwc3VtIiBwaG90b3Nob3A6TGF5ZXJUZXh0PSJMb3JlbSBJcHN1bSIvPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IlFWUiIgcGhvdG9zaG9wOkxheWVyVGV4dD0iUVZSIi8+IDwvcmRmOkJhZz4gPC9waG90b3Nob3A6VGV4dExheWVycz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4pycyRAAABk0lEQVRIie2Uoa7qQBCG2XvkIsCjGcsTtOkKHoEUwht0JbYO19Qj9gn6BDgSwiqCqKhpMgFDwggEyVQhOGJzmzYcjrj3iHsTfjd/Z762829WCCE6P6pfP4t7E9/Ev9LH8wkPgkBrPR6PT6fT9XoNgmA+n2+32+bT+/3uevr9flEUrXnRljGGmYmIiJhZax2G4ePxCMPQNWRZhohpmro2ZkZEpVRNaBGVUswcx3E9zMwAgIhZljmTiIwxaZoSkRACAJxTQ1p7nM1mVVUtl0tXrlYrKeVkMtlsNr7vdzqdKIqklEmSNKeklLfbrS5bxMFg8LzpXq+XJImUMooiz/MQsSxLB7pcLofDIc/zxWLxNbEoCinlcDhsmsfjsSxLRPQ8z/f9/X7v/KqqptMpEZ3P55fJuD0aYwAAAKy1iFgn5nIAACFEvcc4jpn5ZTJCCK01/xYiaq2dDwDMbK11ZU0UQlhr8zx/SXTDSqn1ek1EzZe7D2+WzZ9rIZ7TcNrtdt1udzQavWr4Ut8R/0z/w03xJv6rxE+EMdpTZ94TIgAAAABJRU5ErkJggg==",
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGmWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDMgNzkuOTY5MGE4NywgMjAyNS8wMy8wNi0xOToxMjowMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjUtMDctMDRUMTA6NTY6MjAtMDc6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTY0ZTdlYjYtM2RkYS02OTRkLTg5MzktZWZjMTE4YTE2OTYxIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6ZWFhNTY4ZmYtOGVkMS0xMjQwLWFmNmYtZGFhYjQ1YTIxMmQ5IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBzdEV2dDp3aGVuPSIyMDI1LTA3LTA0VDEwOjU2OjIwLTA3OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjYuOCAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjU2NGU3ZWI2LTNkZGEtNjk0ZC04OTM5LWVmYzExOGExNjk2MSIgc3RFdnQ6d2hlbj0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8cGhvdG9zaG9wOlRleHRMYXllcnM+IDxyZGY6QmFnPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IkxvcmVtIElwc3VtIiBwaG90b3Nob3A6TGF5ZXJUZXh0PSJMb3JlbSBJcHN1bSIvPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IlFWUiIgcGhvdG9zaG9wOkxheWVyVGV4dD0iUVZSIi8+IDwvcmRmOkJhZz4gPC9waG90b3Nob3A6VGV4dExheWVycz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4pycyRAAABk0lEQVRIie2Uoa7qQBCG2XvkIsCjGcsTtOkKHoEUwht0JbYO19Qj9gn6BDgSwiqCqKhpMgFDwggEyVQhOGJzmzYcjrj3iHsTfjd/Z762829WCCE6P6pfP4t7E9/Ev9LH8wkPgkBrPR6PT6fT9XoNgmA+n2+32+bT+/3uevr9flEUrXnRljGGmYmIiJhZax2G4ePxCMPQNWRZhohpmro2ZkZEpVRNaBGVUswcx3E9zMwAgIhZljmTiIwxaZoSkRACAJxTQ1p7nM1mVVUtl0tXrlYrKeVkMtlsNr7vdzqdKIqklEmSNKeklLfbrS5bxMFg8LzpXq+XJImUMooiz/MQsSxLB7pcLofDIc/zxWLxNbEoCinlcDhsmsfjsSxLRPQ8z/f9/X7v/KqqptMpEZ3P55fJuD0aYwAAAKy1iFgn5nIAACFEvcc4jpn5ZTJCCK01/xYiaq2dDwDMbK11ZU0UQlhr8zx/SXTDSqn1ek1EzZe7D2+WzZ9rIZ7TcNrtdt1udzQavWr4Ut8R/0z/w03xJv6rxE+EMdpTZ94TIgAAAABJRU5ErkJggg==",
       "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGmWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDMgNzkuOTY5MGE4NywgMjAyNS8wMy8wNi0xOToxMjowMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgeG1wOk1vZGlmeURhdGU9IjIwMjUtMDctMDRUMTA6NTY6MjAtMDc6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTY0ZTdlYjYtM2RkYS02OTRkLTg5MzktZWZjMTE4YTE2OTYxIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6ZWFhNTY4ZmYtOGVkMS0xMjQwLWFmNmYtZGFhYjQ1YTIxMmQ5IiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBwaG90b3Nob3A6Q29sb3JNb2RlPSIzIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyI+IDx4bXBNTTpIaXN0b3J5PiA8cmRmOlNlcT4gPHJkZjpsaSBzdEV2dDphY3Rpb249ImNyZWF0ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MThjMjNiMTYtMzEyNy0wMzQ0LWIxNTgtYWI4NDU0NWUzYzlkIiBzdEV2dDp3aGVuPSIyMDI1LTA3LTA0VDEwOjU2OjIwLTA3OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjYuOCAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjU2NGU3ZWI2LTNkZGEtNjk0ZC04OTM5LWVmYzExOGExNjk2MSIgc3RFdnQ6d2hlbj0iMjAyNS0wNy0wNFQxMDo1NjoyMC0wNzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8cGhvdG9zaG9wOlRleHRMYXllcnM+IDxyZGY6QmFnPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IkxvcmVtIElwc3VtIiBwaG90b3Nob3A6TGF5ZXJUZXh0PSJMb3JlbSBJcHN1bSIvPiA8cmRmOmxpIHBob3Rvc2hvcDpMYXllck5hbWU9IlFWUiIgcGhvdG9zaG9wOkxheWVyVGV4dD0iUVZSIi8+IDwvcmRmOkJhZz4gPC9waG90b3Nob3A6VGV4dExheWVycz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4pycyRAAABk0lEQVRIie2Uoa7qQBCG2XvkIsCjGcsTtOkKHoEUwht0JbYO19Qj9gn6BDgSwiqCqKhpMgFDwggEyVQhOGJzmzYcjrj3iHsTfjd/Z762829WCCE6P6pfP4t7E9/Ev9LH8wkPgkBrPR6PT6fT9XoNgmA+n2+32+bT+/3uevr9flEUrXnRljGGmYmIiJhZax2G4ePxCMPQNWRZhohpmro2ZkZEpVRNaBGVUswcx3E9zMwAgIhZljmTiIwxaZoSkRACAJxTQ1p7nM1mVVUtl0tXrlYrKeVkMtlsNr7vdzqdKIqklEmSNKeklLfbrS5bxMFg8LzpXq+XJImUMooiz/MQsSxLB7pcLofDIc/zxWLxNbEoCinlcDhsmsfjsSxLRPQ8z/f9/X7v/KqqptMpEZ3P55fJuD0aYwAAAKy1iFgn5nIAACFEvcc4jpn5ZTJCCK01/xYiaq2dDwDMbK11ZU0UQlhr8zx/SXTDSqn1ek1EzZe7D2+WzZ9rIZ7TcNrtdt1udzQavWr4Ut8R/0z/w03xJv6rxE+EMdpTZ94TIgAAAABJRU5ErkJggg==",
-      "inactiveCount": 0
+      "inactiveCount": 0,
+      "isUtility": true
     },
     {
       "id": "meta-conjure-undead-army",
@@ -104,7 +105,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Aggression Potion",
@@ -146,7 +148,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Animate Dead",
@@ -250,15 +253,16 @@
       "name": "Blank",
       "failThreshold": 400,
       "passThreshold": 120,
-      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbAQMAAAC3GmYWAAAABlBMVEUAAABBQUE8hlF6AAAAAXRSTlMAQObYZgAAABZJREFUCB1j/M/A8JCxoYFBYcAIkAsAhJsf/MPHzt8AAAAASUVORK5CYII=",
-      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbAQMAAAC3GmYWAAAABlBMVEUAAABBQUE8hlF6AAAAAXRSTlMAQObYZgAAABZJREFUCB1j/M/A8JCxoYFBYcAIkAsAhJsf/MPHzt8AAAAASUVORK5CYII=",
+      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAJCGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDMgNzkuOTY5MGE4NywgMjAyNS8wMy8wNi0xOToxMjowMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCAyNi44IChXaW5kb3dzKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjUtMDctMDRUMTI6NTI6MjAtMDc6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjUtMDctMDVUMTI6NTU6NTAtMDc6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI1LTA3LTA1VDEyOjU1OjUwLTA3OjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpiMzliYmFlYy1jNmNlLWM3NGMtODg3MC0xMzlmZWRjMzNlNWEiIHhtcE1NOkRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpiY2FiY2Y3YS03NWFjLTM5NDYtODVjMC1mNjBiZWRhNmJmMTciIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmIyYTJmNmE4LWYyOTktZmU0ZS1iZjYyLWMzZjYwMWMzMjU3NSIgc3RFdnQ6d2hlbj0iMjAyNS0wNy0wNFQxMjo1MjoyMC0wNzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo4NWY5MTc4NS1iMDdiLTUyNDEtOWQzYy00MzU4MDgxZjg2YzIiIHN0RXZ0OndoZW49IjIwMjUtMDctMDVUMTI6NTU6NTAtMDc6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyNi44IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY29udmVydGVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJmcm9tIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5waG90b3Nob3AgdG8gaW1hZ2UvcG5nIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJkZXJpdmVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJjb252ZXJ0ZWQgZnJvbSBhcHBsaWNhdGlvbi92bmQuYWRvYmUucGhvdG9zaG9wIHRvIGltYWdlL3BuZyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6YjM5YmJhZWMtYzZjZS1jNzRjLTg4NzAtMTM5ZmVkYzMzZTVhIiBzdEV2dDp3aGVuPSIyMDI1LTA3LTA1VDEyOjU1OjUwLTA3OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjYuOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjg1ZjkxNzg1LWIwN2ItNTI0MS05ZDNjLTQzNTgwODFmODZjMiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiIHN0UmVmOm9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiLz4gPHBob3Rvc2hvcDpUZXh0TGF5ZXJzPiA8cmRmOkJhZz4gPHJkZjpsaSBwaG90b3Nob3A6TGF5ZXJOYW1lPSJEV1JGIiBwaG90b3Nob3A6TGF5ZXJUZXh0PSIiLz4gPC9yZGY6QmFnPiA8L3Bob3Rvc2hvcDpUZXh0TGF5ZXJzPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmRJO1IAAAAZSURBVEiJY2AYBaNgFIyCUTAKRsEoGIwAAAimAAFlV7e8AAAAAElFTkSuQmCC",
+      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAIAAAACtmMCAAAACXBIWXMAAAsTAAALEwEAmpwYAAAJCGlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgOS4xLWMwMDMgNzkuOTY5MGE4NywgMjAyNS8wMy8wNi0xOToxMjowMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCAyNi44IChXaW5kb3dzKSIgeG1wOkNyZWF0ZURhdGU9IjIwMjUtMDctMDRUMTI6NTI6MjAtMDc6MDAiIHhtcDpNZXRhZGF0YURhdGU9IjIwMjUtMDctMDVUMTI6NTU6NTAtMDc6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDI1LTA3LTA1VDEyOjU1OjUwLTA3OjAwIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpiMzliYmFlYy1jNmNlLWM3NGMtODg3MC0xMzlmZWRjMzNlNWEiIHhtcE1NOkRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpiY2FiY2Y3YS03NWFjLTM5NDYtODVjMC1mNjBiZWRhNmJmMTciIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmIyYTJmNmE4LWYyOTktZmU0ZS1iZjYyLWMzZjYwMWMzMjU3NSIgc3RFdnQ6d2hlbj0iMjAyNS0wNy0wNFQxMjo1MjoyMC0wNzowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIDI2LjggKFdpbmRvd3MpIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJzYXZlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDo4NWY5MTc4NS1iMDdiLTUyNDEtOWQzYy00MzU4MDgxZjg2YzIiIHN0RXZ0OndoZW49IjIwMjUtMDctMDVUMTI6NTU6NTAtMDc6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCAyNi44IChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY29udmVydGVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJmcm9tIGFwcGxpY2F0aW9uL3ZuZC5hZG9iZS5waG90b3Nob3AgdG8gaW1hZ2UvcG5nIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJkZXJpdmVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJjb252ZXJ0ZWQgZnJvbSBhcHBsaWNhdGlvbi92bmQuYWRvYmUucGhvdG9zaG9wIHRvIGltYWdlL3BuZyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6YjM5YmJhZWMtYzZjZS1jNzRjLTg4NzAtMTM5ZmVkYzMzZTVhIiBzdEV2dDp3aGVuPSIyMDI1LTA3LTA1VDEyOjU1OjUwLTA3OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgMjYuOCAoV2luZG93cykiIHN0RXZ0OmNoYW5nZWQ9Ii8iLz4gPC9yZGY6U2VxPiA8L3htcE1NOkhpc3Rvcnk+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjg1ZjkxNzg1LWIwN2ItNTI0MS05ZDNjLTQzNTgwODFmODZjMiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiIHN0UmVmOm9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpiMmEyZjZhOC1mMjk5LWZlNGUtYmY2Mi1jM2Y2MDFjMzI1NzUiLz4gPHBob3Rvc2hvcDpUZXh0TGF5ZXJzPiA8cmRmOkJhZz4gPHJkZjpsaSBwaG90b3Nob3A6TGF5ZXJOYW1lPSJEV1JGIiBwaG90b3Nob3A6TGF5ZXJUZXh0PSIiLz4gPC9yZGY6QmFnPiA8L3Bob3Rvc2hvcDpUZXh0TGF5ZXJzPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmRJO1IAAAAZSURBVEiJY2AYBaNgFIyCUTAKRsEoGIwAAAimAAFlV7e8AAAAAElFTkSuQmCC",
       "duration": 300,
       "cooldown": 0,
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Bloat",
@@ -329,7 +333,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Deaths Swiftness",
@@ -371,7 +376,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Enemy debuff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Death Spark",
@@ -485,7 +491,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Devotion",
@@ -541,7 +548,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Elder Overload",
@@ -597,7 +605,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Freedom",
@@ -626,7 +635,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Greater Deaths Swiftness",
@@ -711,7 +721,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Lantadyme Incense",
@@ -725,7 +736,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Limitless",
@@ -781,7 +793,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Necrosis",
@@ -1020,7 +1033,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Sign of Life",
@@ -1062,7 +1076,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Soul Split",
@@ -1188,7 +1203,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Turmoil",
@@ -1202,7 +1218,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Undead Slayer",
@@ -1244,7 +1261,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Enemy debuff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Weapon Poison",

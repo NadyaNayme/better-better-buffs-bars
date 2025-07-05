@@ -214,6 +214,39 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
   
       img.src = imageDataBase64;
     });
+
+    const globalBuffs = useStore.getState().buffs;
+    const blankBuff = globalBuffs.find(b => b.name === "Blank");
+    
+    if (blankBuff?.imageData || blankBuff?.scaledImageData) {
+      const img = new Image();
+      const imageDataBase64 = blankBuff.scaledImageData ?? blankBuff.imageData;
+      const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
+    
+      if (rawBase64) {
+        const index = buffsToDraw.length;
+        const col = index % cols;
+        const row = Math.floor(index / cols);
+        const drawX = x + col * spacing;
+        const drawY = y + row * spacing;
+    
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, img.width, img.height);
+          const encoded = a1lib.encodeImageString(imageData);
+    
+          window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 1200);
+          window.alt1.overLayRefreshGroup(`region${region}`);
+        };
+    
+        img.src = imageDataBase64;
+      }
+    }
+
   }, [alt1Ready, a1lib, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, group.buffs]);
 
   const onDragEnd = (event) => {

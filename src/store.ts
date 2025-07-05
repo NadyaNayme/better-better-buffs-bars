@@ -25,6 +25,7 @@ interface Buff {
   alwaysActive?: boolean;
   lastUpdated?: Date;
   inactiveCount?: number;
+  isUtility?: boolean;
 }
 
 interface Group {

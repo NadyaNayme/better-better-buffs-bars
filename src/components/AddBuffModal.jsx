@@ -10,7 +10,9 @@ const AddBuffModal = ({ groupId, onClose }) => {
 
   const existingBuffIds = useMemo(() => {
     if (!currentGroup) return new Set();
-    return new Set(currentGroup.buffs.map(b => b.id));
+    return new Set(currentGroup.buffs
+      .filter(buff => !buff.isUtility)
+      .map(b => b.id));
   }, [currentGroup]);
 
   const handleSubmit = (e) => {
