@@ -377,7 +377,6 @@ export function BuffReaderComponent({
         
         const position = readerRef.current.find();
         if (position) {
-          console.log(`✅ ${isDebuff ? "Debuff" : "Buff"} bar found.`);
           setStatus("READING");
         } else {
           findRetryTimeoutRef.current = setTimeout(findBar, 3000);

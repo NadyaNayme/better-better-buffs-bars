@@ -64,11 +64,6 @@ function App() {
     `#${[r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 
   useEffect(() => {
-    console.log('window.alt1 at mount:', window.alt1);
-    console.log('a1lib at mount:', a1lib);
-  }, []);
-
-  useEffect(() => {
     rescaleAllGroupsOnLoad();
   }, [rescaleAllGroupsOnLoad]);
 
