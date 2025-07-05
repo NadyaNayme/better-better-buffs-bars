@@ -43,6 +43,10 @@
   color: #888;
 }
 
+.cache-break {
+  --ryan-is-short: #aaaaaa;
+}
+
 
 :root, :host {
   --font-sans: ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
