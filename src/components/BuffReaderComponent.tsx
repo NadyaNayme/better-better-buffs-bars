@@ -30,6 +30,7 @@ import DeathMark from '../assets/data/Death_Mark.data.png';
 import DeathSpark from '../assets/data/Death_Spark.data.png';
 import DeathsSwiftness from '../assets/data/Deaths_Swiftness-top.data.png';
 import DeathsporeArrows from '../assets/data/deathspore_arrows.data.png';
+import Debilitate from '../assets/data/Debilitate.data.png';
 import DeflectMagic from '../assets/data/Deflect_Magic.data.png';
 import DeflectMelee from '../assets/data/Deflect_Melee.data.png';
 import DeflectNecromancy from '../assets/data/Deflect_Necromancy.data.png';
@@ -136,6 +137,7 @@ const buffImagePromises = {
   'Death Spark': DeathSpark,
   'Deaths Swiftness': DeathsSwiftness,
   'Deathspore Arrows': DeathsporeArrows,
+  'Debilitate': Debilitate,
   'Deflect Magic': DeflectMagic,
   'Deflect Melee': DeflectMelee,
   'Deflect Necromancy': DeflectNecromancy,
