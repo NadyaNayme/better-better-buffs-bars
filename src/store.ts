@@ -247,7 +247,8 @@ const useStore = create(
             buffs: group.buffs.map(buff => {
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
-              if (buff.cooldownRemaining && buff.cooldownRemaining > 0) {
+              // Only tick down buffs that have <60s durations
+              if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                  return {
                   ...buff,
                   cooldownRemaining: buff.cooldownRemaining - 1,
