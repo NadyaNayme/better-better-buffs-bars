@@ -408,7 +408,7 @@ export function BuffReaderComponent({
           checked={enableDebug}
           onChange={(e) => setEnableDebug(e.target.checked)}
         />
-        Enable Debug Match Stats
+        Enable Thresholds Debugging
       </label>
       {enableDebug && (
       <div style={{ marginTop: 10 }}>
