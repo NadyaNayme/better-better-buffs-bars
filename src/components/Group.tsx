@@ -10,6 +10,7 @@ import EditGroupModal from './EditGroupModal';
 const imageCache = new Map<string, HTMLCanvasElement>();
 
 const Group = ({ group, a1lib, alt1Ready  }) => {
+  const { cooldownColor, activeColor } = useStore();
   const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
@@ -109,10 +110,9 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       window.alt1.overLaySetGroupZIndex(`${region}-${buff.name}-text`, 3);
 
       const timeToDisplay = isOnCooldown ? buff.cooldownRemaining : (buff.timeRemaining ?? '');
-      const textColor = isOnCooldown 
-      ? a1lib.mixColor(255, 255, 0) // Yellow for cooldown
-      : a1lib.mixColor(255, 255, 255); // White for active
-
+      const textColor = isOnCooldown
+        ? a1lib.mixColor(cooldownColor.r, cooldownColor.g, cooldownColor.b)
+        : a1lib.mixColor(activeColor.r, activeColor.g, activeColor.b);
       // These buffs do not have time or stacks
       if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark") {
         return;

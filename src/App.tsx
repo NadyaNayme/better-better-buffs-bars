@@ -26,6 +26,7 @@ function App() {
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
   const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
+  const { cooldownColor, timeRemainingColor, setCooldownColor, setTimeRemainingColor } = useStore();
 
   const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
     syncIdentifiedBuffs(foundBuffsMap);
@@ -48,6 +49,17 @@ function App() {
       createProfile(name);
     }
   };
+
+  const handleColorChange = (setter) => (e) => {
+    const hex = e.target.value;
+    const r = parseInt(hex.slice(1, 3), 16);
+    const g = parseInt(hex.slice(3, 5), 16);
+    const b = parseInt(hex.slice(5, 7), 16);
+    setter({ r, g, b });
+  };
+
+  const rgbToHex = ({ r, g, b }) =>
+    `#${[r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 
   useEffect(() => {
     console.log('window.alt1 at mount:', window.alt1);
@@ -101,6 +113,28 @@ function App() {
       <div className="mb-8">
       <p>Sort buffs within a group by drag & dropping using <em>left click</em>.</p>
       <p>Delete buffs from a group using <em>right click</em>.</p>
+      </div>
+
+      <div className="mb-8">
+      <div style={{ padding: 10 }}>
+      <label>
+        Cooldown Color: 
+        <input
+          type="color"
+          value={rgbToHex(cooldownColor)}
+          onChange={handleColorChange(setCooldownColor)}
+        />
+      </label>
+      <br />
+      <label>
+        Active Color: 
+        <input
+          type="color"
+          value={rgbToHex(activeColor)}
+          onChange={handleColorChange(setActiveColor)}
+        />
+      </label>
+    </div>
       </div>
 
       <div className="space-y-8">

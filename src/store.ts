@@ -56,6 +56,8 @@ interface StoreStateAndActions {
   activeProfile: string | null;
   buffs: Buff[];
   version: number;
+  cooldownColor: {r: number, g: number, b: number},
+  timeRemainingColor: {r: number, g: number, b: number},
   setVersion: (version: number) => void;
   setBuffsFromJsonIfNewer: () => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
@@ -71,6 +73,8 @@ interface StoreStateAndActions {
   rescaleAllGroupsOnLoad: () => void;
   removeBuffFromGroup: (groupId: string, buffId: string) => void;
   reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
+  setCooldownColor: (color) => void;
+  setTimeRemainingColor: (color) => void;
 }
 
 function resizedataURL(dataUrl, scale) {
@@ -412,6 +416,11 @@ const useStore = create(
           return state;
         });
       },
+      // User Settings
+      cooldownColor: { r: 255, g: 255, b: 0 },
+      timeRemainingColor: { r: 255, g: 255, b: 255 },
+      setCooldownColor: (color) => set({ cooldownColor: color }),
+      settimeRemainingColor: (color) => set({ timeRemainingColor: color }),
     }),
     {
       name: 'buff-tracker-storage',
@@ -421,6 +430,8 @@ const useStore = create(
         activeProfile: state.activeProfile,
         buffs: state.buffs,
         version: state.version,
+        cooldownColor: state.cooldownColor,
+        timeRemainingColor: state.timeRemainingColor
       }),
     }
   )

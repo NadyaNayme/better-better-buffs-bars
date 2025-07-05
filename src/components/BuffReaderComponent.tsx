@@ -282,6 +282,7 @@ export function BuffReaderComponent({
             const match = detected.countMatch(img, false);
             if (enableDebug) {
               updateDebugData(trackedBuff.name, match.failed, match.passed);
+              console.log(trackedBuff.name, match.failed, match.passed);
             }
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
               const time = detected.readTime ? detected.readTime() : detected.time;
