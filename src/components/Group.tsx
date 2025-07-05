@@ -173,8 +173,14 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       const img = new Image();
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
       const useDesaturatedImage = isOnCooldown || (group.explicitInactive && !buff.isActive);
-      const activeImageData = buff.scaledImageData || buff.imageData;
-      const inactiveImageData = buff.scaledDesaturatedImageData || buff.desaturatedImageData;
+      let activeImageData = buff.scaledImageData || buff.imageData;
+      if (buff.buffType === 'Meta' && buff.foundChild) {
+        activeImageData = buff.foundChild.scaledImageData || buff.imageData;
+      }
+      let inactiveImageData = buff.scaledDesaturatedImageData || buff.desaturatedImageData;
+      if (buff.buffType === 'Meta' && buff.foundChild) {
+        activeImageData = buff.foundChild.scaledDesaturatedImageData || buff.foundChild.desaturatedImageData;
+      }
       const imageDataBase64 = useDesaturatedImage ? inactiveImageData : activeImageData;
 
       const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
