@@ -321,7 +321,7 @@ export function BuffReaderComponent({
     }
   
     onBuffsIdentified(finalPayloadMap);
-  }, [onBuffsIdentified]);
+  }, [onBuffsIdentified, enableDebug]);
 
   useEffect(() => {
     const cleanup = () => {
