@@ -71,6 +71,7 @@ interface StoreStateAndActions {
   updateGroup: (id: string, updates: Partial<Group>) => void;
   addBuffToGroup: (groupId: string, buffId: string) => void;
   rescaleAllGroupsOnLoad: () => void;
+  syncGroupBuffs: (buffs: Array) => void;
   removeBuffFromGroup: (groupId: string, buffId: string) => void;
   reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
   setCooldownColor: (color) => void;
@@ -381,6 +382,15 @@ const useStore = create(
         
         set({ groups: finalUpdatedGroups });
         console.log("All groups have been rescaled on initial load.");
+      },
+      syncGroupBuffs: (newBuffs) => {
+        const updatedGroups = get().groups.map(group => {
+          const updatedBuffs = group.buffs.map(oldBuff => {
+            const match = newBuffs.find(b => b.name === oldBuff.name);
+            return match ? { ...match } : oldBuff;
+          });
+          return { ...group, buffs: updatedBuffs };
+        });
       },
       // Buffs
       addBuffToGroup: (groupId, buffId) => {

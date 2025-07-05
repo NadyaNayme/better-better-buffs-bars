@@ -13,6 +13,7 @@ import PopupModal from './components/PopupModal';
 import a1lib from 'alt1';
 import { BuffReaderComponent } from './components/BuffReaderComponent';
 import { CooldownTimer } from './components/CooldownTimer';
+import buffsData from './buffs.json';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -23,6 +24,7 @@ function App() {
   const groups = useStore((state: any) => state.groups);
   const createGroup = useStore((state: any) => state.createGroup);
   const createProfile = useStore((state: any) => state.createProfile);
+  const syncGroupBuffs = useStore((state: any) => state.syncGroupBuffs);
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
   const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
@@ -69,6 +71,10 @@ function App() {
   useEffect(() => {
     rescaleAllGroupsOnLoad();
   }, [rescaleAllGroupsOnLoad]);
+
+  useEffect(() => {
+    syncGroupBuffs(buffsData.buffs);
+  }, []);
 
   useEffect(() => {
     if (isAlt1Available()) {
