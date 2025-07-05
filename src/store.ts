@@ -25,6 +25,7 @@ interface Buff {
   alwaysActive?: boolean;
   lastUpdated?: Date;
   inactiveCount?: number;
+  matchCount?: {fail?: number, pass?: number}
 }
 
 interface Group {
@@ -57,6 +58,10 @@ interface StoreStateAndActions {
   buffs: Buff[];
   version: number;
   setVersion: (version: number) => void;
+  debugData: Map<string, MatchEntry[]>;
+  addDebugMatchData: (buffName: string, detected: boolean, matchCount: { fail: number, pass: number }) => void;
+  getDebugMatchData: () => Map<string, MatchEntry[]>;
+  clearDebugMatchData: () => void;
   setBuffsFromJsonIfNewer: () => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
   tickTimers: () => void;
@@ -72,6 +77,9 @@ interface StoreStateAndActions {
   removeBuffFromGroup: (groupId: string, buffId: string) => void;
   reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
 }
+
+type MatchEntry = { detected: boolean; fail: number; pass: number };
+type DebugMatchData = Map<string, { history: MatchEntry[] }>;
 
 function resizedataURL(dataUrl, scale) {
     return new Promise((resolve, reject) => {
@@ -108,6 +116,7 @@ const useStore = create(
       activeProfile: null,
       buffs: buffsData.buffs.map(buff => ({ ...buff, id: uuidv4() })),
       version: 1,
+      debugData: new Map(),
       setVersion: (version) => set({ version }),
       setBuffsFromJsonIfNewer: () => {
         const version = get().version;
@@ -121,6 +130,31 @@ const useStore = create(
           set({ buffs: newBuffs, version: jsonVersion });
           console.log(`Buffs updated to version ${jsonVersion}`);
         }
+      },
+      addDebugMatchData: (buffName, detected, matchCount) => {
+        if (!matchCount) return;
+        console.log('addDebugMatchData called', { buffName, detected, matchCount });
+      
+        set(state => {
+          const newDebugData = new Map(state.debugData);
+          const entry = newDebugData.get(buffName) || { history: [] };
+          const newHistory = [...entry.history, { detected, ...matchCount }];
+          if (newHistory.length > 1000) newHistory.shift();
+          newDebugData.set(buffName, { history: newHistory });
+      
+          return { debugData: newDebugData };
+        });
+      },
+      getDebugMatchData: () => {
+        const debugMap = get().debugData;
+        const wrappedMap = new Map();
+        for (const [key, entries] of debugMap.entries()) {
+          wrappedMap.set(key, { history: entries });
+        }
+        return wrappedMap;
+      },
+      clearDebugMatchData: () => {
+        set({ debugData: new Map() });
       },
       syncIdentifiedBuffs: (identifiedActiveBuffs) => {
         set((state) => {
