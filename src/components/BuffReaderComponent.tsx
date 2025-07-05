@@ -324,6 +324,12 @@ export function BuffReaderComponent({
   }, [onBuffsIdentified, enableDebug]);
 
   useEffect(() => {
+    if (!enableDebug) {
+      setDebugMatchData(new Map());
+    }
+  }, [enableDebug]);
+
+  useEffect(() => {
     const cleanup = () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
