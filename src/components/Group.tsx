@@ -6,7 +6,6 @@ import useStore from '../store';
 import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
-import { getBuffImageData } from '../lib/getBuffImageData';
 
 const imageCache = new Map<string, HTMLCanvasElement>();
 
@@ -174,7 +173,9 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
       const img = new Image();
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
       const useDesaturatedImage = isOnCooldown || (group.explicitInactive && !buff.isActive);
-      const imageDataBase64 = getBuffImageData(buff, { desaturated: useDesaturatedImage });
+      const activeImageData = buff.scaledImageData || buff.imageData;
+      const inactiveImageData = buff.scaledDesaturatedImageData || buff.desaturatedImageData;
+      const imageDataBase64 = useDesaturatedImage ? inactiveImageData : activeImageData;
 
       const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
 
