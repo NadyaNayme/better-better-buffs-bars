@@ -14,16 +14,14 @@ interface BuffLike {
   export function getBuffImageData(buff: BuffLike, opts?: { desaturated?: boolean }): string | undefined {
     const { desaturated = false } = opts ?? {};
   
-    if (buff.buffType === 'Meta' && buff.foundChild) {
-        const data = desaturated
-        ? buff.foundChild?.desaturatedImageData
-        : buff.foundChild?.imageData;
+    // if (buff.buffType === 'Meta' && buff.foundChild) {
+    //     const data = buff.foundChild?.imageData
   
-      if (!data) {
-        console.warn(`Meta buff "${buff.name}" missing foundChild imageData`);
-      }
-      return data;
-    }
+    //   if (!data) {
+    //     console.warn(`Meta buff "${buff.name}" missing foundChild imageData`);
+    //   }
+    //   return data;
+    // }
   
     const data = desaturated
     ? buff.scaledDesaturatedImageData ?? buff.desaturatedImageData
