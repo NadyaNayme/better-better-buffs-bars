@@ -226,11 +226,34 @@ export function BuffReaderComponent({
   readInterval = 325,
 }: BuffReaderProps) {
   const [status, setStatus] = useState<ComponentStatus>("IDLE");
+  const [debugMatchData, setDebugMatchData] = useState(new Map());
 
   const readerRef = useRef<any>(null);
   const resolvedImagesRef = useRef<Map<string, any> | null>(null);
   const intervalRef = useRef<number | null>(null);
   const findRetryTimeoutRef = useRef<number | null>(null);
+
+  const updateDebugData = (buffName, fail, pass) => {
+    setDebugMatchData(prev => {
+      const newMap = new Map(prev);
+      const history = newMap.get(buffName) || [];
+      const newHistory = [...history, { fail, pass }];
+  
+      if (newHistory.length > 100) newHistory.shift();
+  
+      newMap.set(buffName, newHistory);
+      return newMap;
+    });
+  };
+
+  const formatStats = (arr) => {
+    if (!arr.length) return "N/A";
+    const values = arr.map(x => x);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const avg = Math.round(values.reduce((a,b) => a+b, 0) / values.length);
+    return `${min}, ${max}, ${avg}`;
+  };
 
   const processReaderData = useCallback((detectedBuffs: any[]) => {
     if (!resolvedImagesRef.current) return;
@@ -255,6 +278,7 @@ export function BuffReaderComponent({
             if (!img) continue;
   
             const match = detected.countMatch(img, false);
+            updateDebugData(name, match.failed, match.passed);
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
               const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
@@ -279,6 +303,7 @@ export function BuffReaderComponent({
           if (!refImg) continue;
   
           const match = detected.countMatch(refImg, false);
+          updateDebugData(name, match.failed, match.passed);
           if (match.passed >= passThreshold && match.failed <= failThreshold) {
             finalPayloadMap.set(name, {
               name,
@@ -360,9 +385,24 @@ export function BuffReaderComponent({
   }, [status, isDebuff, readInterval, processReaderData]);
 
   return (
-    <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
-      <p style={{ margin: 0, fontWeight: 'bold' }}>{isDebuff ? "Debuff Reader" : "Buff Reader"}</p>
-      <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
-    </div>
+    <>
+      <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
+        <p style={{ margin: 0, fontWeight: 'bold' }}>{isDebuff ? "Debuff Reader" : "Buff Reader"}</p>
+        <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
+      </div>
+      <div style={{ marginTop: 10 }}>
+        <h4>Buff Threshold Data</h4>
+        {[...debugMatchData.entries()].map(([buffName, history]) => {
+          const failArr = history.map(e => e.fail);
+          const passArr = history.map(e => e.pass);
+          return (
+            <div key={buffName}>
+              <strong>{buffName}</strong><br/>
+              Fail: {formatStats(failArr)} | Pass: {formatStats(passArr)}
+            </div>
+          );
+        })}
+      </div>
+    </>
   );
 }
