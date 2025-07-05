@@ -1,4 +1,5 @@
 interface BuffLike {
+    name: string;
     buffType?: string;
     foundChild?: {
       imageData?: string;
@@ -14,14 +15,23 @@ interface BuffLike {
     const { desaturated = false } = opts ?? {};
   
     if (buff.buffType === 'Meta' && buff.foundChild) {
-      return desaturated
-        ? buff.foundChild.desaturatedImageData
-        : buff.foundChild.imageData;
+        const data = desaturated
+        ? buff.foundChild?.desaturatedImageData
+        : buff.foundChild?.imageData;
+  
+      if (!data) {
+        console.warn(`Meta buff "${buff.name}" missing foundChild imageData`);
+      }
+      return data;
     }
   
-    if (desaturated) {
-      return buff.scaledDesaturatedImageData ?? buff.desaturatedImageData;
-    } else {
-      return buff.scaledImageData ?? buff.imageData;
+    const data = desaturated
+    ? buff.scaledDesaturatedImageData ?? buff.desaturatedImageData
+    : buff.scaledImageData ?? buff.imageData;
+
+    if (!data) {
+        console.warn(`Buff "${buff.name}" missing imageData`);
     }
+
+    return data;
   }
