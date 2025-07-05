@@ -5,6 +5,7 @@ interface BuffLike {
       imageData?: string;
       desaturatedImageData?: string;
     };
+    defaultImageData?: string;
     scaledImageData?: string;
     scaledDesaturatedImageData?: string;
     imageData?: string;
@@ -14,14 +15,13 @@ interface BuffLike {
   export function getBuffImageData(buff: BuffLike, opts?: { desaturated?: boolean }): string | undefined {
     const { desaturated = false } = opts ?? {};
   
-    // if (buff.buffType === 'Meta' && buff.foundChild) {
-    //     const data = buff.foundChild?.imageData
-  
-    //   if (!data) {
-    //     console.warn(`Meta buff "${buff.name}" missing foundChild imageData`);
-    //   }
-    //   return data;
-    // }
+    if (buff.buffType === 'Meta') {
+      const data = buff.imageData ?? buff.defaultImageData;
+      if (!data) {
+        console.warn(`Meta buff "${buff.name}" missing foundChild imageData`);
+      }
+      return data;
+    }
   
     const data = desaturated
     ? buff.scaledDesaturatedImageData ?? buff.desaturatedImageData
