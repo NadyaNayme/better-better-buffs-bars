@@ -7,13 +7,10 @@ import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
 
-const debugMatchData = new Map<string, { history: { detected: boolean, fail: number, pass: number }[] }>();
-
-
 const imageCache = new Map<string, HTMLCanvasElement>();
 
 const Group = ({ group, a1lib, alt1Ready  }) => {
-  const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup, addDebugMatchData } = useStore();
+  const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
@@ -58,17 +55,6 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     return mins > 0 ? `${mins}m` : `${secs}`;
   };
 
-  const recordDebugStats = (buffName, detected, matchCount) => {
-    console.log('Buff:', buff.name, buff.matchCount);
-    if (!matchCount) return;
-    console.log('Recording stats for', buffName, detected, matchCount); // <-- add this
-    const { fail, pass } = matchCount;
-    if (!debugMatchData.has(buffName)) debugMatchData.set(buffName, { history: [] });
-    const history = debugMatchData.get(buffName).history;
-    history.push({ detected, fail, pass });
-    if (history.length > 1000) history.shift();
-  };
-
   useEffect(() => {
     if (!alt1Ready || !a1lib || !window.alt1) return;
     if (!group.enabled) {
@@ -110,7 +96,6 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
     window.alt1.overLayClearGroup(`region${region}`);
 
     buffsToDraw.forEach((buff, index) => {
-      addDebugMatchData(buff.name, buff.isActive, buff.matchCount);
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
       const col = index % cols;
       const row = Math.floor(index / cols);
@@ -300,5 +285,4 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
   );
 };
 
-export { debugMatchData };
 export default Group;

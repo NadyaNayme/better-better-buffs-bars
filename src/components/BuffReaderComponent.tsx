@@ -270,7 +270,6 @@ export function BuffReaderComponent({
               }
               break; // stop after first match
             }
-            useStore.getState().addDebugMatchData(name, match.passed >= passThreshold && match.failed <= failThreshold, match);
           }
         }
   
