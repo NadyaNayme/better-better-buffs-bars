@@ -130,8 +130,8 @@ function App() {
         Active Color: 
         <input
           type="color"
-          value={rgbToHex(activeColor)}
-          onChange={handleColorChange(setActiveColor)}
+          value={rgbToHex(timeRemainingColor)}
+          onChange={handleColorChange(setTimeRemainingColor)}
         />
       </label>
     </div>
