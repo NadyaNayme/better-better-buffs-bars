@@ -281,7 +281,7 @@ export function BuffReaderComponent({
   
             const match = detected.countMatch(img, false);
             if (enableDebug) {
-              updateDebugData(name, match.failed, match.passed);
+              updateDebugData(trackedBuff.name, match.failed, match.passed);
             }
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
               const time = detected.readTime ? detected.readTime() : detected.time;
@@ -308,7 +308,7 @@ export function BuffReaderComponent({
   
           const match = detected.countMatch(refImg, false);
           if (enableDebug) {
-            updateDebugData(name, match.failed, match.passed);
+            updateDebugData(trackedBuff.name, match.failed, match.passed);
           }
           if (match.passed >= passThreshold && match.failed <= failThreshold) {
             finalPayloadMap.set(name, {
