@@ -226,6 +226,7 @@ export function BuffReaderComponent({
   readInterval = 325,
 }: BuffReaderProps) {
   const [status, setStatus] = useState<ComponentStatus>("IDLE");
+  const [enableDebug, setEnableDebug] = useState(false);
   const [debugMatchData, setDebugMatchData] = useState(new Map());
 
   const readerRef = useRef<any>(null);
@@ -234,6 +235,7 @@ export function BuffReaderComponent({
   const findRetryTimeoutRef = useRef<number | null>(null);
 
   const updateDebugData = (buffName, fail, pass) => {
+    if (!enableDebug) return;
     setDebugMatchData(prev => {
       const newMap = new Map(prev);
       const history = newMap.get(buffName) || [];
@@ -278,7 +280,9 @@ export function BuffReaderComponent({
             if (!img) continue;
   
             const match = detected.countMatch(img, false);
-            updateDebugData(name, match.failed, match.passed);
+            if (enableDebug) {
+              updateDebugData(buffName, match.failed, match.passed);
+            }
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
               const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
@@ -303,7 +307,9 @@ export function BuffReaderComponent({
           if (!refImg) continue;
   
           const match = detected.countMatch(refImg, false);
-          updateDebugData(name, match.failed, match.passed);
+          if (enableDebug) {
+            updateDebugData(buffName, match.failed, match.passed);
+          }
           if (match.passed >= passThreshold && match.failed <= failThreshold) {
             finalPayloadMap.set(name, {
               name,
@@ -390,6 +396,15 @@ export function BuffReaderComponent({
         <p style={{ margin: 0, fontWeight: 'bold' }}>{isDebuff ? "Debuff Reader" : "Buff Reader"}</p>
         <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
       </div>
+      <label style={{ display: 'block', marginBottom: 10 }}>
+        <input
+          type="checkbox"
+          checked={enableDebug}
+          onChange={(e) => setEnableDebug(e.target.checked)}
+        />
+        Enable Debug Match Stats
+      </label>
+      {enableDebug && (
       <div style={{ marginTop: 10 }}>
         <h4>{isDebuff ? "Debuff Threshold Data" : "Buff Threshold Data"}</h4>
         {[...debugMatchData.entries()].map(([buffName, history]) => {
@@ -402,7 +417,7 @@ export function BuffReaderComponent({
             </div>
           );
         })}
-      </div>
+      </div>)}
     </>
   );
 }
