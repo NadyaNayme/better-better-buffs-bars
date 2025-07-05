@@ -390,19 +390,21 @@ export function BuffReaderComponent({
         <p style={{ margin: 0, fontWeight: 'bold' }}>{isDebuff ? "Debuff Reader" : "Buff Reader"}</p>
         <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
       </div>
-      <div style={{ marginTop: 10 }}>
-        <h4>Buff Threshold Data</h4>
-        {[...debugMatchData.entries()].map(([buffName, history]) => {
-          const failArr = history.map(e => e.fail);
-          const passArr = history.map(e => e.pass);
-          return (
-            <div key={buffName}>
-              <strong>{buffName}</strong><br/>
-              Fail: {formatStats(failArr)} | Pass: {formatStats(passArr)}
-            </div>
-          );
-        })}
-      </div>
+      {isDebuff && 
+        <div style={{ marginTop: 10 }}>
+          <h4>Buff Threshold Data</h4>
+          {[...debugMatchData.entries()].map(([buffName, history]) => {
+            const failArr = history.map(e => e.fail);
+            const passArr = history.map(e => e.pass);
+            return (
+              <div key={buffName}>
+                <strong>{buffName}</strong><br/>
+                Fail: {formatStats(failArr)} | Pass: {formatStats(passArr)}
+              </div>
+            );
+          })}
+        </div>
+      }
     </>
   );
 }
