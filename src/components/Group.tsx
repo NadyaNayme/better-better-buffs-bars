@@ -118,12 +118,14 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
         return;
       }
 
+      let formattedTime = formatTime(timeToDisplay);
+
       if (buff.buffType === "Meta") {
         window.alt1.overLayTextEx(
-          formatTime(timeToDisplay),
+          formattedTime,
           textColor,
           Math.floor(10 * (group.scale / 100)),
-          Math.floor(drawX + ((group.scale / 100) * 19)),
+          Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
           Math.floor(drawY + ((group.scale / 100) * 19)),
           100,
           '',
@@ -132,10 +134,10 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
         );
       } else {
         window.alt1.overLayTextEx(
-          formatTime(timeToDisplay),
+          formattedTime,
           textColor,
           Math.floor(10 * (group.scale / 100)),
-          Math.floor(drawX + ((group.scale / 100) * 19)),
+          Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
           Math.floor(drawY + ((group.scale / 100) * 19)),
           100,
           '',
