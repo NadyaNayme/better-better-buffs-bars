@@ -252,7 +252,7 @@ export function BuffReaderComponent({
     const min = Math.min(...values);
     const max = Math.max(...values);
     const avg = Math.round(values.reduce((a,b) => a+b, 0) / values.length);
-    return `${min}, ${max}, ${avg}`;
+    return `Min: ${min}, Max: ${max}, Avg: ${avg}`;
   };
 
   const processReaderData = useCallback((detectedBuffs: any[]) => {
