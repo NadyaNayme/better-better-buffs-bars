@@ -56,7 +56,7 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
     >
       <img src={imageUrl} alt={buff.name} title={buff.name} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
       {buff.timeRemaining != null && !(buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark") && (
-        <div className="absolute bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
+        <div className="absolute pointer-events-none bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
           {formatTime(buff.timeRemaining)}
         </div>
       )}

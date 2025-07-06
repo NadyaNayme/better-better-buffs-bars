@@ -42,11 +42,11 @@ import Devotion from '../assets/data/Devotion.data.png';
 import DiamondBakBolts from '../assets/data/diamond_bak_bolts.data.png';
 import Divert from '../assets/data/Divert.data.png';
 import DragonSlayer from '../assets/data/Dragon_Slayer.data.png';
-import DwarfWeedIncense from '../assets/data/Dwarf_Weed.data.png';
+import DwarfWeedIncense from '../assets/data/Dwarf_Weed_Incense_Sticks.data.png';
 import EnhancedExcalibur from '../assets/data/Enhanced_Excalibur-scuffed.data.png';
 import ElderOverload from '../assets/data/Elder_Overload.data.png';
 import ErethdorsGrimoire from '../assets/data/Erethdor\'s_grimoire.data.png';
-import FellstalkIncense from '../assets/data/Fellstalk.data.png';
+import FellstalkIncense from '../assets/data/Fellstalk_Incense_Sticks.data.png';
 import Freedom from '../assets/data/Freedom.data.png';
 import FulArrows from '../assets/data/ful_arrows.data.png';
 import GladiatorsRage from '../assets/data/Gladiators_Rage.data.png';
@@ -59,8 +59,8 @@ import IngenuityOfTheHumans from '../assets/data/Ingenuity_of_the_Humans.data.pn
 import Instability from '../assets/data/Instability.data.png';
 import InvokeLordOfBones from '../assets/data/Invoke_Lord_of_Bones.data.png';
 import JasDragonbaneArrows from '../assets/data/jas_dragonbane.data.png';
-import KwuarmIncense from '../assets/data/Kwuarm.data.png';
-import LantadymeIncense from '../assets/data/Lantadyme.data.png';
+import KwuarmIncense from '../assets/data/Kwuarm_Incense_Sticks.data.png';
+import LantadymeIncense from '../assets/data/Lantadyme_Incense_Sticks.data.png';
 import Limitless from '../assets/data/Limitless.data.png';
 import LivingDeath from '../assets/data/Living_Death.data.png';
 import Malevolence from '../assets/data/Malevolence.data.png';
@@ -150,11 +150,11 @@ const buffImagePromises = {
   'Diamond Bak Bolts': DiamondBakBolts,
   'Divert': Divert,
   'Dragon Slayer': DragonSlayer,
-  'DwarfWeed Incense': DwarfWeedIncense,
+  'Dwarf Weed Incense Sticks': DwarfWeedIncense,
   'Enhanced Excalibur': EnhancedExcalibur,
   'Elder Overload': ElderOverload,
   'Erethdors Grimoire': ErethdorsGrimoire,
-  'Fellstalk Incense': FellstalkIncense,
+  'Fellstalk Incense Sticks': FellstalkIncense,
   'Freedom': Freedom,
   'Ful Arrows': FulArrows,
   'Gladiators Rage': GladiatorsRage,
@@ -167,8 +167,8 @@ const buffImagePromises = {
   'Instability': Instability,
   'Invoke Lord of Bones': InvokeLordOfBones,
   'Jas Dragonbane Arrows': JasDragonbaneArrows,
-  'Kwuarm Incense': KwuarmIncense,
-  'Lantadyme Incense': LantadymeIncense,
+  'Kwuarm Incense Sticks': KwuarmIncense,
+  'Lantadyme Incense Sticks': LantadymeIncense,
   'Limitless': Limitless,
   'LivingDeath': LivingDeath,
   'Malevolence': Malevolence,

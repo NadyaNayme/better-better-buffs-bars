@@ -551,7 +551,7 @@
       "isActive": false
     },
     {
-      "name": "Dwarf Weed Incense",
+      "name": "Dwarf Weed Incense Sticks",
       "failThreshold": 50,
       "passThreshold": 150,
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAUVBMVEUAAAAAAAKCa0QqJycgOiCDa0QAAAAAEAAQFxBalhkQAAAyKhwcFxAQEAAkHBAnIBAnIBcqJBcQEBAwJxcAFwA1LRw6MBwQHBAXEAAXEBCDbERjgJQuAAAAAXRSTlMAQObYZgAAAPxJREFUeF6FzwmKxDAMRFF92U7SPfu+3P+gg4RMEQzTJo4JeqnCdrm17GLLwgzmx1nkxOjQd1ZhOYxpj8dWQaf2Hg+chX6PXccivqAf9Iro+yoqokAHpjCVvKtjDzSFShSx5YYp1ohCHYlDEfS+TagMRWRHDuOcInRFqCOBxBGoNVp2JNBdVNKurc2OgBL1vz/h26lDoh34K457SAEJJ8bPeeqiEvgH/hbmEf+uy25nAV4vh6YOCfyuIsDrohIVMWDgPwRqbQKJO14w0l6z5yw+GRhmDPAH8AQSOU7OPbiAMvSdEUwgocWIDoFV8FtgESKM7X9hCCxCaxG31h+AzgshaeE/GQAAAABJRU5ErkJggg==",
@@ -608,7 +608,7 @@
       "isActive": false
     },
     {
-      "name": "Fellstalk Incense",
+      "name": "Fellstalk Incense Sticks",
       "failThreshold": 50,
       "passThreshold": 150,
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAS1BMVEUAAAAAAAIydnMqJyctLQAAAAAwdXIydXMQEABalhkQFwAQJCAAEBAQJycAFxcXFwAXMDAXMjIQAAAQICAAEAAQEBAQLSozMzMQLS3RjHlWAAAAAXRSTlMAQObYZgAAAPRJREFUeF6Fz4mKwzAMRVFd2U7TZTr78v9fOohIPIyhFXGM0bEetvOzsrMthRnUYRZHhw59R2K62qPb47NV0Mm1xwez0PVYuS3iFeJ6juhjETmiQAcmkV1ljECzuEAHZcSCEuuIRB0JjQg3CmpGjaiMaMZeInQhZQSQuARqjfZ1ZAz0FoXQPlqrjIASef905TSmDIm2s33juIcUkNjghF9x2PRQCfwN/8HxT/yWjx2zAM+fQ1OGhEbAlg+VmEbcCdRaAYk/XjAIdoucWfCOY5gV8AQljnYUkUEBiV+dj4wCSlEdGdgjUWAVihmPhSGwCNUintU/9swK5bbwAfgAAAAASUVORK5CYII=",
@@ -724,7 +724,7 @@
       "isActive": false
     },
     {
-      "name": "Kwuarm Incense",
+      "name": "Kwuarm Incense Sticks",
       "failThreshold": 50,
       "passThreshold": 150,
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAYFBMVEUAAAAAAAKFYkZGUSBlb0cAAABGUyAQEACGYkYXFwAXHABalhkgJBAyJxwAEAA3KhwQAAAkHBAXEBAnKhwqIBcyJBwnHBcXEAA6KiAQFwAcEBAcHBAcIBAcJBAgIBeGZEaA+qu+AAAAAXRSTlMAQObYZgAAARVJREFUeF6Fz4eOxCAQA1A8QJLt13v5/788MxlkKZx2ERMp4mGLdLi10iENC9zoP1sBcCZg2uEf4YcTONxjhl9dJ+9bBLAVfj1nH26P2Yh8pPgi2CPvKOZRRIQDj4GEgxwRUTW3nhAqiYh3itl7gC7GiEATQihixwjv6O+RiIjeQZAwVRcq8YjeceYQSBwbKgUlOhrI/S0qKT800cGpEnHfXmCf62n1SRLlG/YIg1mTAhIGmEcA1juQJGAX2DMWLPewV4/IHImIWMBtBpSzOiSWk0c0ZjU6JPx2fB4ogFI6kDjhCQkecUdRN+KNJiGtYQTmQCKOufBBIaAM/RPMQAcSWg4YeUX8CmyFaup1kSAwCM0gbq0/fCYNcM5GO3MAAAAASUVORK5CYII=",
@@ -739,7 +739,7 @@
       "isUtility": true
     },
     {
-      "name": "Lantadyme Incense",
+      "name": "Lantadyme Incense Sticks",
       "failThreshold": 50,
       "passThreshold": 119,
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAY1BMVEUAAAAAAAKBa0QqJycyQkA1REAAAAEAAAAQEBAAEAAAEBAQAAAXHBwQFxBalhkXHBcXIBwcFxAkHBAkIBAnIBcqJBcQHBcwJxcwKhwyKhwXEAA1LRwXEBA3MBwQEAAQFxeCbEQpZD7NAAAAAXRSTlMAQObYZgAAARdJREFUeF6FzQeOwzAMRFF/qqVne2/3P+WaIuyB48VGECEIepoZTtfWcBpWi3EzXZYiXihQjvwh+qO/Ft+1rgQFn0r5pmyApdB3nzhYiRsoZ0pEUHbUSxEREyjALFRyJudxO9g5CqESMuQjOTooW2AW/WNWhAe2fkocFDGi3uFTZ6GIDQSoHuNCJRFB9DQ6GGZxcJQSyTu25BYdgwTkJ9J+NDjIDppE/MfusRaFzcfBJNIB22CYuRSQMDDsAWNOyQFCYO/Ys5s77A2yoyYxRxA1JHVIYC89ImrUEWIR8YGjlCYg8cojlc723nMhPjEqtXbwBdaBRDw75xZMQBm6R8QEJLSiQ2At+BG4FKpp/4sBgaXQCEhcW79V8g+eBZwQuAAAAABJRU5ErkJggg==",
