@@ -21,6 +21,7 @@ import BlackstoneArrows from '../assets/data/blackstone_arrows.data.png';
 import Bloated from '../assets/data/bloated.data.png';
 import BlueVirus from '../assets/data/Blue_virus.data.png';
 import BonfireBoost from '../assets/data/Bonfire_Boost.data.png';
+import Cease from '../assets/data/Cease.data.png';
 import ChronicleAttraction from '../assets/data/Chronicle_Attraction.data.png';
 import CrystalMask from '../assets/data/Crystal_Mask.data.png';
 import CrystalRain from '../assets/data/Crystal_Rain-minimal.data.png';
@@ -128,6 +129,7 @@ const buffImagePromises = {
   'Bloated': Bloated,
   'Blue Virus': BlueVirus,
   'Bonfire Boost': BonfireBoost,
+  'Cease': Cease,
   'Chronicle Attraction': ChronicleAttraction,
   'Crystal Mask': CrystalMask,
   'Crystal Rain': CrystalRain,
