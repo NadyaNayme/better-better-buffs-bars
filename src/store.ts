@@ -228,7 +228,7 @@ const useStore = create(
                     return {
                       ...buff,
                       timeRemaining: newTime,
-                      isActive: newTime > 0 || !!buff.alwaysActive,
+                      isActive: newTime > 0,
                       lastUpdated: now,
                     };
                   }
