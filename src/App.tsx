@@ -96,7 +96,7 @@ function App() {
   return (
     <div className="bg-gray-900 text-white min-h-screen p-8">
       <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold">Better Buffs Bar - 0.1.1b</h1>
+        <h1 className="text-4xl font-bold">Better Buffs Bar - 0.1.2b</h1>
       </header>
 
       {!alt1Detected && (
