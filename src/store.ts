@@ -130,17 +130,18 @@ const useStore = create(
       },
       syncIdentifiedBuffs: (identifiedActiveBuffs) => {
         set((state) => {
-          let didChange = false;
+          let globalDidChange = false;
           const now = Date.now();
       
           const updatedGroups = state.groups.map(group => {
+            let groupDidChange = false;
+      
             const updatedBuffs = group.buffs.map(buff => {
               const activeInfo = identifiedActiveBuffs.get(buff.name);
       
               if (buff.buffType === "Meta") {
-                // Case 1: An active child WAS found on this tick.
                 if (activeInfo && activeInfo.foundChild) {
-                  didChange = true;
+                  groupDidChange = true;
                   return {
                     ...buff,
                     isActive: true,
@@ -152,49 +153,40 @@ const useStore = create(
                     inactiveCount: 0,
                     lastUpdated: now,
                   };
-                }
-                
-                // Case 2: No active child was found on this tick.
-                else {
-                  if (buff.isActive) {
-                    const timeSinceLastUpdate = now - (buff.lastUpdated ?? 0);
-                    if (timeSinceLastUpdate > 400) {
-                      const newInactiveCount = (buff.inactiveCount ?? 0) + 1;
-                      if (newInactiveCount >= 3) {
-                        console.log(`Buff is inactive after 1.2s ${buff.inactiveCount}`);
-                        didChange = true;
-                        return {
-                          ...buff,
-                          isActive: false,
-                          timeRemaining: 0,
-                          inactiveCount: 0,
-                          imageData: buff.defaultImageData,
-                          lastUpdated: now,
-                        };
-                      } 
-                      else {
-                        console.log(`Buff's inactive count will be incrementing: ${buff.inactiveCount}`);
-                        didChange = true;
-                        return {
-                          ...buff,
-                          isActive: true,
-                          inactiveCount: newInactiveCount,
-                          lastUpdated: now,
-                        };
-                      }
+                } else if (buff.isActive) {
+                  const timeSinceLastUpdate = now - (buff.lastUpdated ?? 0);
+                  if (timeSinceLastUpdate > 400) {
+                    const newInactiveCount = (buff.inactiveCount ?? 0) + 1;
+                    if (newInactiveCount >= 3) {
+                      groupDidChange = true;
+                      return {
+                        ...buff,
+                        isActive: false,
+                        timeRemaining: 0,
+                        inactiveCount: 0,
+                        imageData: buff.defaultImageData,
+                        lastUpdated: now,
+                      };
+                    } else {
+                      groupDidChange = true;
+                      return {
+                        ...buff,
+                        isActive: true,
+                        inactiveCount: newInactiveCount,
+                        lastUpdated: now,
+                      };
                     }
-                  return buff;
                   }
                 }
+                return buff;
               }
       
               if (activeInfo) {
                 if (
-                  buff.cooldownRemaining !== 0 &&
-                  !buff.isActive ||
+                  buff.cooldownRemaining !== 0 && !buff.isActive ||
                   buff.timeRemaining !== activeInfo.time
                 ) {
-                  didChange = true;
+                  groupDidChange = true;
                   return {
                     ...buff,
                     isActive: true,
@@ -206,7 +198,6 @@ const useStore = create(
                 return buff;
               }
       
-              // If buff is active but not detected, decay timeRemaining based on elapsed time:
               if (buff.isActive) {
                 const elapsedMs = now - (buff.lastUpdated ?? now);
                 const elapsedSeconds = Math.floor(elapsedMs / 1000);
@@ -216,7 +207,7 @@ const useStore = create(
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
       
                   if (newTime === 0) {
-                    didChange = true;
+                    groupDidChange = true;
                     return {
                       ...buff,
                       isActive: false,
@@ -225,11 +216,11 @@ const useStore = create(
                       lastUpdated: now,
                     };
                   } else if (newTime !== timeLeft && timeLeft < 60) {
-                    didChange = true;
+                    groupDidChange = true;
                     return {
                       ...buff,
                       timeRemaining: newTime,
-                      isActive: true, // newTime > 0,
+                      isActive: true,
                       lastUpdated: now,
                     };
                   }
@@ -239,10 +230,15 @@ const useStore = create(
               return buff;
             });
       
-            return didChange ? { ...group, buffs: updatedBuffs } : group;
+            if (groupDidChange) {
+              globalDidChange = true;
+              return { ...group, buffs: updatedBuffs };
+            }
+      
+            return group;
           });
       
-          return didChange ? { groups: updatedGroups } : {};
+          return globalDidChange ? { groups: updatedGroups } : {};
         });
       },
       tickCooldownTimers: () => {
