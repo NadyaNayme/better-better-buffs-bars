@@ -229,7 +229,7 @@ const useStore = create(
                     return {
                       ...buff,
                       timeRemaining: newTime,
-                      isActive: newTime > 0,
+                      isActive: active, // newTime > 0,
                       lastUpdated: now,
                     };
                   }
