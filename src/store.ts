@@ -231,7 +231,7 @@ const useStore = create(
             });
       
             if (groupDidChange) {
-              // globalDidChange = true;
+              globalDidChange = true;
               return { ...group, buffs: updatedBuffs };
             }
       
