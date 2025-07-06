@@ -194,6 +194,8 @@ const useStore = create(
                   buff.timeRemaining !== activeInfo.time
                 ) {
                   didChange = true;
+                  console.log(buff);
+                  console.log(`Buff was on cooldown past cooldown time. Resetting state to be active.`);
                   return {
                     ...buff,
                     isActive: true,
@@ -216,6 +218,8 @@ const useStore = create(
       
                   if (newTime === 0) {
                     didChange = true;
+                    console.log(buff);
+                    console.log(`Setting buff to be inactive`);
                     return {
                       ...buff,
                       isActive: false,
@@ -224,6 +228,8 @@ const useStore = create(
                       lastUpdated: now,
                     };
                   } else if (newTime !== timeLeft && timeLeft < 60) {
+                    console.log(buff);
+                    console.log(`Time Left <60s for above buff.`);
                     didChange = true;
                     return {
                       ...buff,
