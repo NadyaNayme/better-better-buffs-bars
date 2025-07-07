@@ -402,8 +402,8 @@
       "name": "Death Spark",
       "buffType": "Meta",
       "childBuffNames": [
-        "Death Spark (Unready)",
-        "Death Spark (Ready)"
+        "Death Spark (Ready)",
+        "Death Spark (Unready)"
       ],
       "isActive": false,
       "alwaysActive": false,
