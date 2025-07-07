@@ -1,0 +1,24 @@
+export interface Buff {
+    id: string;
+    name: string;
+    failThreshold?: number;
+    passThreshold?: number;
+    imageData: string;
+    scaledImageData?: string;
+    desaturatedImageData: string;
+    scaledDesaturatedImageData?: string;
+    defaultImageData?: string;
+    duration?: number;
+    cooldown?: number;
+    cooldownRemaining?: number;
+    timeRemaining?: number;
+    isPermanent?: boolean;
+    hasAlert?: boolean;
+    buffType?: string;
+    isActive: boolean;
+    alwaysActive?: boolean;
+    lastUpdated?: number;
+    inactiveCount?: number;
+    isUtility?: boolean;
+    childBuffNames?: string[];
+  }

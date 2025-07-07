@@ -1,89 +1,11 @@
-// @ts-nocheck
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, type PersistOptions } from 'zustand/middleware';
 import { v4 as uuidv4 } from 'uuid';
 import buffsData from './buffs.json';
+import { type Group } from './types/Group';
+import { type Store } from './types/Store';
 
-interface Buff {
-  id: string;
-  name: string;
-  failThreshold?: number;
-  passThreshold?: number;
-  imageData: string;
-  scaledImageData?: string;
-  desaturatedImageData: string;
-  scaledDesaturatedImageData?: string;
-  defaultImageData?: string;
-  duration?: number;
-  cooldown?: number;
-  cooldownRemaining?: number;
-  timeRemaining?: number;
-  isPermanent?: boolean;
-  hasAlert?: boolean;
-  buffType?: string;
-  isActive: boolean;
-  alwaysActive?: boolean;
-  lastUpdated?: Date;
-  inactiveCount?: number;
-  isUtility?: boolean;
-}
-
-interface Group {
-  id: string;
-  name:string;
-  buffs: Buff[];
-  buffsPerRow: number;
-  enabled: boolean;
-  explicitInactive: boolean;
-  overlayPosition: {x: number, y: number};
-  scale: number;
-}
-
-interface Profile {
-  id: string;
-  name: string;
-  groups: Group[];
-}
-
-interface IdentifiedBuffInfo {
-  name: string;
-  time: number;
-  foundChild?: { name: string; image: string };
-}
-
-interface StoreStateAndActions {
-  groups: Group[];
-  profiles: Profile[];
-  activeProfile: string | null;
-  buffs: Buff[];
-  version: number;
-  cooldownColor: {r: number, g: number, b: number},
-  timeRemainingColor: {r: number, g: number, b: number},
-  setVersion: (version: number) => void;
-  setBuffsFromJsonIfNewer: () => void;
-  syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
-  tickTimers: () => void;
-  createProfile: (name: string) => void;
-  loadProfile: (id: string) => void;
-  deleteProfile: (id: string) => void;
-  editProfile: (id: string, newName: string) => void;
-  createGroup: (name: string) => void;
-  deleteGroup: (id: string) => void;
-  updateGroup: (id: string, updates: Partial<Group>) => void;
-  addBuffToGroup: (groupId: string, buffId: string) => void;
-  rescaleAllGroupsOnLoad: () => void;
-  syncGroupBuffs: (buffs: Array) => void;
-  removeBuffFromGroup: (groupId: string, buffId: string) => void;
-  reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
-  setCooldownColor: (color) => void;
-  setTimeRemainingColor: (color) => void;
-  customThresholds: { [buffName: string]: { passThreshold: number, failThreshold: number } };
-  setCustomThreshold: (buffName: string, thresholds: { pass: number, fail: number }) => void;
-  getCustomThresholds: (buffName: string) => void;
-  removeCustomThreshold: (buffName: string) => void;
-}
-
-function resizedataURL(dataUrl, scale) {
+function resizedataURL(dataUrl: string, scale: number): Promise<{ scaledDataUrl: string; width: number; height: number }> {
     return new Promise((resolve, reject) => {
       const img = new Image();
   
@@ -101,7 +23,7 @@ function resizedataURL(dataUrl, scale) {
   
         ctx.drawImage(img, 0, 0, width, height);
   
-        const scaledDataUrl = canvas.toDataURL('image/png'); // data URI
+        const scaledDataUrl = canvas.toDataURL('image/png');
         resolve({ scaledDataUrl, width, height });
       };
   
@@ -111,7 +33,7 @@ function resizedataURL(dataUrl, scale) {
   }
 
 const useStore = create(
-  persist(
+  persist<Store, [], [], Store>(
     (set, get) => ({
       groups: [],
       profiles: [],
@@ -168,7 +90,7 @@ const useStore = create(
                         isActive: false,
                         timeRemaining: 0,
                         inactiveCount: 0,
-                        imageData: buff.defaultImageData,
+                        imageData: buff.defaultImageData ?? '',
                         lastUpdated: now,
                       };
                     } else {
@@ -305,7 +227,7 @@ const useStore = create(
 
       // Groups
       createGroup: (name) => {
-        const newGroup = {
+        const newGroup: Group = {
           id: uuidv4(),
           name,
           buffs: [],
@@ -345,8 +267,8 @@ const useStore = create(
 
             return {
               ...buff,
-              scaledImageData: scaledResult?.scaledDataUrl,
-              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl,
+              scaledImageData: scaledResult?.scaledDataUrl ?? '',
+              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
             };
           });
 
@@ -371,8 +293,8 @@ const useStore = create(
             
             return {
               ...buff,
-              scaledImageData: scaledResult?.scaledDataUrl,
-              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl,
+              scaledImageData: scaledResult?.scaledDataUrl ?? '',
+              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
             };
           });
 
@@ -385,14 +307,7 @@ const useStore = create(
         set({ groups: finalUpdatedGroups });
         console.log("All groups have been rescaled on initial load.");
       },
-      syncGroupBuffs: (newBuffs) => {
-        const updatedGroups = get().groups.map(group => {
-          const updatedBuffs = group.buffs.map(oldBuff => {
-            const match = newBuffs.find(b => b.name === oldBuff.name);
-            return match ? { ...match } : oldBuff;
-          });
-          return { ...group, buffs: updatedBuffs };
-        });
+      syncGroupBuffs: () => {
       },
       // Buffs
       addBuffToGroup: (groupId, buffId) => {
@@ -441,7 +356,7 @@ const useStore = create(
             [buffName]: thresholds,
           },
         })),
-      getBuffThresholds: (buffName) => {
+      getBuffThresholds: (buffName: string) => {
         const custom = get().customThresholds?.[buffName];
         const baseBuff = get().buffs.find((b) => b.name === buffName);
         return {
@@ -459,7 +374,7 @@ const useStore = create(
     }),
     {
       name: 'buff-tracker-storage',
-      partialize: (state) => ({
+      partialize: (state: Store) => ({
         groups: state.groups,
         profiles: state.profiles,
         activeProfile: state.activeProfile,
@@ -469,7 +384,7 @@ const useStore = create(
         timeRemainingColor: state.timeRemainingColor,
         customThresholds: state.customThresholds,
       }),
-    }
+    } as PersistOptions<Store>
   )
 );
 

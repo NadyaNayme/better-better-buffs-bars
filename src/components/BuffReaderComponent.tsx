@@ -218,7 +218,7 @@ const buffImagePromises = {
 
 interface BuffReaderProps {
   isDebuff?: boolean;
-  onBuffsIdentified: (identifiedBuffs: { name: string; time: number }[]) => void;
+  onBuffsIdentified: (identifiedBuffs: Map<string, { time: number }>) => void;
   readInterval?: number;
 }
 
@@ -238,7 +238,7 @@ export function BuffReaderComponent({
   const intervalRef = useRef<number | null>(null);
   const findRetryTimeoutRef = useRef<number | null>(null);
 
-  const updateDebugData = (buffName, fail, pass) => {
+  const updateDebugData = (buffName: string, fail: number, pass: number) => {
     if (!enableDebug) return;
     setDebugMatchData(prev => {
       const newMap = new Map(prev);
@@ -252,7 +252,7 @@ export function BuffReaderComponent({
     });
   };
 
-  const formatStats = (arr) => {
+  const formatStats = (arr: number[]) => {
     if (!arr.length) return "N/A";
     const values = arr.map(x => x);
     const min = Math.min(...values);
@@ -419,8 +419,8 @@ export function BuffReaderComponent({
       <div style={{ marginTop: 10 }}>
         <h4>{isDebuff ? "Debuff Threshold Data" : "Buff Threshold Data"}</h4>
         {[...debugMatchData.entries()].map(([buffName, history]) => {
-          const failArr = history.map(e => e.fail);
-          const passArr = history.map(e => e.pass);
+          const failArr = history.map((e: { fail: number; }) => e.fail);
+          const passArr = history.map((e: { pass: number; }) => e.pass);
           return (
             <div key={buffName}>
               <strong>{buffName}</strong><br/>

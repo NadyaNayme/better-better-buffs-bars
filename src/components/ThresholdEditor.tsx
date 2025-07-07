@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, type FormEventHandler } from 'react';
 import useStore from '../store';
 
 const ThresholdEditor = () => {
@@ -11,7 +11,7 @@ const ThresholdEditor = () => {
   const [pass, setPass] = useState('');
   const [fail, setFail] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!selectedBuff || isNaN(+pass) || isNaN(+fail)) return;
 
