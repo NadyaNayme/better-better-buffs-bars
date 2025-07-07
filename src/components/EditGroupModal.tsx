@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import useStore from '../store';
 import ConfirmModal from './ConfirmModal';
+import type { Group } from '../types/Group';
 
-const EditGroupModal = ({ group, onClose }) => {
+interface EditGroupModalComponentProps {
+  group: Group;
+  onClose: () => void;
+}
+
+const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose }) => {
   if (!group) return null; 
 
   const { updateGroup, deleteGroup } = useStore();
@@ -43,7 +49,7 @@ const EditGroupModal = ({ group, onClose }) => {
               min="1"
               max="50"
               value={buffsPerRow}
-              onChange={(e) => setBuffsPerRow(e.target.value)}
+              onChange={(e) => setBuffsPerRow(Number(e.target.value))}
               className="mr-2"
             />
             <label>Buffs Per Row</label>
@@ -64,7 +70,7 @@ const EditGroupModal = ({ group, onClose }) => {
               min="50"
               max="500"
               value={scale}
-              onChange={(e) => setScale(e.target.value)}
+              onChange={(e) => setScale(Number(e.target.value))}
               className="w-full"
             />
           </div>

@@ -1,7 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import useStore from '../store';
 
-const AddBuffModal = ({ groupId, onClose }) => {
+interface AddBuffModalComponentProps {
+  groupId: string;
+  onClose: () => void;
+}
+
+const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }) => {
   const { buffs, addBuffToGroup } = useStore();
   const currentGroup = useStore(state => 
     state.groups.find(g => g.id === groupId)
@@ -15,7 +20,7 @@ const AddBuffModal = ({ groupId, onClose }) => {
       .map(b => b.id));
   }, [currentGroup]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     if (selectedBuff) {
       addBuffToGroup(groupId, selectedBuff);

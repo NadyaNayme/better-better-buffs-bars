@@ -2,15 +2,21 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import useStore from '../store';
+import type { Buff } from '../types/Buff';
 
-const formatTime = (seconds) => {
+const formatTime = (seconds: number) => {
   if (seconds <= 0) return '0s';
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return mins > 0 ? `${mins}m` : `${secs}s`;
 };
 
-const Buff = ({ buff, scale = 100, onRemove  }) => {
+interface BuffComponentProps {
+  buff: Buff;
+  onRemove: () => void;
+}
+
+const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
   const {
     attributes,
     listeners,
@@ -20,7 +26,6 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
     isDragging,
   } = useSortable({ id: buff.id });
 
-  const sizePercent = Math.max(50, Math.min(scale, 500)) / 100;
   const baseSize = 27;
   const sizePx = baseSize;
 
@@ -33,10 +38,6 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
     gridColumn: 'span 1',
     gridRow: 'span 1',
   };
-
-  const fontStyle = {
-    fontSize:  'calc(10px * ' + sizePercent + ')'
-  }
 
   const imageUrl = buff.isActive ? buff.imageData : buff.imageData;
 
@@ -69,4 +70,4 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
   );
 };
 
-export default Buff;
+export default BuffComponent;
