@@ -173,7 +173,7 @@ const buffImagePromises = {
   'LivingDeath': LivingDeath,
   'Malevolence': Malevolence,
   'Necrosis': Necrosis,
-  'OmniGuard': OmniGuard,
+  'Omni Guard': OmniGuard,
   'Onyx Bak Bolts': OnyxBakBolts,
   'Overload': Overloaded,
   'Perfect Equilibrium': PerfectEquilibrium,
