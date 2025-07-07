@@ -273,6 +273,8 @@ export function BuffReaderComponent({
     for (const detected of detectedBuffs) {
       for (const [name, trackedBuff] of trackedBuffMap.entries()) {
         if (!trackedBuff) continue;
+        if (isDebuff && trackedBuff.buffType === "Buff") continue;
+        if (!isDebuff && trackedBuff.buffType === "Debuff") continue;
   
         const passThreshold = trackedBuff.passThreshold ?? 10;
         const failThreshold = trackedBuff.failThreshold ?? 50;
