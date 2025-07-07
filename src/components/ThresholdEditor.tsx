@@ -75,7 +75,7 @@ const ThresholdEditor = () => {
             {Object.entries(customThresholds).map(([name, thresholds]) => (
               <li
                 key={name}
-                className="flex justify-between items-center bg-white border p-2 rounded"
+                className="flex justify-between items-center bg-slate-700 border p-2 rounded"
               >
                 <span className="text-sm">
                   <strong>{name}</strong>: Pass {thresholds.passThreshold}, Fail {thresholds.failThreshold}
