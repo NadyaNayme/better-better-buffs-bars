@@ -1,5 +1,5 @@
 {
-  "version": 67,
+  "version": 68,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -87,8 +87,8 @@
       "name": "Death Spark (Meta)",
       "buffType": "Meta",
       "childBuffNames": [
-        "Death Spark",
-        "Death Spark (Uncapped)"
+        "Death Spark (Unready)",
+        "Death Spark"
       ],
       "isActive": false,
       "alwaysActive": false,

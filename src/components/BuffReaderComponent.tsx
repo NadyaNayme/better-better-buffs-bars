@@ -297,7 +297,7 @@ export function BuffReaderComponent({
               if (childData) {
                 finalPayloadMap.set(name, {
                   name,
-                  time,
+                  time: time,
                   foundChild: {
                     imageData: childData.scaledImageData ?? childData.imageData,
                     desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
