@@ -1,6 +1,6 @@
-// @ts-nocheck
 import React, { useState } from 'react';
 import useStore from '../store';
+import type { Profile } from '../types/Profile';
 
 type ProfileManagerProps = {
   openModalForProfile: () => void;
@@ -12,12 +12,11 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
     activeProfile,
     createProfile,
     loadProfile,
-    saveProfile,
     deleteProfile,
     editProfile,
   } = useStore();
   const [newProfileName, setNewProfileName] = useState('');
-  const [editingProfile, setEditingProfile] = useState(null);
+  const [editingProfile, setEditingProfile] = useState('');
   const [editingProfileName, setEditingProfileName] = useState('');
 
   const handleCreateProfile = () => {
@@ -27,15 +26,15 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
     }
   };
 
-  const handleEdit = (profile) => {
+  const handleEdit = (profile: Profile) => {
     setEditingProfile(profile.id);
     setEditingProfileName(profile.name);
   };
 
   const handleSaveEdit = () => {
     if (editingProfileName.trim()) {
-      editProfile(editingProfile, editingProfileName);
-      setEditingProfile(null);
+      editProfile(editingProfile ?? '', editingProfileName);
+      setEditingProfile('');
       setEditingProfileName('');
     }
   };
@@ -47,7 +46,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
         <button onClick={openModalForProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Create New Profile
         </button>
-        <button onClick={saveProfile} disabled={!activeProfile} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
+        <button onClick={handleSaveEdit} disabled={!activeProfile} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
           Update Loaded Profile
         </button>
       </div>
@@ -80,7 +79,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
                     <button onClick={handleSaveEdit} className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">
                       Save
                     </button>
-                    <button onClick={() => setEditingProfile(null)} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded">
+                    <button onClick={() => setEditingProfile('')} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded">
                       Cancel
                     </button>
                   </>

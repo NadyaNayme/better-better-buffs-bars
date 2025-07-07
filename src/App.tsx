@@ -11,6 +11,7 @@ import ThresholdEditor from './components/ThresholdEditor';
 import Debug from './components/Debug';
 import { type Group } from './types/Group';
 import GroupComponent from './components/GroupComponent';
+import type { Color } from './types/Color';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -49,8 +50,7 @@ function App() {
     }
   };
 
-  // @ts-ignore
-  const handleColorChange = (setter) => (e) => {
+  const handleColorChange = (setter: (color: Color) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const hex = e.target.value;
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -58,8 +58,7 @@ function App() {
     setter({ r, g, b });
   };
 
-  // @ts-ignore
-  const rgbToHex = ({ r, g, b }) =>
+  const rgbToHex = ({ r, g, b }: Color) =>
     `#${[r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 
   useEffect(() => {
