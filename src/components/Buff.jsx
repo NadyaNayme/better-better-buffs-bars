@@ -41,6 +41,10 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
 
   const [highlighted, setHighlighted] = useState(false);
 
+  const customThresholds = useStore((s) => s.customThresholds);
+  const effectivePass = customThresholds[buff.name]?.passThreshold ?? buff.passThreshold;
+  const effectiveFail = customThresholds[buff.name]?.failThreshold ?? buff.failThreshold;
+
   return (
     <div
       ref={setNodeRef}
@@ -54,7 +58,7 @@ const Buff = ({ buff, scale = 100, onRemove  }) => {
         setTimeout(() => onRemove(), 50);
       }}
     >
-      <img src={imageUrl} alt={buff.name} title={buff.name} data-pass={buff.passThreshold} data-fail={buff.failThreshold} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
+      <img src={imageUrl} alt={buff.name} title={buff.name} data-pass={effectivePass} data-fail={effectiveFail} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
       {buff.timeRemaining != null && !(buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark") && (
         <div className="absolute pointer-events-none bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
           {formatTime(buff.timeRemaining)}
