@@ -89,7 +89,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     })
 
     const buffsToDraw = group.buffs.filter(buff => {
-      if (buff.buffType === "Meta" || group.explicitInactive) {
+      if (buff.noNumberDisplay || group.explicitInactive) {
         return true;
       }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
