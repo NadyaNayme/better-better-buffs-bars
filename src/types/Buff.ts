@@ -22,4 +22,5 @@ export interface Buff {
     isUtility?: boolean;
     childBuffNames?: string[];
     isStack?: boolean;
+    noNumberDisplay?: boolean;
   }

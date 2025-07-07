@@ -117,39 +117,24 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
       const textColor = isOnCooldown
         ? a1lib.mixColor(cooldownColor.r, cooldownColor.g, cooldownColor.b)
         : a1lib.mixColor(timeRemainingColor.r, timeRemainingColor.g, timeRemainingColor.b);
-      // These buffs do not have time or stacks
-      // TODO: Make this another buffProperty ("hasTimeOrStacks"?)
-      if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver") {
+
+      if (buff.noNumberDisplay) {
         return;
       }
 
       let formattedTime = formatTime(Number(timeToDisplay));
 
-      if (buff.buffType === "Meta" && buff.name !== "Death Spark (Meta)") {
-        window.alt1.overLayTextEx(
-          formattedTime,
-          textColor,
-          Math.floor(10 * (group.scale / 100)),
-          Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
-          Math.floor(drawY + ((group.scale / 100) * 19)),
-          100,
-          '',
-          true,                     
-          true
-        );
-      } else {
-        window.alt1.overLayTextEx(
-          formattedTime,
-          textColor,
-          Math.floor(10 * (group.scale / 100)),
-          Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
-          Math.floor(drawY + ((group.scale / 100) * 19)),
-          100,
-          '',
-          true,                     
-          true
-        );
-      }
+      window.alt1.overLayTextEx(
+        formattedTime,
+        textColor,
+        Math.floor(10 * (group.scale / 100)),
+        Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
+        Math.floor(drawY + ((group.scale / 100) * 19)),
+        100,
+        '',
+        true,                     
+        true
+      );
       window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
     });
 
