@@ -80,6 +80,7 @@ interface StoreStateAndActions {
   customThresholds: { [buffName: string]: { passThreshold: number, failThreshold: number } };
   setCustomThreshold: (buffName: string, pass: number, fail: number) => void;
   getCustomThresholds: (buffName: string) => void;
+  removeCustomThreshold: (buffName: string) => void;
 }
 
 function resizedataURL(dataUrl, scale) {
@@ -447,6 +448,13 @@ const useStore = create(
           passThreshold: custom?.passThreshold ?? baseBuff?.passThreshold ?? 10,
           failThreshold: custom?.failThreshold ?? baseBuff?.failThreshold ?? 50,
         };
+      },
+      removeCustomThreshold: (buffName) => {
+        set((state) => {
+          const updated = { ...state.customThresholds };
+          delete updated[buffName];
+          return { customThresholds: updated };
+        });
       },
     }),
     {
