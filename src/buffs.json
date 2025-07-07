@@ -81,7 +81,7 @@
     },
     {
       "id": "meta-death-spark",
-      "name": "Death Spark",
+      "name": "Death Spark (Meta)",
       "buffType": "Meta",
       "childBuffNames": [
         "Death Spark",
