@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import useStore from '../store';
 
 const formatTime = (seconds) => {
   if (seconds <= 0) return '0s';
