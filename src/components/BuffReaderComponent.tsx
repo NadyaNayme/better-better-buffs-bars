@@ -29,6 +29,7 @@ import Darkness from '../assets/data/Darkness.data.png';
 import DeathGuard from '../assets/data/Death_Guard_Special-top.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
 import DeathSpark from '../assets/data/Death_Spark.data.png';
+import DeathSparkUnready from '../assets/data/Death_Spark-notready.data.png';
 import DeathsSwiftness from '../assets/data/Deaths_Swiftness-top.data.png';
 import DeathsporeArrows from '../assets/data/deathspore_arrows.data.png';
 import Debilitate from '../assets/data/Debilitate.data.png';
@@ -137,6 +138,7 @@ const buffImagePromises = {
   'Death Guard': DeathGuard,
   'Death Mark': DeathMark,
   'Death Spark': DeathSpark,
+  'Death Spark (Unready)': DeathSparkUnready,
   'Deaths Swiftness': DeathsSwiftness,
   'Deathspore Arrows': DeathsporeArrows,
   'Debilitate': Debilitate,
@@ -170,7 +172,7 @@ const buffImagePromises = {
   'Kwuarm Incense Sticks': KwuarmIncense,
   'Lantadyme Incense Sticks': LantadymeIncense,
   'Limitless': Limitless,
-  'LivingDeath': LivingDeath,
+  'Living Death': LivingDeath,
   'Malevolence': Malevolence,
   'Necrosis': Necrosis,
   'Omni Guard': OmniGuard,
