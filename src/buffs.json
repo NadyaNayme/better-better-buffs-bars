@@ -1,5 +1,5 @@
 {
-  "version": 63,
+  "version": 64,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -277,7 +277,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
-      "isUtility": true,
+      "isUtility": true
     },
     {
       "name": "Bonfire Boost",
