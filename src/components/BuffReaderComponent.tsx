@@ -229,7 +229,7 @@ type ComponentStatus = "IDLE" | "LOADING_IMAGES" | "FINDING_BAR" | "READING" | "
 export function BuffReaderComponent({ 
   isDebuff = false, 
   onBuffsIdentified,
-  readInterval = 325,
+  readInterval = 250,
 }: BuffReaderProps) {
   const [status, setStatus] = useState<ComponentStatus>("IDLE");
   const [enableDebug, setEnableDebug] = useState(false);
