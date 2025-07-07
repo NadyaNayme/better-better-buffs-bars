@@ -276,8 +276,7 @@ export function BuffReaderComponent({
         if (isDebuff && trackedBuff.buffType === "Buff") continue;
         if (!isDebuff && trackedBuff.buffType === "Debuff") continue;
   
-        const passThreshold = trackedBuff.passThreshold ?? 10;
-        const failThreshold = trackedBuff.failThreshold ?? 50;
+        const { passThreshold, failThreshold } = useStore.getState().getBuffThresholds(trackedBuff.name);
   
         // Meta buff logic
         if (trackedBuff.buffType === 'Meta' && trackedBuff.childBuffNames) {

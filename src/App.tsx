@@ -14,6 +14,7 @@ import a1lib from 'alt1';
 import { BuffReaderComponent } from './components/BuffReaderComponent';
 import { CooldownTimer } from './components/CooldownTimer';
 import buffsData from './buffs.json';
+import ThresholdEditor from './components/ThresholdEditor';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -158,6 +159,7 @@ function App() {
         isDebuff={true} 
         onBuffsIdentified={handleBuffsIdentified} 
       />
+      <ThresholdEditor/>
       <CooldownTimer/>
     </div>
   );

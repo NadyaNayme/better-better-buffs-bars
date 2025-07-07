@@ -77,6 +77,8 @@ interface StoreStateAndActions {
   reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
   setCooldownColor: (color) => void;
   setTimeRemainingColor: (color) => void;
+  setCustomThreshold: (buffName: string, pass: number, fail: number) => void;
+  getCustomThresholds: (buffName: string) => void;
 }
 
 function resizedataURL(dataUrl, scale) {
@@ -429,6 +431,22 @@ const useStore = create(
       timeRemainingColor: { r: 255, g: 255, b: 255 },
       setCooldownColor: (color) => set({ cooldownColor: color }),
       setTimeRemainingColor: (color) => set({ timeRemainingColor: color }),
+      customThresholds: {}, // { [buffName: string]: { passThreshold: number, failThreshold: number } }
+      setCustomThreshold: (buffName, pass, fail) =>
+        set((state) => ({
+          customThresholds: {
+            ...state.customThresholds,
+            [buffName]: { passThreshold: pass, failThreshold: fail },
+          },
+        })),
+      getBuffThresholds: (buffName) => {
+        const custom = get().customThresholds?.[buffName];
+        const baseBuff = get().buffs.find((b) => b.name === buffName);
+        return {
+          passThreshold: custom?.passThreshold ?? baseBuff?.passThreshold ?? 10,
+          failThreshold: custom?.failThreshold ?? baseBuff?.failThreshold ?? 50,
+        };
+      },
     }),
     {
       name: 'buff-tracker-storage',
@@ -439,7 +457,8 @@ const useStore = create(
         buffs: state.buffs,
         version: state.version,
         cooldownColor: state.cooldownColor,
-        timeRemainingColor: state.timeRemainingColor
+        timeRemainingColor: state.timeRemainingColor,
+        customThresholds: state.customThresholds,
       }),
     }
   )
