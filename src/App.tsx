@@ -1,20 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
-// @ts-ignore
 import useStore from './store';
-// @ts-ignore
-import Group from './components/Group';
-// @ts-ignore
-import ProfileManager from './components/ProfileManager';
-// @ts-ignore
-import Debug from './components/Debug';
-// @ts-ignore
-import { isAlt1Available } from "./lib/alt1Utils";
-import PopupModal from './components/PopupModal';
+import buffsData from './buffs.json';
 import a1lib from 'alt1';
+import { isAlt1Available } from "./lib/alt1Utils";
 import { BuffReaderComponent } from './components/BuffReaderComponent';
 import { CooldownTimer } from './components/CooldownTimer';
-import buffsData from './buffs.json';
+import PopupModal from './components/PopupModal';
+import ProfileManager from './components/ProfileManager';
 import ThresholdEditor from './components/ThresholdEditor';
+import Debug from './components/Debug';
+import { type Group } from './types/Group';
+import GroupComponent from './components/GroupComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -143,7 +139,7 @@ function App() {
 
       <div className="space-y-8">
         {groups.map((group: any) => (
-          <Group key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} />
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} />
         ))}
       </div>
       <PopupModal

@@ -9,7 +9,7 @@ import EditGroupModal from './EditGroupModal';
 
 const imageCache = new Map<string, HTMLCanvasElement>();
 
-const Group = ({ group, a1lib, alt1Ready  }) => {
+const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
   const { cooldownColor, timeRemainingColor } = useStore();
   const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
@@ -318,4 +318,4 @@ const Group = ({ group, a1lib, alt1Ready  }) => {
   );
 };
 
-export default Group;
+export default GroupComponent;
