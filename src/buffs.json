@@ -727,8 +727,7 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
+      "isActive": false
     },
     {
       "name": "Incense Sticks (Fellstalk)",
@@ -742,8 +741,7 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
+      "isActive": false
     },
     {
       "name": "Incense Sticks (Kwuarm)",
@@ -757,8 +755,7 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
+      "isActive": false
     },
     {
       "name": "Incense Sticks (Lantadyme)",
@@ -772,8 +769,7 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
+      "isActive": false
     },
     {
       "name": "Instability",
