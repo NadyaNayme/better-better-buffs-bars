@@ -77,6 +77,7 @@ interface StoreStateAndActions {
   reorderBuffsInGroup: (groupid: string, oldIndex: number, newIndex: number) => void;
   setCooldownColor: (color) => void;
   setTimeRemainingColor: (color) => void;
+  customThresholds: { [buffName: string]: { passThreshold: number, failThreshold: number } };
   setCustomThreshold: (buffName: string, pass: number, fail: number) => void;
   getCustomThresholds: (buffName: string) => void;
 }
