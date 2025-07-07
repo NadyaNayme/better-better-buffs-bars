@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import buffsData from './buffs.json';
 import { type Group } from './types/Group';
 import { type Store } from './types/Store';
+import { createBlankBuff } from './lib/createBlankBuff';
 
 function resizedataURL(dataUrl: string, scale: number): Promise<{ scaledDataUrl: string; width: number; height: number }> {
     return new Promise((resolve, reject) => {
@@ -227,10 +228,11 @@ const useStore = create(
 
       // Groups
       createGroup: (name) => {
+        const blankBuff = createBlankBuff();
         const newGroup: Group = {
           id: uuidv4(),
           name,
-          buffs: [],
+          buffs: [blankBuff],
           overlayPosition: { x: 0, y: 0 },
           buffsPerRow: 8,
           scale: 100,
@@ -246,7 +248,14 @@ const useStore = create(
       },
       updateGroup: async (id, updates) => {
         set((state) => ({
-          groups: state.groups.map(g => (g.id === id ? { ...g, ...updates } : g)),
+          groups: state.groups.map(group => {
+            if (group.id !== id) return group;
+            const updatedGroup = { ...group, ...updates };
+            const nonBlankBuffs = updatedGroup.buffs.filter(b => b.name !== "Blank");
+            updatedGroup.buffs = [...nonBlankBuffs, createBlankBuff()];
+      
+            return updatedGroup;
+          }),
         }));
         if (updates.scale !== undefined) {
           const groupToProcess = get().groups.find(g => g.id === id);

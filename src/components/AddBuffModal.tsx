@@ -40,6 +40,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
           >
             <option value="" disabled>Select a buff</option>
             {buffs.map(buff => {
+              if (buff.isUtility) return;
               const isAlreadyInGroup = existingBuffIds.has(buff.id);
               return (
                 <option
