@@ -2,9 +2,6 @@ import useStore from '../store';
 
 const Debug = () => {
     const { profiles, groups, activeProfile } = useStore();
-  
-    const activeProfileData = profiles.find(p => p.id === activeProfile);
-  
     return (
       <div>
         <h2>Debug Info</h2>

@@ -1,15 +1,19 @@
-// @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
-import { SortableContext, arrayMove, rectSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '../store';
 import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
+import type { Group } from '../types/Group';
 
-const imageCache = new Map<string, HTMLCanvasElement>();
+interface GroupComponentProps {
+  group: Group;
+  a1lib: any;
+  alt1Ready: any;
+}
 
-const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
+const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready  }) => {
   const { cooldownColor, timeRemainingColor } = useStore();
   const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
@@ -118,7 +122,7 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
         return;
       }
 
-      let formattedTime = formatTime(timeToDisplay);
+      let formattedTime = formatTime(Number(timeToDisplay));
 
       if (buff.buffType === "Meta") {
         window.alt1.overLayTextEx(
@@ -195,6 +199,7 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
         canvas.width = img.width;
         canvas.height = img.height;
         const ctx = canvas.getContext('2d');
+        if (ctx === null) return;
         ctx.drawImage(img, 0, 0);
   
         const imageData = ctx.getImageData(0, 0, img.width, img.height);
@@ -235,6 +240,7 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
+          if (ctx === null) return;
           ctx.drawImage(img, 0, 0);
           const imageData = ctx.getImageData(0, 0, img.width, img.height);
           const encoded = a1lib.encodeImageString(imageData);
@@ -249,7 +255,7 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
 
   }, [alt1Ready, a1lib, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, group.buffs]);
 
-  const onDragEnd = (event) => {
+  const onDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
       const oldIndex = group.buffs.findIndex((b) => b.id === active.id);
@@ -258,11 +264,10 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
     }
   };
 
-  const handleRemoveBuff = (buffId) => {
+  const handleRemoveBuff = (buffId: string) => {
     removeBuffFromGroup(group.id, buffId);
   };
 
-  const scale = group.scale ?? 100;
   const minWidth = 27;
 
   return (
@@ -293,7 +298,7 @@ const GroupComponent = ({ group, a1lib, alt1Ready  }) => {
           <div className="grid grid-cols-12-dynamic gap-2" style={{ 
             '--buff-min-width': `${minWidth}px`,
             '--buff-rows': `${group.buffsPerRow}`
-            }}>
+            } as React.CSSProperties}>
             {group.buffs
               .map((buff, index, filteredBuffs) => {
                 const isInactive = !buff.isActive;

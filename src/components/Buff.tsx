@@ -13,10 +13,12 @@ const formatTime = (seconds: number) => {
 
 interface BuffComponentProps {
   buff: Buff;
+  desaturated: boolean;
+  scale: number;
   onRemove: () => void;
 }
 
-const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
+const BuffComponent: React.FC<BuffComponentProps> = ({ buff, desaturated, scale, onRemove }) => {
   const {
     attributes,
     listeners,
