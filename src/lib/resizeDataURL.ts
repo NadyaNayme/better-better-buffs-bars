@@ -1,10 +1,7 @@
 /**
  * Resize a base64 image to match the desired scale, flooring dimensions to integers.
- * @param {string} dataUrl - The original image as a base64 data URI (with `data:image/png;base64,` prefix).
- * @param {number} scale - Scale as a decimal (e.g. 1.5 for 150%).
- * @returns {Promise<{ scaledDataUrl: string, width: number, height: number }>}
  */
-export function resizedataURL(dataUrl, scale) {
+export function resizedataURL(dataUrl: string, scale: number): Promise<{ scaledDataUrl: string, width: number, height: number }> {
     return new Promise((resolve, reject) => {
       const img = new Image();
   

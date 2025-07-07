@@ -1,4 +1,3 @@
-// @ts-nocheck
 export function isAlt1Available() {
     return typeof window !== 'undefined' && typeof window.alt1 !== 'undefined';
   }
