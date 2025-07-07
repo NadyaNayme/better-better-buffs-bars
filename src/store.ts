@@ -132,6 +132,7 @@ const useStore = create(
                 if (elapsedSeconds > 0) {
                   const timeLeft = buff.timeRemaining ?? 0;
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
+                  if (buff.name === "Necrosis") return buff;
       
                   if (newTime === 0) {
                     groupDidChange = true;
