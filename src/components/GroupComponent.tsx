@@ -118,13 +118,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         ? a1lib.mixColor(cooldownColor.r, cooldownColor.g, cooldownColor.b)
         : a1lib.mixColor(timeRemainingColor.r, timeRemainingColor.g, timeRemainingColor.b);
       // These buffs do not have time or stacks
+      // TODO: Make this another buffProperty ("hasTimeOrStacks"?)
       if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver") {
         return;
       }
 
       let formattedTime = formatTime(Number(timeToDisplay));
 
-      if (buff.buffType === "Meta") {
+      if (buff.buffType === "Meta" && buff.name !== "Death Spark (Meta)") {
         window.alt1.overLayTextEx(
           formattedTime,
           textColor,
