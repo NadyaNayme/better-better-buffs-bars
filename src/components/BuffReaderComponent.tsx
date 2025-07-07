@@ -137,7 +137,7 @@ const buffImagePromises = {
   'Darkness': Darkness,
   'Death Guard': DeathGuard,
   'Death Mark': DeathMark,
-  'Death Spark': DeathSpark,
+  'Death Spark (Ready)': DeathSpark,
   'Death Spark (Unready)': DeathSparkUnready,
   'Deaths Swiftness': DeathsSwiftness,
   'Deathspore Arrows': DeathsporeArrows,
