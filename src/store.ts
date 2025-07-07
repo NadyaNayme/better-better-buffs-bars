@@ -177,6 +177,7 @@ const useStore = create(
             buffs: group.buffs.map(buff => {
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
+              if (buff.name === "Necrosis") return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                  return {
                   ...buff,
