@@ -1,5 +1,5 @@
 {
-  "version": 70,
+  "version": 71,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -588,21 +588,6 @@
       "isActive": false
     },
     {
-      "name": "Dwarf Weed Incense Sticks",
-      "failThreshold": 50,
-      "passThreshold": 150,
-      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAUVBMVEUAAAAAAAKCa0QqJycgOiCDa0QAAAAAEAAQFxBalhkQAAAyKhwcFxAQEAAkHBAnIBAnIBcqJBcQEBAwJxcAFwA1LRw6MBwQHBAXEAAXEBCDbERjgJQuAAAAAXRSTlMAQObYZgAAAPxJREFUeF6FzwmKxDAMRFF92U7SPfu+3P+gg4RMEQzTJo4JeqnCdrm17GLLwgzmx1nkxOjQd1ZhOYxpj8dWQaf2Hg+chX6PXccivqAf9Iro+yoqokAHpjCVvKtjDzSFShSx5YYp1ohCHYlDEfS+TagMRWRHDuOcInRFqCOBxBGoNVp2JNBdVNKurc2OgBL1vz/h26lDoh34K457SAEJJ8bPeeqiEvgH/hbmEf+uy25nAV4vh6YOCfyuIsDrohIVMWDgPwRqbQKJO14w0l6z5yw+GRhmDPAH8AQSOU7OPbiAMvSdEUwgocWIDoFV8FtgESKM7X9hCCxCaxG31h+AzgshaeE/GQAAAABJRU5ErkJggg==",
-      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAUVBMVEUAAAAAAAKCa0QqJycgOiCDa0QAAAAAEAAQFxBalhkQAAAyKhwcFxAQEAAkHBAnIBAnIBcqJBcQEBAwJxcAFwA1LRw6MBwQHBAXEAAXEBCDbERjgJQuAAAAAXRSTlMAQObYZgAAAPxJREFUeF6FzwmKxDAMRFF92U7SPfu+3P+gg4RMEQzTJo4JeqnCdrm17GLLwgzmx1nkxOjQd1ZhOYxpj8dWQaf2Hg+chX6PXccivqAf9Iro+yoqokAHpjCVvKtjDzSFShSx5YYp1ohCHYlDEfS+TagMRWRHDuOcInRFqCOBxBGoNVp2JNBdVNKurc2OgBL1vz/h26lDoh34K457SAEJJ8bPeeqiEvgH/hbmEf+uy25nAV4vh6YOCfyuIsDrohIVMWDgPwRqbQKJO14w0l6z5yw+GRhmDPAH8AQSOU7OPbiAMvSdEUwgocWIDoFV8FtgESKM7X9hCCxCaxG31h+AzgshaeE/GQAAAABJRU5ErkJggg==",
-      "duration": 300,
-      "cooldown": 0,
-      "timeRemaining": 0,
-      "isPermanent": false,
-      "hasAlert": false,
-      "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
-    },
-    {
       "name": "Elder Overload",
       "failThreshold": 50,
       "passThreshold": 60,
@@ -643,21 +628,6 @@
       "hasAlert": false,
       "buffType": "Buff",
       "isActive": false
-    },
-    {
-      "name": "Fellstalk Incense Sticks",
-      "failThreshold": 50,
-      "passThreshold": 150,
-      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAS1BMVEUAAAAAAAIydnMqJyctLQAAAAAwdXIydXMQEABalhkQFwAQJCAAEBAQJycAFxcXFwAXMDAXMjIQAAAQICAAEAAQEBAQLSozMzMQLS3RjHlWAAAAAXRSTlMAQObYZgAAAPRJREFUeF6Fz4mKwzAMRVFd2U7TZTr78v9fOohIPIyhFXGM0bEetvOzsrMthRnUYRZHhw59R2K62qPb47NV0Mm1xwez0PVYuS3iFeJ6juhjETmiQAcmkV1ljECzuEAHZcSCEuuIRB0JjQg3CmpGjaiMaMZeInQhZQSQuARqjfZ1ZAz0FoXQPlqrjIASef905TSmDIm2s33juIcUkNjghF9x2PRQCfwN/8HxT/yWjx2zAM+fQ1OGhEbAlg+VmEbcCdRaAYk/XjAIdoucWfCOY5gV8AQljnYUkUEBiV+dj4wCSlEdGdgjUWAVihmPhSGwCNUintU/9swK5bbwAfgAAAAASUVORK5CYII=",
-      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAS1BMVEUAAAAAAAIydnMqJyctLQAAAAAwdXIydXMQEABalhkQFwAQJCAAEBAQJycAFxcXFwAXMDAXMjIQAAAQICAAEAAQEBAQLSozMzMQLS3RjHlWAAAAAXRSTlMAQObYZgAAAPRJREFUeF6Fz4mKwzAMRVFd2U7TZTr78v9fOohIPIyhFXGM0bEetvOzsrMthRnUYRZHhw59R2K62qPb47NV0Mm1xwez0PVYuS3iFeJ6juhjETmiQAcmkV1ljECzuEAHZcSCEuuIRB0JjQg3CmpGjaiMaMZeInQhZQSQuARqjfZ1ZAz0FoXQPlqrjIASef905TSmDIm2s33juIcUkNjghF9x2PRQCfwN/8HxT/yWjx2zAM+fQ1OGhEbAlg+VmEbcCdRaAYk/XjAIdoucWfCOY5gV8AQljnYUkUEBiV+dj4wCSlEdGdgjUWAVihmPhSGwCNUintU/9swK5bbwAfgAAAAASUVORK5CYII=",
-      "duration": 300,
-      "cooldown": 0,
-      "timeRemaining": 0,
-      "isPermanent": false,
-      "hasAlert": false,
-      "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
     },
     {
       "name": "Freedom",
@@ -746,6 +716,66 @@
       "isActive": false
     },
     {
+      "name": "Incense Sticks (Dwarf Weed)",
+      "failThreshold": 50,
+      "passThreshold": 150,
+      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAEKUlEQVR4nL1WX0hbVxj/3UvBLVrNsPEPpCVMWlfRtQRHR9BCQh5ktDrXF3FPZS+FvI51D66wBtkYZYNS+yR7GMrWhxZljCpLEyumVayLYrBN0thrllpuRLgtN7AUyh3n3Htuzr1Juu6lHxxzvnO+8/3O73e+cz3C6PV2DW/LRq+3a4Ig/K8GiLTxvsfnMcdp3wlLDME58CYb0jQBNKfR9/iO0L50L0d/PYZv6SuiuYaZBWxsbAxOpxOKoiAejyMWi9Hk4z+FsbmSxI0bv9G44Kkg1GdF7NzfofNB4u+reP+dDnw2OoySWgLOgeYJh8fLoLyMsiybTVVVbWNjQxs+P6xFFiK0zyQq7BUs/pOdJ9rk5KR2bfKaViwWzRzJh0lTXoIj2iWbmppCW1sbBgcH0dDQgIuhi0huJtHR0YFjxzopC8e7Dur3DfngdrnhanYhkVin61VVRWtrO21nvjgDaUsyc1eAMSMSzszMoOd4D5bjK6ivr8enn5/F6Y9PI5vNolgsYuTsCPxeP43fyK/r8gEIBPwYPj9EN0LOruqZ2YuirqkODocDhUIB29vb6P6gGye6TmB1ZRXN7c3oPdmLXGMO0t8S8nt54BXQ0tKCO3ciNMf8n/MYmP3EKJpSbTBijQcbUdgrIBqNYW1tDd4PvfAc9uC78e/Rc6obvl4fXO+5EH8Q1+U6B7qxC19fwPOd58jnn1nyVcjY1NQEvz+Ar779EgOBAdxduEvHM08zFIjIt5y7j9sLt6m05HwXlxdNuQRRQCKVQDS6gHQ6RVmRqq1ajcxIVd28ddO8qH1DfbRC5+bmzEtLKpJUJrvApBqJz190vhotMvb398PtdpP94eXBEpZm79Fxsrul5SV4vR+h5XizHqyICF0KoZArmKyu/HwFV3+4WnHx2T2zgGUyGaTTj/XAf2z6yiLScgovDx0xylmkRSElrF8Rsp6ZLp9AwaueGTMlq1iSEOvqPArHfh1lQvrsDnmMGHY27JwYCJuvDSa/MPtStnwxd1MpCsSk5Fnw8tmBKsD4YAsTWcTlUACvSjIUiBgJHsbDdNqSTDOS8wztfgUzkpxJSJLuyrI5l5JeUFCWnG1G4r7+dvl4vwKMAPASKooOMP3Hpjl2aSJqxtZiyPusGk0wMkiS/r74iPqkfytSBkhJe3Tsl9kH5vzEdKSqfB5bwTCrYLa6uWv211M6AGNC7HG+LKVsFEhX51GLXAyIZ1UVjO16JvaoYoyx4qUk40TK18nH7AAvIc/gr61dhEMBfGOMCRyriekyKFvPGGIf2EplKoBqMmOsfp3Xz4wsZKC6fHoBEeAfJ/R/J8xYwVQ1/Sknar6TbvobDgXNV5H9BcXmSLscCmpO4wMMw7ev4RvFIX9qAdifb+5WpyX5mwIJPNjrgqq9F+2s/guIgQlv80X8L5W6vZFh/WabAAAAAElFTkSuQmCC",
+      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADfklEQVR4nL1WWyt0URh+9zTJKQ3CBZOZKSRSQrly2Bdq9tyglJRy5w/4A/6AK+UHkJ/ABXHDhVPkWFJDznKKcQrN1/P2vau1T3yH8tRq1lp77fdZz/O+a88yTNNM00/BNM20YRj/3WKxmK2fkZFhew6ewL9sMBqNctPHzv77+zs5EdQH/f39lJubS6lUira3t2l9fZ3nBwcHaX9/n+bn53lcV1dHDw8PlEwm1TiVSlEoFKK2tjZ6e3ujdDrNc+Pj495kXV1dqt/X10enp6c0OTlJVVVV1NTUxGTY+cDAAN3c3Khxb28vra2t0efnJ3V0dNDLywvHwIYWFhbUpmxkwMzMDI2NjVF9fT0NDQ1RT08P7ezsUCKRoHA4zCoyMzOptLSUGhoa+J1QKEQHBwdMDKLu7m5l6cnJiYrtmzNYiF1FIhEmA0FrayvV1tayYgRtaWmhmpoaXn98fMz2AdioaZpUUFBgy51LmQ4QoN3f39PZ2RmVl5dTLBajvb09ys/Pp8rKSrq4uKDLy0u6vb3lPGF+ZGSE319ZWWF7pWi+JMvOzqa7uztWiQKpqKigkpISmpiYYKLq6mrKy8uj3d1dZRfWj46O8u/19bUtnossJyeHbYA9jY2NtLGxwfNQ0NzczPYdHh5y8js7OykrK4srV+wyDIMLQooCqtBHOlxkKAS019dXWl5epuHhYZ5fXV3l4CgEYHNzk3NXWFhIU1NTynZAJ9Jh4GTL+SkrK6OioiLuBwIB9lteQs6Ki4u5IT8IiGrEEYBSWQeFsFSIhLi9vd2uDIv0hTpQaai4YDCo8gNSnUhiCITo29KX5OrEOGcfHx+8e/QlcNShQvIkkOe+ZI+Pj6oPCwUoFBAB+hlK+uRJH7vIvJTAwng8Ts/Pz0yAgw1LvYJ72SdjFxmCi4UIirwIUAwgdW4m+YV9+thFBgLdwqenJyaQygSmp6fVWj+FXoptZAiKAyp9OdDA1dUVzy0tLannc3NznnZFHQXjq0x2Cpyfn3NQUQLAVrFSPrzhcNg3T1+Sya63trZcc6IKkA1gXt+gl30CdaidCnCGLMtSnyJ880QV/nq8EP5dMDr5t8pElV4UQgpIAYF4dnbW9q4fke12FYlE+DeRSPjeoPRnlmXZblCWZX15+1K3K9h1dHTkUuDE4uKibSxfkLgjBd8q+5vmVPUnjXl+8kb8C2u1SxSLnaAHAAAAAElFTkSuQmCC",
+      "duration": 300,
+      "cooldown": 0,
+      "timeRemaining": 0,
+      "isPermanent": false,
+      "hasAlert": false,
+      "buffType": "Buff",
+      "isActive": false,
+      "isUtility": true
+    },
+    {
+      "name": "Incense Sticks (Fellstalk)",
+      "failThreshold": 50,
+      "passThreshold": 150,
+      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADWUlEQVR4nL1WTUgbQRT+dpVa8JA9SFKVHoNUslCiEChIq14EixdPCb158ZBDtZhLyUnqoVV7E/oLhVAhYLG0Gmlr9C6KNKE22yKlKdYkIlupYAsxZWYzk9mfJPbig/H95M188715O44Ummst4bwkNNdakiTpvwYg0yH6qgoeJ7aiwJRDcBrPsqFSSQJds2yr6im1UymZarXsi7auy3wOk6pg09PT3G5uBkZHJxCN3oWiKNQ/PgaWlpYASBgYuIapqUmen81WNkmEgTqC9fb2Ynx8HPl8HrKxeczOPkU4HOb+6SnZvY72dgXDw7cQidwzsRJZsgqUpzpLMBhCX58HPp8HmpahsYWFGLxeDzyeViwuTnJgKysm6bTBri6Y2+2Gz9cHl+uKkSwDbW2XEY3OYGbmAY2dnICzIEBWVqyURGo2yPz8S6pJOQkTIoHAdQQCBvDKyiMUi4ZNxArEWDG/JrNwOIjBoX709NzgsVgsRoFJeTc2tJrlKwmsajAzkg4P81h+s853R87G5XIhGDTAU6l12plE/P5+qhsastjf1zgQmUeA1Xpl/PXbHhsZGaGDSHf3LNUtLW6srn6g9sFBHm73JQ5EhAE7giWTawiF+k2sSJlIObu6jLPL5SQUCqs0Ho8v05jHU8Lm5g/bh1/1O2OJ6XTSdKTk8HU9g6amHd51qmroZHKNzikUAE2rzGENwphVbZBsHrarqLPDi+LfDgpA7FS5KVSH7hMbpG436jnZsdP2MhkKZCSZWZSE8lmBbGBispWJf2IMe8U/0CHj4tBN7Gha1Y83Ldwaom9jRhZnTC4MDWIvlzMcCdC/foc/MkZtsjjbTEq4/a3lE30bGAFgN4EMCbp+RAF2Xy3wnK37D3luNYaiz7qRg5EgWfTne9KFMABWEhyAsdqNG6DE3n7y3LF8qqVhmNiY5bY/VgBSn+mijAmNfSuXkjpHVHV2eG3XE/PFf6CO3UgZJBL2WNxeyqsTt2kpa5WPSaNYQhODGqy2XsQqu5UqjIyGAT5lvtiAqjLbTbwz9Ou3VJOJIihyBc526/Ez01zWMI5iPOXkksfvp9ofucNfRdYXFPuN24pi8iXLHHFQHPKnGoDt+UZuWhHsjECSCFYryem9aGVVD4iBSef5Iv4HcUsgYJShrIcAAAAASUVORK5CYII=",
+      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAACyUlEQVR4nL1WPUiyURQ+b0QEKbjUkkKOgktjQ4auTjm0tbk0uTu4OLm0NNjk4ubkHhREYNHgYGKD4CD4B/lDmYWF8Vw497ve975vfd8HHbi+5557Pc99nnPeq1YsFlvQL9kqPq6urv47kc/no/F4LP3pdErz+VyuR6NRWvnXxBjqXPdVoCVmJjs5OfmzaXWVzs7O6Pj4mDwej5h/fHzQ7e2tWN/d3aVisSj3g5XJjGD48tHREY1GI7IsS8TK5TIdHh7K+WKxoJeXF8EkFotRoVCwseI5y+vIDJbNZqnVatFsNqP393cRu7y8pPPzc5EQycAWwE6sGAjmWjMkC4VCtLW1JeZgtbm5SclkUsr8+flpbAq1jq4ysmUyGfGEnIlEQvjhcFgMAIMlWLG0TvLx3BUsl8vR09MT9Xo9Gbu4uKB8Pi+ZoF7fyfcjZpPJhO7v7+XpwGJjY4P29vZErFKpiM6EgS3s9fWV+v0+md4/VzC0t27xeFwMWKlUkglPT0+Fj8ToWo6rZgSrVquUTqeXWEGmVCpFfr9fxN7e3kSnIn5zcyNi6+vr1G63l4BUOY1g2NhoNJZiKD4SPT8/y67DPjxxOFNyvW6OrY93S5ciEAiQ1+sVAPC5KXyG7lOBeN0RjF9ivdPQmQBitjoLvU7q3AbmxCQSiUj5gsGgrTaq6fLx3AaG5MxkZ2eHhsOhXIMPUP0wYxf5XK8rALA8uBkADICHhwe55/r6Wu51YmhivASGpM1mU/qPj482VrVaTa7zT4xT3b7txm63K/3BYCCSMhO+J1lKViAQCDjWyRXMxIpjzArGB9jf35dSqqxMJsF0Bm6s7u7uZIxvfFPD/IgZs6rX6zYm6jsIYFzGqqksbYa/cpZlLba3t8Xz4OBAPE1DXYO/trZmXLMMAzgrfMJOp2NjoJsqn9ogEU3ub5n9zdBZ/WQInN/8R/wFFNnXacqd0jIAAAAASUVORK5CYII=",
+      "duration": 300,
+      "cooldown": 0,
+      "timeRemaining": 0,
+      "isPermanent": false,
+      "hasAlert": false,
+      "buffType": "Buff",
+      "isActive": false,
+      "isUtility": true
+    },
+    {
+      "name": "Incense Sticks (Kwuarm)",
+      "failThreshold": 50,
+      "passThreshold": 150,
+      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAEUElEQVR4nL1WYWhbVRT+XgyorWmjQ0JxjREkczqIHeq05IfMLYOW/giFGQv+iVRcQYorrjDjlI5N6ozQ4gpqW51UKG5pddCqyVykJt0WpGmVBdMkLJVQeC1zaaxlnbNP7nnv3bzkpXP+2YGbd865957vfueed/KEtoE6CXdK2gbqJEEQ/tcADDS0tqvVxv1Mt1hQsobhGG/nQJIkgGIquqvVSnow8Ds9XYqt1UXRwPeoUgLm8/kQjUYRDoe5nUqlYXusGg+atpNvYmISQIaAdu9+Hs3NzUjnIhg7PQ7AQGseqnkWfv/r6Op6k2wOqk2jKIqS3+8nfXBwkOwDB93ST9PnpNXVVbLX1v6SZmYvUorYWibfhcbl9LltNNg6Jmyvml6GIx+lTDo6OuDxeNDTcxSZK3Gsr20gEonAYqlDT28nGhy74PG8iC2Wu3H1j2XsdDTyvTseaS6JFfshy3UdWH19PXp7e9Hd3Y2TJwfId/PmhnwfbitqTA+QvrS0RM+NfyRIEvDRx0cxN51Fa2sb4vG4ctlAPl+E0BVIU1OTogkUXBWn04mnno7h3nuqMDQ0BGNtRo4nAfFfptG46wXU1o7A4XDg8y/7sA/7sJBc0RTNup7Z6OgoJicnceTI29hy/1bM/5onP0vjB/2HKfjCwgL5CtfW6TkzdwH2R3fg0KEuZDIZXP7tZ/Jfvy6UxNaBraysYP9+D9ZvrKHjlXeRTRfIX20yYuTUGTpI+6te8v19A7jLKODH6FcQRREtLS1IXZkriceyo95bxQJh8t6HB7HzSVbCJ7gvly3A53sHVVXVeO3l97k/Np2l18Vkug+Bs5/w9G1z1NCT35u29O12e7EjuG2S3b6dxktep/Scs4H7mc38TG94xs47B/ObzXLnOPCGm+bVLqLrIKlUSu4QSmHMzyfpaXvCigsRuVswOT8RoQ7B/PFYmqfr6rUcZ5HJxhEMs/QZKOYt06gWhrYi2zv34mHrNgJiOkufdk0sXLQJSAFW5zcFUwuDSSIuAzMJfTNLQHQXYnF7LJwlVvxwZUA6MG0KtUxYYRzz7sFUYBbZ7DJsf0r4NnCpJFhe8/KGvpZfjXJbx4wFTygpZEGnQpf5XDK3TKBMcrkCP0xwXOn+bisFVu+o3NaBMYCcJoXJxCIBfBEsvj9vDZ/ja0+f+r6EoRZItdWuz8GYkwU9ezFBNtMDU7IuKKyOe/fgs2CMz/ePBSumz6UAladTx+xSYpHrM+lFAjisMGGSzsn3x0RUgNo791L1qaxUIC2rimBMGEAgmtD5hhVWgiaVDHiwP6irvnIgJkZ1opzBTLIyK+brG5NBVZEURuor8WlfSAe0KbMzCquR83JRsI1aUDFf4KxODAdL9hLLzUT+lDNIjY/Lfey418X7WfkXlDqn6mb6ezTQOOZ16fZoB+Gwn80Ayj/ftprNJWC3CyRowW61qNL3IrFSuvt/HVILJtzJL+J/AZWToGt1mdgSAAAAAElFTkSuQmCC",
+      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADiklEQVR4nL1W3Su0URCfR2/bihsJpewFol1J7oSS3SvtEi644lb22j/gyp8giiR/gAtK4gLlI4TIkm195yOfST4Wz9tvMqfzPM+u1/u+Zeq0M3POM7+ZOTOzx/D7/Sb9FPn9ftMwjP9eJSUlFt7tdlv2gZPyLw76fD5eumznX15eyE6/dKGtrY22trZobW1NyScnJ5SZmUlZWVmsW1xcZEPb29tUXl5OFRUVtL+/TzMzM8pObm4u1dTUUG9vb3KwpqYmSk9PZ7Curi6qrKyk/v5+qq6upuLiYnp6eqKGhgY6Ojqijo4OBmppaWEHJiYmyOv1kmmaFA6HKSMjg53AWTgGSpjGxsZGCgQCNDw8TIeHh/T29kabm5vU3NxMAwMDVFRURLW1tZSWlkb39/fsiBAAddrb21O8Ayw7O5u97uvro9HRUdZ9fHwoQ4gcdHd3Z9kLh8MUi8XYiWg0quzF4/HkYEhNIi9LS0upp6eHWltbaXx8nJ6fn9Xe7u4ulZWVsaOFhYV0cHDA+qurK0vROMCmp6f5Dtrb2znvFxcXrEcaR0ZGmBcd7lDAPB4PO3J6esoRgt7f3y22HWCPj4/U3d1Nr6+vfPk3Nzesd7lcypFgMKhSmJKSQktLS3wOBYWC0AnZkXtL2mdDQ0N88Z2dnUp3e3tLg4OD5Ha7OQqhWCzGFZyamkpTU1MqfTk5OdZ70ydIXl6e4n0+n+nxeHhVVVWZXq9X6SFDD76goEB9A73L5WK+rq6O9/UJYukzNLCEDjo+PuZfVODOzo46t7q6yo2Nc3I/4BG5RIGW0avyyzRKEegVid7DdAAQeB0IJMYhgxdg2U8KJoUBOj8/V/z6+joD2edf9NO4GLYDJQRLFAnSgwpE+V9fX3OBrKysWM7HteaNRCIWmyI7wGBcUgijMtdAl5eXquwxpsSZyKcxAOtAdtkBBgA9hWdnZwywvLysdJggcnZ2dtaRkUSyA0xSJfzGxgbzhmFwVKFQiBYWFtQ+eipR+gTInk5HZPoEQCsAYGxsTOkQtaRSCiQQCDjK3A6UEAwEAIlK183Pz6tIJZUAxhhLVH1JwWBMDHwVFXT6v7JO9oL5VmToJZBeFDrow8ODimpyctLyLaJMSjIb8/Pz+be+vj7pC0rfAy9z0DAMMxQKffn6Uq8rpAbvBXsEdpqbm7PIck/BYNByBX+M7G+WParvLMb5yRfxbwzmR3pX87nVAAAAAElFTkSuQmCC",
+      "duration": 300,
+      "cooldown": 0,
+      "timeRemaining": 0,
+      "isPermanent": false,
+      "hasAlert": false,
+      "buffType": "Buff",
+      "isActive": false,
+      "isUtility": true
+    },
+    {
+      "name": "Incense Sticks (Lantadyme)",
+      "failThreshold": 50,
+      "passThreshold": 119,
+      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAD2ElEQVR4nL1WTWhTWRT+3qvMppVm5yjRgWha0EVnUjILoWWSvEVRW9pd1eImKELWutDWhW6GgcosGmGEMigWd6KIC6HWxiIuGtNKZpqfhlCcGH00xUyn6dRF+uTcvHtz38uL7cDggZt3zv053/2+e17eVc7c2m/ga9mZW/sNRVH+UwNU1uTYr/0k+sl37XNZ5hDOnt1syDAUsJym79d6mT8//YI9/WYs+2V9XazhptoTj46OIhAIWIAoAT1pLBgMCCBKNjZ2Fce7/VhOpsSaswODYi21pjLqum6Mj49b5KE2PHzaIFtKpyySrZZKRmWzYgSDIdZ/7uJ5No/HfC7hNDBzsre5HDQthHw+j+8OHYJS2bRItrFRweXLl5hfevvOsnY+vthcRifTV4ro7+/Hs7kYSqU1XAhfEGPb29uIzc6ip7cHp3oC2Nr6xPrdHZ7ahPL6zmByIdC5tLa24s9UCq/jcXamPq0X1dpEfNzcwEwshpGREUdWPI+6Gwn7+voY2K8//4KhoSF4PB6cDISQT9YlunblKtra2oScBZJTYtUUrL29HSMXw+g84kX7N3vR1dWF23d+x8DgAEIhDalMGj/6ull5qy0tbM3CwhtMTEwwOZmZchKr+LMY8x3fs3A4zBrZ5OQkKpUKfrt3FwnzvVr8I4mBvhPo6Ohk8b8mgyev5tCfGoTf57PIx8tfoZK8H/kggLxeL9zugzjQ4UExm0ehUMThH44h8XIOemGVnRWZa7sFZbUKY+1vxoqMxhLxRQR93fhHrVrex9PRbxtlzGZzLMlSbhkzM8+RzWagr5UYEDc6Kxrj8pHxTdA58TEuH2fWtEDepXPWJACOdnqx9dd7dlbk581q85lzEvFZERMQB9mxGvVCUfj5dP2vqJjJMCBGQqq2BAGVVQFsB2oAowmOTAqruB4JovpJRxkqhrWDSGWzNvlUsW7BlI+sKsnZwIyScwkpaVHXxVhmZZ2B8o3xzSTMKiVgAuKs7HEDGAHIEpJUBDD1JCn6rkVnxFw7QxmIx/xTI8Cok5I+fpFmMfkPpusAmZWalHcfxcV4dGra8glZMOXiQLKcjszmk3VWi5kaAGdClivUpdTNczra6bXIxYFkVo5gfNcPn6cb+jgrWUrqJym/JB+3PbKEMoPEUhE3IkGMmX2KxCo6VQfl6zlDKpilzHIDUFNmnNX9p7UzY59/aSO6+X4R8M3otGUtLxhHq13lVOP49272vBHRxK3IfoPiY9SuRzTD5YIlVmxr5MZw6KcZgP365javZzz5boEUGexLk5zui3ZWOwFxMPaJaS7y/2ufAfnGgiwQsVHWAAAAAElFTkSuQmCC",
+      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADQElEQVR4nL1WO0trQRCeEy7xiZ0PxIiFIKgpxAeoCBoQTFKJlYWNna2lf8Hf4G+wUhvRRgsLX2gQo4IvfCs+UNGguXyjs8xuTkzuvXA/OJzd2T3zzTcze1gvEomk6X8hEomkPc/75yccDlvjsrIyax08gb8JsLm5mR89d8dPT0/kIoNsZGSEWlpaLJs40Gvb29vG1tjYSEdHR2Z/b28v+eGXaxgcHKTS0lJaX1+3iPr6+mh0dJSOj49pcnLS7B8aGqKCggLa29ujVCpFoVCIbcvLyzzXgeWVxvPzc2ptbaWzszOqqKigj48PK5DX11caHh7m8d3dnfXt7u6uGedFdnt7S11dXbSxsUEPDw8Uj8fN2ufnJ21ublI4HKa2tjZ6f39ne1VVFb9FXU4yXauioiKuSzKZ5Lo1NTVROv11ap6fnzmQ/v5+X1XiJ5BPCjs6OqiwsJDGxsaop6eHqqurqb29nesnmJqa4oAkndfX15aqrGQlJSU0MDBANTU1VFxcTPX19TQzM0MTExM0Pj7OJA0NDdzegcCXi/39fZqenuZ0Arqu0iAZ3QigJlIXkKAB5ubmKJFIsO3g4IA6Ozu58wCsA2tra9Td3c2B6PQJPJzsxcVFY4Ca8vJyqqyspMvLS7q5uaHa2lra2dnhTkOtgGAwyM3w9vbGqgCsoaYgcdseRycjjaenp+zk5OSEzxre9/f3VksjjXIONREAElkToh9rJo2hnQBI2+PjI9cK48PDQ2tPMpk0c02Usxu1EqgVXFxcmFqh5QUggiodnCbyJfNTgoMcjUbp5eWFHcIB0qv3p1SbSyMBOItZf1dwLimEU60QfxKQusEkvp2DWBO58wwylwCpAsHq6qqx4RjIXlehX4Z8yeBUJGOMX5Dg6uqKbSsrK2Z9YWHBcpZQCvU8qzKJFEA64VSUAFAtqcQZA5BO17E79yWTqLe2tjJsogqQAGDXAfqlT2B+V64CtHssFqPZ2Vmee55nVC0tLfk6C303jCbPqUxU6aYQUn2/APH8/Lz1bTYi63ZVV1fH73g8nvUGpddisVg6GAxac++H25e5XSFdcmHRClzgXqEhBznqlCCnsj95XFX5PMzzP2/EvwFnox0boDYYGQAAAABJRU5ErkJggg==",
+      "duration": 300,
+      "cooldown": 0,
+      "timeRemaining": 0,
+      "isPermanent": false,
+      "hasAlert": false,
+      "buffType": "Buff",
+      "isActive": false,
+      "isUtility": true
+    },
+    {
       "name": "Instability",
       "failThreshold": 50,
       "passThreshold": 80,
@@ -759,36 +789,6 @@
       "hasAlert": false,
       "buffType": "Debuff",
       "isActive": false
-    },
-    {
-      "name": "Kwuarm Incense Sticks",
-      "failThreshold": 50,
-      "passThreshold": 150,
-      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAYFBMVEUAAAAAAAKFYkZGUSBlb0cAAABGUyAQEACGYkYXFwAXHABalhkgJBAyJxwAEAA3KhwQAAAkHBAXEBAnKhwqIBcyJBwnHBcXEAA6KiAQFwAcEBAcHBAcIBAcJBAgIBeGZEaA+qu+AAAAAXRSTlMAQObYZgAAARVJREFUeF6Fz4eOxCAQA1A8QJLt13v5/788MxlkKZx2ERMp4mGLdLi10iENC9zoP1sBcCZg2uEf4YcTONxjhl9dJ+9bBLAVfj1nH26P2Yh8pPgi2CPvKOZRRIQDj4GEgxwRUTW3nhAqiYh3itl7gC7GiEATQihixwjv6O+RiIjeQZAwVRcq8YjeceYQSBwbKgUlOhrI/S0qKT800cGpEnHfXmCf62n1SRLlG/YIg1mTAhIGmEcA1juQJGAX2DMWLPewV4/IHImIWMBtBpSzOiSWk0c0ZjU6JPx2fB4ogFI6kDjhCQkecUdRN+KNJiGtYQTmQCKOufBBIaAM/RPMQAcSWg4YeUX8CmyFaup1kSAwCM0gbq0/fCYNcM5GO3MAAAAASUVORK5CYII=",
-      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAYFBMVEUAAAAAAAKFYkZGUSBlb0cAAABGUyAQEACGYkYXFwAXHABalhkgJBAyJxwAEAA3KhwQAAAkHBAXEBAnKhwqIBcyJBwnHBcXEAA6KiAQFwAcEBAcHBAcIBAcJBAgIBeGZEaA+qu+AAAAAXRSTlMAQObYZgAAARVJREFUeF6Fz4eOxCAQA1A8QJLt13v5/788MxlkKZx2ERMp4mGLdLi10iENC9zoP1sBcCZg2uEf4YcTONxjhl9dJ+9bBLAVfj1nH26P2Yh8pPgi2CPvKOZRRIQDj4GEgxwRUTW3nhAqiYh3itl7gC7GiEATQihixwjv6O+RiIjeQZAwVRcq8YjeceYQSBwbKgUlOhrI/S0qKT800cGpEnHfXmCf62n1SRLlG/YIg1mTAhIGmEcA1juQJGAX2DMWLPewV4/IHImIWMBtBpSzOiSWk0c0ZjU6JPx2fB4ogFI6kDjhCQkecUdRN+KNJiGtYQTmQCKOufBBIaAM/RPMQAcSWg4YeUX8CmyFaup1kSAwCM0gbq0/fCYNcM5GO3MAAAAASUVORK5CYII=",
-      "duration": 300,
-      "cooldown": 0,
-      "timeRemaining": 0,
-      "isPermanent": false,
-      "hasAlert": false,
-      "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
-    },
-    {
-      "name": "Lantadyme Incense Sticks",
-      "failThreshold": 50,
-      "passThreshold": 119,
-      "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAY1BMVEUAAAAAAAKBa0QqJycyQkA1REAAAAEAAAAQEBAAEAAAEBAQAAAXHBwQFxBalhkXHBcXIBwcFxAkHBAkIBAnIBcqJBcQHBcwJxcwKhwyKhwXEAA1LRwXEBA3MBwQEAAQFxeCbEQpZD7NAAAAAXRSTlMAQObYZgAAARdJREFUeF6FzQeOwzAMRFF/qqVne2/3P+WaIuyB48VGECEIepoZTtfWcBpWi3EzXZYiXihQjvwh+qO/Ft+1rgQFn0r5pmyApdB3nzhYiRsoZ0pEUHbUSxEREyjALFRyJudxO9g5CqESMuQjOTooW2AW/WNWhAe2fkocFDGi3uFTZ6GIDQSoHuNCJRFB9DQ6GGZxcJQSyTu25BYdgwTkJ9J+NDjIDppE/MfusRaFzcfBJNIB22CYuRSQMDDsAWNOyQFCYO/Ys5s77A2yoyYxRxA1JHVIYC89ImrUEWIR8YGjlCYg8cojlc723nMhPjEqtXbwBdaBRDw75xZMQBm6R8QEJLSiQ2At+BG4FKpp/4sBgaXQCEhcW79V8g+eBZwQuAAAAABJRU5ErkJggg==",
-      "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAMAAABgOjJdAAAAY1BMVEUAAAAAAAKBa0QqJycyQkA1REAAAAEAAAAQEBAAEAAAEBAQAAAXHBwQFxBalhkXHBcXIBwcFxAkHBAkIBAnIBcqJBcQHBcwJxcwKhwyKhwXEAA1LRwXEBA3MBwQEAAQFxeCbEQpZD7NAAAAAXRSTlMAQObYZgAAARdJREFUeF6FzQeOwzAMRFF/qqVne2/3P+WaIuyB48VGECEIepoZTtfWcBpWi3EzXZYiXihQjvwh+qO/Ft+1rgQFn0r5pmyApdB3nzhYiRsoZ0pEUHbUSxEREyjALFRyJudxO9g5CqESMuQjOTooW2AW/WNWhAe2fkocFDGi3uFTZ6GIDQSoHuNCJRFB9DQ6GGZxcJQSyTu25BYdgwTkJ9J+NDjIDppE/MfusRaFzcfBJNIB22CYuRSQMDDsAWNOyQFCYO/Ys5s77A2yoyYxRxA1JHVIYC89ImrUEWIR8YGjlCYg8cojlc723nMhPjEqtXbwBdaBRDw75xZMQBm6R8QEJLSiQ2At+BG4FKpp/4sBgaXQCEhcW79V8g+eBZwQuAAAAABJRU5ErkJggg==",
-      "duration": 300,
-      "cooldown": 0,
-      "timeRemaining": 0,
-      "isPermanent": false,
-      "hasAlert": false,
-      "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
     },
     {
       "name": "Limitless",
