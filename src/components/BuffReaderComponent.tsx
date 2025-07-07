@@ -12,7 +12,7 @@ import Anticipation from '../assets/data/Anticipation.data.png';
 import Antifire from '../assets/data/antifire_top.data.png';
 import Antipoison from '../assets/data/Anti-poison_Active.data.png';
 import Aura from '../assets/data/Aura.data.png';
-import BalanceByForce from '../assets/data/balance_by_force-beta.data.png';
+import BalanceByForce from '../assets/data/balance_by_force.data.png';
 import Barricade from '../assets/data/Barricade.data.png';
 import Berserk from '../assets/data/Berserk.data.png';
 import BikArrows from '../assets/data/bik_arrows.data.png';
