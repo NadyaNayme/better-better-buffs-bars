@@ -118,7 +118,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         ? a1lib.mixColor(cooldownColor.r, cooldownColor.g, cooldownColor.b)
         : a1lib.mixColor(timeRemainingColor.r, timeRemainingColor.g, timeRemainingColor.b);
       // These buffs do not have time or stacks
-      if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark") {
+      if (buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver") {
         return;
       }
 
