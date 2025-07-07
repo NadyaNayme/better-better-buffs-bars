@@ -1,5 +1,5 @@
 {
-  "version": 54,
+  "version": 55,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -276,7 +276,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Enemy debuff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true,
     },
     {
       "name": "Bonfire Boost",
@@ -893,7 +894,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Powder of Protection",
@@ -907,7 +909,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Powerburst Prevention",
@@ -921,7 +924,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Debuff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Prayer Renewal",
