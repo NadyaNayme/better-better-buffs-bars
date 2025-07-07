@@ -206,7 +206,7 @@ const buffImagePromises = {
   'Super Antifire': SuperAntifire,
   'Supreme Overload': SupremeOverload,
   'Threads of Fate': ThreadsOfFate,
-  'TimeRift': TimeRift,
+  'Time Rift': TimeRift,
   'Torment': Torment,
   'Turmoil': Turmoil,
   'Undead Slayer': UndeadSlayer,
