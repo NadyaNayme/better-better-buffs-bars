@@ -175,7 +175,7 @@ const buffImagePromises = {
   'Necrosis': Necrosis,
   'OmniGuard': OmniGuard,
   'Onyx Bak Bolts': OnyxBakBolts,
-  'Overloaded': Overloaded,
+  'Overload': Overloaded,
   'Perfect Equilibrium': PerfectEquilibrium,
   'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
   'Powder of Penance': PowderOfPenance,
