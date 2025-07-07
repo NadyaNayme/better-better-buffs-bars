@@ -825,7 +825,7 @@
       "buffType": "Buff",
       "isActive": false,
       "alwaysActive": true,
-      "isStack": true,
+      "isStack": true
     },
     {
       "name": "Omni Guard",
