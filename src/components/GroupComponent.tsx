@@ -82,7 +82,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     const cols = group.buffsPerRow || 8;
 
     group.buffs.map((buff) => {
-      if (!buff.isActive && !group.explicitInactive && !(buff.buffType === "Meta")) {
+      if (!buff.isActive && !group.explicitInactive && !(buff.noNumberDisplay)) {
         window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
         window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
       }
