@@ -78,7 +78,7 @@ interface StoreStateAndActions {
   setCooldownColor: (color) => void;
   setTimeRemainingColor: (color) => void;
   customThresholds: { [buffName: string]: { passThreshold: number, failThreshold: number } };
-  setCustomThreshold: (buffName: string, pass: number, fail: number) => void;
+  setCustomThreshold: (buffName: string, thresholds: { pass: number, fail: number }) => void;
   getCustomThresholds: (buffName: string) => void;
   removeCustomThreshold: (buffName: string) => void;
 }
@@ -434,11 +434,11 @@ const useStore = create(
       setCooldownColor: (color) => set({ cooldownColor: color }),
       setTimeRemainingColor: (color) => set({ timeRemainingColor: color }),
       customThresholds: {}, // { [buffName: string]: { passThreshold: number, failThreshold: number } }
-      setCustomThreshold: (buffName, pass, fail) =>
+      setCustomThreshold: (buffName, thresholds) =>
         set((state) => ({
           customThresholds: {
             ...state.customThresholds,
-            [buffName]: { passThreshold: pass, failThreshold: fail },
+            [buffName]: thresholds,
           },
         })),
       getBuffThresholds: (buffName) => {
