@@ -302,7 +302,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
             {group.buffs
               .map((buff, index, filteredBuffs) => {
                 const isInactive = !buff.isActive;
-
+                if (buff.name === "Blank") return;
                 return (
                   <Buff
                     key={buff.id}
