@@ -132,7 +132,7 @@ const useStore = create(
                 if (elapsedSeconds > 0) {
                   const timeLeft = buff.timeRemaining ?? 0;
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
-                  if (buff.name === "Necrosis") return buff;
+                  if (buff.isStack) return buff;
       
                   if (newTime === 0) {
                     groupDidChange = true;
@@ -177,7 +177,7 @@ const useStore = create(
             buffs: group.buffs.map(buff => {
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
-              if (buff.name === "Necrosis") return buff;
+              if (buff.isStack) return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                  return {
                   ...buff,

@@ -21,4 +21,5 @@ export interface Buff {
     inactiveCount?: number;
     isUtility?: boolean;
     childBuffNames?: string[];
+    isStack?: boolean;
   }

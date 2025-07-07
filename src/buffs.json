@@ -824,7 +824,8 @@
       "hasAlert": false,
       "buffType": "Buff",
       "isActive": false,
-      "alwaysActive": true
+      "alwaysActive": true,
+      "isStack": true,
     },
     {
       "name": "Omni Guard",
@@ -866,7 +867,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isStack": true
     },
     {
       "name": "Perfect Equilibrium (Capped)",
@@ -880,7 +882,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Powder of Penance",
