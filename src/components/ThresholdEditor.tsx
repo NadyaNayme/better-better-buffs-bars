@@ -27,7 +27,7 @@ const ThresholdEditor = () => {
 
   return (
     <div className="p-4 border rounded bg-gray-100">
-      <h2 className="text-lg font-semibold mb-2">Buff Threshold Overrides</h2>
+      <h3 className="text-lg font-semibold mb-2">Buff Threshold Overrides</h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
         <select
@@ -70,7 +70,7 @@ const ThresholdEditor = () => {
 
       {Object.keys(customThresholds).length > 0 && (
         <div className="mt-4">
-          <h3 className="font-semibold mb-1">Current Overrides</h3>
+          <h4 className="font-semibold mb-1">Current Overrides</h4>
           <ul className="space-y-1">
             {Object.entries(customThresholds).map(([name, thresholds]) => (
               <li

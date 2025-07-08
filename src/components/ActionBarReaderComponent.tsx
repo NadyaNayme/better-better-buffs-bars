@@ -25,7 +25,9 @@ export function ActionBarReaderComponent({
 
   const readAbilities = useCallback(() => {
     if (readerRef.current) {
-      const data = readerRef.current.readLife();
+      const { x, y, width, height } = readerRef.current;
+      const captureRegion = a1lib.getRegion(x, y, width, height);
+      const data = readerRef.current.readLife(captureRegion, captureRegion.width, captureRegion.height);
       console.log(data);
       if (data) {
         checkCombat(data);

@@ -4,11 +4,11 @@ const Debug = () => {
     const { profiles, groups, activeProfile } = useStore();
     return (
       <div>
-        <h2>Debug Info</h2>
+        <h3>Debug Info</h3>
   
         {profiles.map(profile => (
           <div key={profile.id}>
-            <h3>{profile.name}</h3>
+            <h4>{profile.name}</h4>
             {profile.id === activeProfile ? (
               <ul>
                 {groups.map(group => (
