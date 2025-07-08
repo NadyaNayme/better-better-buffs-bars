@@ -25,6 +25,7 @@ export function ActionBarReaderComponent({
   const lastRunRef = useRef(0);
   const isReadingRef = useRef(false);
   const hasPotted = useRef(false);
+  const hasRanOutOfPrayer = useRef(false);
   const alertVolume = useStore.getState().alertVolume;
 
   const checkCombat = useCombatMonitor();
@@ -54,17 +55,17 @@ export function ActionBarReaderComponent({
             adrenaline: data.dren ?? 0,
             prayer: data.pray ?? 0,
         });
-        if (data.pray === 0 && !hasPotted.current) {
+        if (data.pray === 0 && !hasRanOutOfPrayer.current) {
             const sound = new Audio(alertsMap['Prayer (Empty)']);
             sound.volume = alertVolume / 100;
             sound.play().catch(() => {});
-            hasPotted.current = true;
+            hasRanOutOfPrayer.current = true;
         } else if (data.pray <= 0.30 && !hasPotted.current) {
             const sound = new Audio(alertsMap['Prayer (Low)']);
             sound.volume = alertVolume / 100;
             sound.play().catch(() => {});
             hasPotted.current = true;
-        } else if (data.pray >= 0.50 && hasPotted) {
+        } else if (data.pray >= 0.40 && (hasPotted || hasRanOutOfPrayer)) {
             hasPotted.current = false;
         }
     }
