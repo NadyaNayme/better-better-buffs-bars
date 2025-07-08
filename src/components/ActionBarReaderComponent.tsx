@@ -41,7 +41,7 @@ export function ActionBarReaderComponent({
           });
       }
     }
-  }, [checkCombat, setLifeData]);
+  }, [checkCombat]);
 
   useEffect(() => {
     const cleanup = () => {
