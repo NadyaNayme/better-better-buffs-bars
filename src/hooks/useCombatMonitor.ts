@@ -2,26 +2,26 @@ import { useRef, useEffect, useCallback } from "react";
 import useStore from "../store";
 
 export function useCombatMonitor() {
-  const lastValues = useRef<{ hp: number; adrenaline: number; prayer: number } | null>(null);
+  const lastValues = useRef<{ hp: number; dren: number; pray: number } | null>(null);
   const lastChange = useRef<number>(Date.now());
   const interval = useRef<number | null>(null);
   const lastCheck = useRef<number>(0);
 
   const checkCombat = useCallback((data: any) => {
     const now = Date.now();
-    const { hp, adrenaline, prayer } = data;
+    const { hp, dren, pray } = data;
 
     if (now - lastCheck.current < 1500) return;
     lastCheck.current = now;
 
-    const current = { hp, adrenaline, prayer };
+    const current = { hp, dren, pray };
     const previous = lastValues.current;
 
     const changed =
       !previous ||
       hp !== previous.hp ||
-      adrenaline !== previous.adrenaline ||
-      prayer !== previous.prayer;
+      dren !== previous.dren ||
+      pray !== previous.pray;
 
     if (changed) {
       useStore.getState().setInCombat(true);

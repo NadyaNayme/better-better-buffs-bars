@@ -26,9 +26,8 @@ export function ActionBarReaderComponent({
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
-    console.log('Read Abilities callback called');
     if (readerRef.current) {
-      const { captureRect } = readerRef.current;
+      const { captureRect } = readerRef.current.bars[0].bounds;
       const captureRegion = a1lib.capture(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
       const data = readerRef.current.readLife(captureRegion, captureRegion.width, captureRegion.height);
       console.log(data);
@@ -36,8 +35,8 @@ export function ActionBarReaderComponent({
         checkCombat(data);
         setLifeData({
             hp: data.hp ?? 0,
-            adrenaline: data.adrenaline ?? 0,
-            prayer: data.prayer ?? 0,
+            adrenaline: data.dren ?? 0,
+            prayer: data.pray ?? 0,
           });
       }
     }
