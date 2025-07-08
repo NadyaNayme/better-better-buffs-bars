@@ -13,7 +13,7 @@ interface ActionBarReaderProps {
 export function ActionBarReaderComponent({
   debugMode = false,
   a1lib,
-  readInterval = 500,
+  readInterval = 2500,
 }: ActionBarReaderProps) {
   const [status, setStatus] = useState<ReaderStatus>("IDLE");
   const readerRef = useRef<any | null>(null);
@@ -26,7 +26,6 @@ export function ActionBarReaderComponent({
     if (readerRef.current) {
       const data = readerRef.current.readLife();
       if (data) {
-        console.log(data);
         checkCombat(data);
       }
     }

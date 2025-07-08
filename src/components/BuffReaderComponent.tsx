@@ -270,9 +270,7 @@ export function BuffReaderComponent({
  
     const inCombat = useStore.getState().inCombat;
     const combatCheck = useStore.getState().combatCheck;
-    if (!inCombat && combatCheck) { 
-      return;
-    }
+    if (!inCombat && combatCheck) return;
 
     const groups = useStore.getState().groups;
     const allBuffs = useStore.getState().buffs;

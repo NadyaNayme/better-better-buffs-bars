@@ -7,7 +7,7 @@ import SocialButtons from './SocialButtons';
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const enableCombatCheck = useStore(s => s.enableCombatCheck);
+  const combatCheck = useStore(s => s.combatCheck);
   const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
 
   const enableAlerts = useStore(s => s.enableAlerts);
@@ -74,7 +74,7 @@ const SettingsPanelComponent: React.FC = () => {
         }}>
           <input
             type="checkbox"
-            checked={enableCombatCheck}
+            checked={combatCheck}
             onChange={(e) => setEnableCombatCheck(e.target.checked)}
             style={{
                 marginRight: '8px'
