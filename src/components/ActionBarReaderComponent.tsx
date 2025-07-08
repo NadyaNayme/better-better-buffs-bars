@@ -30,7 +30,7 @@ export function ActionBarReaderComponent({
       const { x, y, width, height } = readerRef.current.bars[0].bounds;
       console.log(readerRef.current);
       const captureRegion = a1lib.capture(x, y, width, height);
-      const data = readerRef.current.readLife(captureRegion, captureRegion.width, captureRegion.height);
+      const data = readerRef.current.readLife(captureRegion);
       console.log(data);
       if (data) {
         checkCombat(data);
