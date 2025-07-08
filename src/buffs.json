@@ -1,5 +1,5 @@
 {
-  "version": 86,
+  "version": 87,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -389,7 +389,7 @@
       "isPermanent": false,
       "hasAlert": true,
       "hasAlerted": false,
-      "alertThreshold": 15,
+      "alertThreshold": 20,
       "buffType": "Buff",
       "isActive": false
     },
@@ -1406,7 +1406,9 @@
       "cooldown": 0,
       "timeRemaining": 0,
       "isPermanent": false,
-      "hasAlert": false,
+      "hasAlert": true,
+      "hasAlerted": false,
+      "alertThreshold": 20,
       "buffType": "Buff",
       "isActive": false
     },
