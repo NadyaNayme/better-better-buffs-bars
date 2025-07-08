@@ -27,9 +27,6 @@ export function ActionBarReaderComponent({
 
   const readAbilities = useCallback(() => {
     if (readerRef.current) {
-      const { x, y, width, height } = readerRef.current.bars[0].bounds;
-      console.log(readerRef.current);
-      //const captureRegion = a1lib.capture(x, y, width, height);
       const data = readerRef.current.readLife();
       console.log(data);
       if (data) {
@@ -76,7 +73,7 @@ export function ActionBarReaderComponent({
       }
     }
 
-    else if (status === "READING") {
+    else if (status === "READING" && intervalRef.current === null) {
         console.log('[Actionbar Reader] Starting read interval...');
         intervalRef.current = window.setInterval(readAbilities, readInterval);
     }
