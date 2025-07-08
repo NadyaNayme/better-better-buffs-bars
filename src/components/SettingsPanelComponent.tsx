@@ -40,9 +40,10 @@ const SettingsPanelComponent: React.FC = () => {
           bottom: '1rem',
           right: '1rem',
           zIndex: 1000,
+          backgroundColor: isOpen ? '#646cff' : '#1a1a1a'
         }}
       >
-        ⚙ Settings
+        {isOpen ? '⚙ Close Settings' : '⚙ Settings'}
       </button>
 
       <div
