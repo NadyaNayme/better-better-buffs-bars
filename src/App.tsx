@@ -11,7 +11,7 @@ import ThresholdEditor from './components/ThresholdEditor';
 import Debug from './components/Debug';
 import { type Group } from './types/Group';
 import GroupComponent from './components/GroupComponent';
-import type { Color } from './types/Color';
+import SettingsPanelComponent from './components/SettingsPanelComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -26,7 +26,7 @@ function App() {
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
   const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
-  const { cooldownColor, timeRemainingColor, setCooldownColor, setTimeRemainingColor } = useStore();
+  const { debugMode } = useStore();
 
   const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
     syncIdentifiedBuffs(foundBuffsMap);
@@ -49,17 +49,6 @@ function App() {
       createProfile(name);
     }
   };
-
-  const handleColorChange = (setter: (color: Color) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const hex = e.target.value;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    setter({ r, g, b });
-  };
-
-  const rgbToHex = ({ r, g, b }: Color) =>
-    `#${[r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
 
   useEffect(() => {
     rescaleAllGroupsOnLoad();
@@ -114,33 +103,13 @@ function App() {
       <p>Delete buffs from a group using <em>right click</em>.</p>
       </div>
 
-      <div className="mb-8">
-      <div style={{ padding: 10 }}>
-      <label>
-        Cooldown Color: 
-        <input
-          type="color"
-          value={rgbToHex(cooldownColor)}
-          onChange={handleColorChange(setCooldownColor)}
-        />
-      </label>
-      <br />
-      <label>
-        Active Color: 
-        <input
-          type="color"
-          value={rgbToHex(timeRemainingColor)}
-          onChange={handleColorChange(setTimeRemainingColor)}
-        />
-      </label>
-    </div>
-      </div>
-
       <div className="space-y-8">
         {groups.map((group: any) => (
           <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} />
         ))}
       </div>
+      <CooldownTimer/>
+      <SettingsPanelComponent />
       <PopupModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -148,6 +117,8 @@ function App() {
         title={modalContext === 'group' ? 'Enter Group Name' : 'Enter Profile Name'}
         placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
       />
+      (debugMode && {
+        <>
       <Debug />
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
@@ -157,7 +128,8 @@ function App() {
         onBuffsIdentified={handleBuffsIdentified} 
       />
       <ThresholdEditor/>
-      <CooldownTimer/>
+      </>
+      })
     </div>
   );
 }

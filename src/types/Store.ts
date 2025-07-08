@@ -11,6 +11,12 @@ export interface Store {
     version: number;
     cooldownColor: Color,
     timeRemainingColor: Color,
+    enableAlerts: boolean,
+    alertVolume: number,
+    debugMode: boolean,
+    setEnableAlerts: (enabled: boolean) => void;
+    setAlertVolume: (volume: number) => void;
+    setDebugMode: (enabled: boolean) => void;
     setVersion: (version: number) => void;
     setBuffsFromJsonIfNewer: () => void;
     syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;

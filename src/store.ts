@@ -43,6 +43,12 @@ const useStore = create(
       buffs: buffsData.buffs.map(buff => ({ ...buff, id: uuidv4() })),
       version: 1,
       setVersion: (version) => set({ version }),
+      enableAlerts: true,
+      alertVolume: 100,
+      debugMode: false,
+      setEnableAlerts: (enabled: boolean) => set({ enableAlerts: enabled }),
+      setAlertVolume: (volume: number) => set({ alertVolume: volume }),
+      setDebugMode: (enabled: boolean) => set({ debugMode: enabled }),
       setBuffsFromJsonIfNewer: () => {
         const version = get().version;
         const jsonVersion = buffsData.version;
@@ -181,9 +187,10 @@ const useStore = create(
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
               const newTime = buff.timeRemaining;
-              if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
+              const { enableAlerts, alertVolume } = useStore.getState();
+              if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name] && enableAlerts) {
                 const sound = new Audio(alertsMap[buff.name]);
-                sound.volume = 1; //TODO: Update to let users set volume
+                sound.volume = alertVolume / 100;
                 sound.play().catch(() => {});
                 return {
                   ...buff,
@@ -409,6 +416,9 @@ const useStore = create(
         cooldownColor: state.cooldownColor,
         timeRemainingColor: state.timeRemainingColor,
         customThresholds: state.customThresholds,
+        enableAlerts: state.enableAlerts,
+        alertVolume: state.alertVolume,
+        debugMode: state.debugMode,
       }),
     } as PersistOptions<Store>
   )
