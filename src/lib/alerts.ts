@@ -4,5 +4,4 @@ export const alertsMap: Record<string,string> = {
     'Overload': OverloadAlert,
     'Supreme Overload': OverloadAlert,
     'Elder Overload': OverloadAlert,
-    'Anticipation': OverloadAlert,
 }

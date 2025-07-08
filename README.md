@@ -22,3 +22,7 @@ To see my other Alt1 plugins [click here](https://github.com/NadyaNayme/NyusPlug
 ## Discord
 
 For any support & suggestions please join the Discord server: [https://discord.gg/KJ2SgWyJFF](https://discord.gg/KJ2SgWyJFF) or open an issue on the relevant plugin's repository.
+
+## Other Contributors
+
+- **Sheil**, provided audio for alerts
