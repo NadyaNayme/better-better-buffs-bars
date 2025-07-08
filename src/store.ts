@@ -5,6 +5,7 @@ import buffsData from './buffs.json';
 import { type Group } from './types/Group';
 import { type Store } from './types/Store';
 import { createBlankBuff } from './lib/createBlankBuff';
+import { alertsMap } from './lib/alerts';
 
 function resizedataURL(dataUrl: string, scale: number): Promise<{ scaledDataUrl: string; width: number; height: number }> {
     return new Promise((resolve, reject) => {
@@ -132,6 +133,18 @@ const useStore = create(
                 if (elapsedSeconds > 0) {
                   const timeLeft = buff.timeRemaining ?? 0;
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
+
+                  if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
+                    const sound = new Audio(alertsMap[buff.name]);
+                    sound.play().catch(() => {});
+                    return {
+                      ...buff,
+                      timeRemaining: newTime,
+                      lastUpdated: now,
+                      hasAlerted: newTime === buff.alertThreshold ? true : false,
+                    };
+                  }
+
                   if (buff.isStack) return buff;
       
                   if (newTime === 0) {
@@ -142,6 +155,7 @@ const useStore = create(
                       timeRemaining: 0,
                       cooldownRemaining: buff.cooldown ?? 0,
                       lastUpdated: now,
+                      hasAlerted: false,
                     };
                   } else if (newTime !== timeLeft && timeLeft < 60) {
                     groupDidChange = true;

@@ -597,7 +597,9 @@
       "cooldown": 0,
       "timeRemaining": 0,
       "isPermanent": false,
-      "hasAlert": false,
+      "hasAlert": true,
+      "alertThreshold": 15,
+      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },
@@ -883,7 +885,9 @@
       "cooldown": 0,
       "timeRemaining": 0,
       "isPermanent": false,
-      "hasAlert": false,
+      "hasAlert": true,
+      "alertThreshold": 15,
+      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },
@@ -1212,7 +1216,9 @@
       "cooldown": 0,
       "timeRemaining": 0,
       "isPermanent": false,
-      "hasAlert": false,
+      "hasAlert": true,
+      "alertThreshold": 15,
+      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },

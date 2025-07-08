@@ -7,7 +7,7 @@ export function CooldownTimer() {
   useEffect(() => {
     const intervalId = setInterval(() => {
         tickCooldownTimers();
-    }, 1000); // 1 second
+    }, 1000);
     return () => clearInterval(intervalId);
   }, [tickCooldownTimers]);
 
