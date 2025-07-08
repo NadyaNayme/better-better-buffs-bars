@@ -67,6 +67,7 @@ export function ActionBarReaderComponent({
             hasPotted.current = true;
         } else if (data.pray >= 0.31 && (hasPotted || hasRanOutOfPrayer)) {
             hasPotted.current = false;
+            hasRanOutOfPrayer.current = false;
         }
     }
     } catch (e) {
