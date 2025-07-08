@@ -24,7 +24,7 @@ export function ActionBarReaderComponent({
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
-    console.log(readerRef.current);
+    console.log('Read Abilities callback called');
     if (readerRef.current) {
       const { x, y, width, height } = readerRef.current;
       const captureRegion = a1lib.getRegion(x, y, width, height);
@@ -58,6 +58,7 @@ export function ActionBarReaderComponent({
     }
 
     else if (status === "FINDING ACTION BAR") {
+      console.log('Attempting to find Actionbar');
       try {
         const reader = new ActionbarReader(a1lib.captureHoldFullRs());
         const found = reader.find();
@@ -74,6 +75,7 @@ export function ActionBarReaderComponent({
     }
 
     else if (status === "READING") {
+        console.log('[Actionbar Reader] Starting read interval...');
         intervalRef.current = window.setInterval(readAbilities, readInterval);
     }
 
