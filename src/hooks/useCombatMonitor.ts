@@ -11,7 +11,7 @@ export function useCombatMonitor() {
     const now = Date.now();
     const { hp, dren, pray } = data;
 
-    if (now - lastCheck.current < 1500) return;
+    if (now - lastCheck.current < 500) return;
     lastCheck.current = now;
 
     const current = { hp, dren, pray };
@@ -32,10 +32,10 @@ export function useCombatMonitor() {
 
   useEffect(() => {
     interval.current = window.setInterval(() => {
-      if (Date.now() - lastChange.current > 3000) {
+      if (Date.now() - lastChange.current > 2500) {
         useStore.getState().setInCombat(false);
       }
-    }, 1000);
+    }, 500);
 
     return () => {
       if (interval.current) clearInterval(interval.current);
