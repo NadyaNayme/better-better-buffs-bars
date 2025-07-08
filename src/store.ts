@@ -47,12 +47,32 @@ const useStore = create(
       enableAlerts: true,
       alertVolume: 100,
       debugMode: false,
-      setEnableCombatCheck: (enabled: boolean) => set({combatCheck: enabled}),
-      setEnableAlerts: (enabled: boolean) => set({ enableAlerts: enabled }),
-      setAlertVolume: (volume: number) => set({ alertVolume: volume }),
-      setDebugMode: (enabled: boolean) => set({ debugMode: enabled }),
+      setEnableCombatCheck: (enabled: boolean) => { 
+        const currentValue = get().combatCheck;
+        if (enabled === currentValue) return;
+        set({combatCheck: enabled})
+      },
+      setEnableAlerts: (enabled: boolean) => {
+        const currentValue = get().enableAlerts;
+        if (enabled === currentValue) return;
+        set({ enableAlerts: enabled })
+      },
+      setAlertVolume: (volume: number) => {
+        const currentValue = get().alertVolume;
+        if (volume === currentValue) return;
+        set({ alertVolume: volume })
+      },
+      setDebugMode: (enabled: boolean) => {
+        const currentValue = get().debugMode;
+        if (enabled === currentValue) return;
+        set({ debugMode: enabled })
+      },
       inCombat: false,
-      setInCombat: (value: boolean) => set({ inCombat: value }),
+      setInCombat: (value: boolean) => {
+        const currentValue = get().inCombat;
+        if (value === currentValue) return;
+        set({ inCombat: value })
+      },
       setBuffsFromJsonIfNewer: () => {
         const version = get().version;
         const jsonVersion = buffsData.version;
