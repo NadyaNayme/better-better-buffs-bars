@@ -47,7 +47,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-gray-900 p-6 rounded shadow-lg w-80">
-        <h2 className="text-xl mb-4 text-white-900">{title}</h2>
+        <h3 className="text-xl mb-4 text-white-900">{title}</h3>
         <input
           ref={inputRef}
           type="text"
