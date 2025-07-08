@@ -1,5 +1,5 @@
 {
-  "version": 83,
+  "version": 84,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -1433,7 +1433,8 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false
+      "isActive": false,
+      "isUtility": true
     },
     {
       "name": "Wen Arrows",
