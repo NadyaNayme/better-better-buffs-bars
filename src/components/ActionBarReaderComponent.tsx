@@ -16,6 +16,7 @@ export function ActionBarReaderComponent({
   readInterval = 2500,
 }: ActionBarReaderProps) {
   const [status, setStatus] = useState<ReaderStatus>("IDLE");
+  const [lifeData, setLifeData] = useState<{ hp: number; adrenaline: number; prayer: number } | null>(null);
   const readerRef = useRef<any | null>(null);
   const intervalRef = useRef<number | null>(null);
   const retryTimeoutRef = useRef<number | null>(null);
@@ -27,6 +28,11 @@ export function ActionBarReaderComponent({
       const data = readerRef.current.readLife();
       if (data) {
         checkCombat(data);
+        setLifeData({
+            hp: data.hp ?? 0,
+            adrenaline: data.adrenaline ?? 0,
+            prayer: data.prayer ?? 0,
+          });
       }
     }
   }, [checkCombat]);
@@ -72,15 +78,22 @@ export function ActionBarReaderComponent({
 
   return (
     debugMode && (
-        <>
-            <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
-            <p style={{ margin: 0, fontWeight: 'bold' }}>Action Bar Reader</p>
-            <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
+      <>
+        <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
+          <p style={{ margin: 0, fontWeight: 'bold' }}>Action Bar Reader</p>
+          <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
+          {lifeData && (
+            <div style={{ fontSize: '0.9em', marginTop: '4px' }}>
+              <p style={{ margin: 0 }}>HP: {lifeData.hp}</p>
+              <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline}</p>
+              <p style={{ margin: 0 }}>Prayer: {lifeData.prayer}</p>
             </div>
-            {status === "ERROR" && (
-            <div style={{ color: "red" }}>Error finding Action Bar. Please restart overlay.</div>
-            )}
-        </>
+          )}
+        </div>
+        {status === "ERROR" && (
+          <div style={{ color: "red" }}>Error finding Action Bar. Please restart overlay.</div>
+        )}
+      </>
     )
   );
 }
