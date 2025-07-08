@@ -27,6 +27,7 @@ export function ActionBarReaderComponent({
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
+    console.trace('readAbilities called');
     const now = Date.now();
     if (now - lastRunRef.current < 1500) return;
     lastRunRef.current = now;
