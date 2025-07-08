@@ -14,9 +14,8 @@ export interface Buff {
     timeRemaining?: number;
     isPermanent?: boolean;
     hasAlert?: boolean;
-    alertSound?: string;
-    alertThreshold?: number;
     hasAlerted?: boolean;
+    alertThreshold?: number;
     buffType?: string;
     isActive: boolean;
     alwaysActive?: boolean;

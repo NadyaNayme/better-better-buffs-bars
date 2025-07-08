@@ -1,5 +1,5 @@
 {
-  "version": 73,
+  "version": 74,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -598,8 +598,8 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": true,
+      "hasAlerted": false,
       "alertThreshold": 15,
-      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },
@@ -886,8 +886,8 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": true,
+      "hasAlerted": false,
       "alertThreshold": 15,
-      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },
@@ -1217,8 +1217,8 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": true,
+      "hasAlerted": false,
       "alertThreshold": 15,
-      "alertSound": "./assets/audio/Callum_Overload.mp3",
       "buffType": "Buff",
       "isActive": false
     },
