@@ -7,12 +7,14 @@ type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 interface ActionBarReaderProps {
   debugMode?: boolean;
   readInterval?: number;
+  onCombatCheck: (inCombat: boolean) => void;
   a1lib: any;
 }
 
 export function ActionBarReaderComponent({
   debugMode = false,
   a1lib,
+  onCombatCheck,
   readInterval = 2500,
 }: ActionBarReaderProps) {
   const [status, setStatus] = useState<ReaderStatus>("IDLE");
@@ -39,7 +41,7 @@ export function ActionBarReaderComponent({
           });
       }
     }
-  }, [checkCombat]);
+  }, [onCombatCheck, checkCombat]);
 
   useEffect(() => {
     const cleanup = () => {
