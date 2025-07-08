@@ -1,5 +1,5 @@
 {
-  "version": 82,
+  "version": 83,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -53,12 +53,12 @@
       "name": "Quiver (Both)",
       "buffType": "Meta",
       "childBuffNames": [
-        "Black Stone Arrows",
-        "Deathspore Arrows",
-        "Bik Arrows",
         "Ful Arrows",
-        "Jas Dragonbane Arrows",
+        "Bik Arrows",
         "Wen Arrows",
+        "Deathspore Arrows",
+        "Black Stone Arrows",
+        "Jas Dragonbane Arrows",
         "Hydrix Bakriminel Bolts (e)",
         "Onyx Bakriminel Bolts (e)",
         "Diamond Bakriminel Bolts (e)",
@@ -78,12 +78,12 @@
       "name": "Quiver (Arrows)",
       "buffType": "Meta",
       "childBuffNames": [
-        "Black Stone Arrows",
-        "Deathspore Arrows",
-        "Bik Arrows",
         "Ful Arrows",
-        "Jas Dragonbane Arrows",
-        "Wen Arrows"
+        "Bik Arrows",
+        "Wen Arrows",
+        "Deathspore Arrows",
+        "Black Stone Arrows",
+        "Jas Dragonbane Arrows"
       ],
       "isActive": false,
       "alwaysActive": false,
@@ -1423,8 +1423,8 @@
     },
     {
       "name": "Ful Arrows",
-      "failThreshold": 50,
-      "passThreshold": 26,
+      "failThreshold": 32,
+      "passThreshold": 4,
       "imageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAACgUlEQVR4nL1VQWsTURD+3jbFglCCUJv+gCxKLqVHc8oaEBV6T8SDP0HIRUtvOZUEitCCZ6EF7ypIm5zai1AieEsuQizsipCKxUNJnsxLZvP29WWzK+jAY9/Mvp1v5puZfaK6vybxv6S6vyaFELELcOTTLCL6vG+EsQjHSRIQ+X8zcCK6lCJ1YhmbsdFoRPRarYbt7S2cnJyi3W4pm+eVUCzeQ71eR6lE+6Lap6LR8zxJ8sP3pT9ZruuqZ7PZVBTSer3bVDb6huy8j6PRmhnJzrMKvpy28P5ChJStLExp/DVMzSJm1uzr8ip+b3jI5/PKOckigAcYReqVpnYZ/oAdshweHqhnEATI5XJqfz4EPgoBgenZ6upyOrDH2RHeDZwIYKVSQRB8R79/HuvgwP+JzcWF5GA3ATzECB/UJIxpIaBWqx22+dXlJQqFAvL5O+p9uVxGr9dT779dDZERQKnkEU/o9/vodrt2sLeTrMb0jLPbWJK4EQYA1F5uYe/VLs7OPind933svHge1uzWym0cHx9doz4i499V9I/gefev2Uh33bvyySNPvWfbepaic9TIkJ3e0zlb64dzpjvnWTLBTIAkurD9rrg2tNazo5ltTec6A0ed4S7uaM3Fuk0iVlU3zRkDcgAMbjoUEyA9OBoJM1hrCCagmY3NoZQi1Ok8jYTO1kywOLp0nRyaALrOT8489oqx0WXWJw7QlET3mf6xWR8GMDO2NdlcMFu0en30jG2U64CJb+p5dAmNYrbpgInB4uiy1Udvis8X0xslMZgeva0+UutAXVLVLAlgxzKDZoZ/BcbC9MQ1BA90qgaxZac3Bu/1+ugDzTZ1n1X2LHfPP5A/G0wRlefmYyEAAAAASUVORK5CYII=",
       "desaturatedImageData": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADHElEQVR4nL2WvS97URjHv5qiiJB4l5YFYSMWEYOXyYrBYNStFvEfWKRhkwgagyZiEIvFIhYJizCJICEU9R7EW2j88n04de7tqSLN75vc9pxze5/PeV7Oc5vS2tr6jv8kJz+Wl5eTZrC4uNi4XlNT8wFLpOHhYbkSqbKyEru7uzIOh8MxcCOsrq4ODQ0NMi4oKMD9/T16e3txenqKvLy8jwedTmRlZcn86uoKj4+P0XU9Ugpq9GxgYABtbW14enqSeWZmpjxweHiInp4erK2t4ebmBm9vbygtLRXY8/Mz6uvrBdjU1CQbYyQ2NjYsth12jwiamZlBR0cHAoEAtra2xOjd3R0uLi4sYSksLEQoFJJ1bo7PeL1eZGRkiB27LDDlUTAYlPnr6yvS0tKQmpqKSCSCy8tLFBUViQc5OTmyfnZ2hoeHB7y/fxU1YVz7Fsad6urs7MTS0pKMy8vLsbe3JzlRm2B4p6amooD5+XlMTk7K78bGxr6H7e/vy0Nut/vjpuPrNne6urqK29tbVFRUoKqqSrwi9OXlRSIyODiI6+triYAuFXoLjMmnuru74fF4MDc3h/b2dskJK5Ha3t5GdXU1XC6XhFtVIcWCWFxclEpm/gnRc2yB8cfj4+OSu4mJCfT39yM3N1dCub6+jpKSEoExV0dHR5ZNKHEDDGNfX19M+aewXdk7CL1iCTc2NqKsrAwLCwuW8GRnZ8fA3G63VCZFbxhqQhWopaXF6pkSDTEP3AQNNjc3W/LAQ273KvQJ8vl88r2yshIFfdtBurq6cH5+LuPp6emY+zRiD58OskOUjJ4pkK78/Hy5Dg4OjIZ8n6DR0VHEk9EzGlVi9zg5OZGx8mZnZ+fXoBjYyMiInDVdrEKKvc/kMZUIYoSxJdkhCsR5enq6NOS/eBUDU4Z0kJofHx9b+p8SD/5PZSwQkwjikdClukM4TvXFhfn9fqNXFL1Khhx6CE2geF79xiMLbGhoSE68ejvrYmfgmzgZcvBjdnY2ukCgun7yr+nXsM3NzeilSwHZB5MBdNoXdGBtba0xV3+VvGKSZi2B/gGfKLvfI5jd8wAAAABJRU5ErkJggg==",
       "duration": 300,
