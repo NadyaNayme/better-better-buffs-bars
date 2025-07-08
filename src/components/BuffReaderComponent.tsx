@@ -31,7 +31,7 @@ import DeathMark from '../assets/data/Death_Mark.data.png';
 import DeathSpark from '../assets/data/Death_Spark.data.png';
 import DeathSparkUnready from '../assets/data/Death_Spark-notready.data.png';
 import DeathsSwiftness from '../assets/data/Deaths_Swiftness-top.data.png';
-import DeathsporeArrows from '../assets/data/deathspore_arrows.data.png';
+import DeathsporeArrows from '../assets/data/deathspore_arrows-quiver.data.png';
 import Debilitate from '../assets/data/Debilitate.data.png';
 import DeflectMagic from '../assets/data/Deflect_Magic.data.png';
 import DeflectMelee from '../assets/data/Deflect_Melee.data.png';
@@ -125,8 +125,8 @@ const buffImagePromises = {
   'Barricade': Barricade,
   'Berserk': Berserk,
   'Bik Arrows': BikArrows,
-  'BlackVirus': BlackVirus,
-  'Blackstone Arrows': BlackstoneArrows,
+  'Black Virus': BlackVirus,
+  'Black Stone Arrows': BlackstoneArrows,
   'Bloated': Bloated,
   'Blue Virus': BlueVirus,
   'Bonfire Boost': BonfireBoost,
@@ -149,7 +149,7 @@ const buffImagePromises = {
   'Demon Slayer': DemonSlayer,
   'Desolation': Desolation,
   'Devotion': Devotion,
-  'Diamond Bak Bolts': DiamondBakBolts,
+  'Diamond Bakriminel Bolts (e)': DiamondBakBolts,
   'Divert': Divert,
   'Dragon Slayer': DragonSlayer,
   'Enhanced Excalibur': EnhancedExcalibur,
@@ -161,7 +161,7 @@ const buffImagePromises = {
   'Greater Deaths Swiftness': GreaterDeathsSwiftness,
   'Greater Sunshine': GreaterSunshine,
   'Green Virus': GreenVirus,
-  'Hydrix Bak Bolts': HydrixBakBolts,
+  'Hydrix Bakriminel Bolts (e)': HydrixBakBolts,
   'Immortality': Immortality,
   'Ingenuity of the Humans': IngenuityOfTheHumans,
   'Incense Sticks (Dwarf Weed)': DwarfWeedIncense,
@@ -176,7 +176,7 @@ const buffImagePromises = {
   'Malevolence': Malevolence,
   'Necrosis': Necrosis,
   'Omni Guard': OmniGuard,
-  'Onyx Bak Bolts': OnyxBakBolts,
+  'Onyx Bakriminel Bolts (e)': OnyxBakBolts,
   'Overload': Overloaded,
   'Perfect Equilibrium': PerfectEquilibrium,
   'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
@@ -194,7 +194,7 @@ const buffImagePromises = {
   'Reflect': Reflect,
   'Residual Soul': ResidualSoul,
   'Resonance': Resonance,
-  'Ruby Bak Bolts': RubyBakBolts,
+  'Ruby Bakriminel Bolts (e)': RubyBakBolts,
   'Ruination': Ruination,
   'Seren Godbow': SerenGodbow,
   'Sign of Life': SignOfLife,
