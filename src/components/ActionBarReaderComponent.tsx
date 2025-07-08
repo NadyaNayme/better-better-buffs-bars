@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../hooks/useCombatMonitor';
+import { alertsMap } from '../lib/alerts';
+import useStore from '../store';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 
@@ -22,6 +24,8 @@ export function ActionBarReaderComponent({
   const retryTimeoutRef = useRef<number | null>(null);
   const lastRunRef = useRef(0);
   const isReadingRef = useRef(false);
+  const hasPotted = useRef(false);
+  const alertVolume = useStore.getState().alertVolume;
 
   const checkCombat = useCombatMonitor();
 
@@ -46,10 +50,23 @@ export function ActionBarReaderComponent({
     if (data) {
         checkCombat(data);
         setLifeData({
-        hp: data.hp ?? 0,
-        adrenaline: data.dren ?? 0,
-        prayer: data.pray ?? 0,
+            hp: data.hp ?? 0,
+            adrenaline: data.dren ?? 0,
+            prayer: data.pray ?? 0,
         });
+        if (data.pray === 0 && !hasPotted.current) {
+            const sound = new Audio(alertsMap['Prayer (Empty)']);
+            sound.volume = alertVolume / 100;
+            sound.play().catch(() => {});
+            hasPotted.current = true;
+        } else if (data.pray <= 0.30 && !hasPotted.current) {
+            const sound = new Audio(alertsMap['Prayer (Low)']);
+            sound.volume = alertVolume / 100;
+            sound.play().catch(() => {});
+            hasPotted.current = true;
+        } else if (data.pray >= 0.50 && hasPotted) {
+            hasPotted.current = false;
+        }
     }
     } catch (e) {
     console.error('readAbilities failed:', e);

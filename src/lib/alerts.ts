@@ -32,4 +32,6 @@ export const alertsMap: Record<string,string> = {
     'Aura': Aura,
     'Darkness': Darkness,
     'Weapon Poison': WeaponPoison,
+    'Prayer (Empty)': PrayerEmpty,
+    'Prayer (Low)': PrayerLow,
 }
