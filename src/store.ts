@@ -136,7 +136,7 @@ const useStore = create(
 
                   if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
                     const sound = new Audio(alertsMap[buff.name]);
-                    sound.volume = 100; //TODO: Update to let users set volume
+                    sound.volume = 1; //TODO: Update to let users set volume
                     sound.play().catch(() => {});
                     return {
                       ...buff,
@@ -198,7 +198,7 @@ const useStore = create(
 
                 if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
                   const sound = new Audio(alertsMap[buff.name]);
-                  sound.volume = 100; //TODO: Update to let users set volume
+                  sound.volume = 1; //TODO: Update to let users set volume
                   sound.play().catch(() => {});
                   return {
                     ...buff,
