@@ -134,17 +134,6 @@ const useStore = create(
                   const timeLeft = buff.timeRemaining ?? 0;
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
 
-                  if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
-                    const sound = new Audio(alertsMap[buff.name]);
-                    sound.volume = 1; //TODO: Update to let users set volume
-                    sound.play().catch(() => {});
-                    return {
-                      ...buff,
-                      lastUpdated: now,
-                      hasAlerted: newTime === buff.alertThreshold ? true : false,
-                    };
-                  }
-
                   if (buff.isStack) return buff;
       
                   if (newTime === 0) {
@@ -191,6 +180,17 @@ const useStore = create(
             buffs: group.buffs.map(buff => {
               const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
               if (recentlyUpdated) return buff;
+              const newTime = buff.timeRemaining;
+              if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
+                const sound = new Audio(alertsMap[buff.name]);
+                sound.volume = 1; //TODO: Update to let users set volume
+                sound.play().catch(() => {});
+                return {
+                  ...buff,
+                  lastUpdated: now,
+                  hasAlerted: newTime === buff.alertThreshold ? true : false,
+                };
+              }
               if (buff.isStack) return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                 const newTime = buff.cooldownRemaining - 1;
