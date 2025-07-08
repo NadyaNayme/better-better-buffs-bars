@@ -1433,8 +1433,7 @@
       "isPermanent": false,
       "hasAlert": false,
       "buffType": "Buff",
-      "isActive": false,
-      "isUtility": true
+      "isActive": false
     },
     {
       "name": "Wen Arrows",
