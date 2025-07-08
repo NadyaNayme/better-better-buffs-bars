@@ -36,19 +36,18 @@ export function ActionBarReaderComponent({
     const bounds = readerRef.current.bars?.[0]?.bounds;
     if (!bounds) return;
 
-    const { x, y, width, height } = bounds;
+    //const { x, y, width, height } = bounds;
 
     try {
     console.log('Going to attempt a capture');
     isReadingRef.current = true;
-    const captureRegion = a1lib.capture(x, y, width, height);
-    console.log('Captured a region');
-    const data: {hp: number, dren: number, pray: number } = await new Promise((resolve) => {
-        setTimeout(() => {
-          const result = readerRef.current.readLife(captureRegion, x, y);
-          resolve(result);
-        }, 0);
-      });
+    // const captureRegion = a1lib.capture(x, y, width, height);
+    // console.log('Captured a region');
+    const data: {hp: number, dren: number, pray: number } = {
+        hp: 1,
+        dren: 1,
+        pray: 1
+    }
     console.log(data);
 
     if (data) {
