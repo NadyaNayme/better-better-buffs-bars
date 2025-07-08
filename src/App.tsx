@@ -129,7 +129,6 @@ function App() {
       <ActionBarReaderComponent 
             debugMode={debugMode}
             a1lib={a1lib}
-            onCombatCheck={onCombatCheck}
           />
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
