@@ -125,10 +125,12 @@ function App() {
       )}
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
+            debugMode={debugMode}
           />
       <BuffReaderComponent 
         isDebuff={true} 
         onBuffsIdentified={handleBuffsIdentified} 
+        debugMode={debugMode}
       />
     </div>
   );

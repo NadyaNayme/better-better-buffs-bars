@@ -220,6 +220,7 @@ const buffImagePromises = {
 
 interface BuffReaderProps {
   isDebuff?: boolean;
+  debugMode: boolean;
   onBuffsIdentified: (identifiedBuffs: Map<string, { time: number }>) => void;
   readInterval?: number;
 }
@@ -228,6 +229,7 @@ type ComponentStatus = "IDLE" | "LOADING_IMAGES" | "FINDING_BAR" | "READING" | "
 
 export function BuffReaderComponent({ 
   isDebuff = false, 
+  debugMode,
   onBuffsIdentified,
   readInterval = 250,
 }: BuffReaderProps) {
@@ -403,7 +405,7 @@ export function BuffReaderComponent({
     return cleanup;
   }, [status, isDebuff, readInterval, processReaderData]);
 
-  return (
+  return (debugMode &&
     <>
       <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
         <p style={{ margin: 0, fontWeight: 'bold' }}>{isDebuff ? "Debuff Reader" : "Buff Reader"}</p>
