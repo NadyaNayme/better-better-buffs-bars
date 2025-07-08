@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useStore from '../store';
+import { SocialButtons } from './components/SocialButtons';
 import { rgbToHex } from '../lib/colorUtils';
 import type { Color } from '../types/Color';
 
@@ -143,6 +144,15 @@ const SettingsPanelComponent: React.FC = () => {
           />
           Enable Debug Mode
         </label>
+        <br />
+        <hr />
+        <br />
+        <div style={{
+            textAlign: 'center',
+            width: '100%',
+        }}>
+            <SocialButtons />
+        </div>
       </div>
     </>
   );
