@@ -5,7 +5,7 @@ const SocialButtons = () => {
         href="https://discord.gg/KJ2SgWyJFF"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex justify-center items-center gap-2 bg-[#4f5bd9] text-white font-semibold px-4 py-2 rounded-lg shadow hover:brightness-50 transition"
+        className="flex justify-center items-center gap-2 bg-[#4f5bd9] text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-[#3c45a5] transition"
       >
         <DiscordIcon className="w-5 h-5" />
         Join the Discord Server
@@ -15,7 +15,7 @@ const SocialButtons = () => {
         href="https://ko-fi.com/nadyanayme"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex justify-center items-center gap-2 bg-[#e55452] text-white font-semibold px-4 py-2 rounded-lg shadow hover:brightness-50 transition"
+        className="flex justify-center items-center gap-2 bg-[#e55452] text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-[#b2413f] transition"
       >
         <KofiIcon className="w-5 h-5" />
         Support me on Ko-fi
