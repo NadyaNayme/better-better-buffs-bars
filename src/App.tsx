@@ -119,7 +119,10 @@ function App() {
       />
       {(debugMode && 
         <>
-      <Debug />
+          <Debug />
+          <ThresholdEditor/>
+        </>
+      )}
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
           />
@@ -127,9 +130,6 @@ function App() {
         isDebuff={true} 
         onBuffsIdentified={handleBuffsIdentified} 
       />
-      <ThresholdEditor/>
-      </>
-      )}
     </div>
   );
 }
