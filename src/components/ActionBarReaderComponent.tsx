@@ -24,34 +24,39 @@ export function ActionBarReaderComponent({
 
   const checkCombat = useCombatMonitor();
 
-  const readAbilities = () => {
+  const readAbilities = useCallback(() => {
     const now = Date.now();
     if (now - lastRunRef.current < 1500) return;
     lastRunRef.current = now;
   
-    if (readerRef.current) {
-      const bounds = readerRef.current.bars?.[0]?.bounds;
-      if (!bounds) return;
-  
-      const { x, y, width, height } = bounds;
-  
-      try {
-        const captureRegion = a1lib.capture(x, y, width, height);
-        const data = readerRef.current.readLife(captureRegion);
-  
-        if (data) {
-          //checkCombat(data);
-          setLifeData({
-            hp: data.hp ?? 0,
-            adrenaline: data.dren ?? 0,
-            prayer: data.pray ?? 0,
-          });
-        }
-      } catch (e) {
-        console.error('readAbilities failed:', e);
-      }
+    const bounds = readerRef.current.bars?.[0]?.bounds;
+    if (!bounds) return;
+
+    const { x, y, width, height } = bounds;
+
+    try {
+    console.log('Going to attempt a capture');
+    const captureRegion = a1lib.capture(x, y, width, height);
+    const data = readerRef.current.readLife(captureRegion);
+    console.log(data);
+
+    if (data) {
+        checkCombat(data);
+        setLifeData({
+        hp: data.hp ?? 0,
+        adrenaline: data.dren ?? 0,
+        prayer: data.pray ?? 0,
+        });
+        console.log({
+        hp: data.hp ?? 0,
+        adrenaline: data.dren ?? 0,
+        prayer: data.pray ?? 0,
+        });
     }
-}
+    } catch (e) {
+    console.error('readAbilities failed:', e);
+    }
+}, [a1lib, checkCombat]);
 
   useEffect(() => {
     const cleanup = () => {
@@ -86,7 +91,7 @@ export function ActionBarReaderComponent({
       }
     }
 
-    else if (status === "READING" && intervalRef.current === null) {
+    else if (status === "READING" && intervalRef.current === null && readerRef.current) {
         console.log('[Actionbar Reader] Starting read interval...');
         intervalRef.current = setInterval(() => {
             readAbilities();
@@ -94,7 +99,7 @@ export function ActionBarReaderComponent({
     }
 
     return cleanup;
-  }, [status, readInterval]);
+  }, [status, readInterval, a1lib, readAbilities]);
 
   return (
     debugMode && (
