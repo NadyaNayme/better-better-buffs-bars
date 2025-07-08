@@ -396,7 +396,7 @@ export function BuffReaderComponent({
       findBar();
     }
     
-    else if (status === "READING") {
+    else if (status === "READING" && intervalRef.current === null) {
       console.log(`[${isDebuff ? "Debuff" : "Buff"} Reader] Starting read interval...`);
       intervalRef.current = setInterval(() => {
         const data = readerRef.current?.read();

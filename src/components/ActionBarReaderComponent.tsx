@@ -34,10 +34,14 @@ export function ActionBarReaderComponent({
   useEffect(() => {
     const cleanup = () => {
         if (retryTimeoutRef.current) {
-            clearTimeout(retryTimeoutRef.current);
-            retryTimeoutRef.current = null;
+          clearTimeout(retryTimeoutRef.current);
+          retryTimeoutRef.current = null;
         }
-    };
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+      };
 
     if (status === "IDLE") {
       setStatus("FINDING ACTION BAR");
@@ -59,8 +63,8 @@ export function ActionBarReaderComponent({
       }
     }
 
-    else if (status === "READING") {
-      intervalRef.current = window.setInterval(readAbilities, readInterval);
+    else if (status === "READING" && intervalRef.current === null) {
+        intervalRef.current = window.setInterval(readAbilities, readInterval);
     }
 
     return cleanup;
