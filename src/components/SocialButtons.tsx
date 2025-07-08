@@ -1,6 +1,6 @@
 const SocialButtons = () => {
   return (
-    <div className="flex gap-4 mt-4">
+    <div className="flex flex-col gap-4 mt-4">
       <a
         href="https://discord.gg/KJ2SgWyJFF"
         target="_blank"
@@ -8,7 +8,7 @@ const SocialButtons = () => {
         className="flex items-center gap-2 bg-[#5865F2] text-white font-semibold px-4 py-2 rounded-lg shadow hover:brightness-50 transition"
       >
         <DiscordIcon className="w-5 h-5" />
-        Join the Discord
+        Join the Discord Server
       </a>
 
       <a
@@ -18,7 +18,7 @@ const SocialButtons = () => {
         className="flex items-center gap-2 bg-[#FF5E5B] text-white font-semibold px-4 py-2 rounded-lg shadow hover:brightness-50 transition"
       >
         <KofiIcon className="w-5 h-5" />
-        Donate
+        Support me on Ko-fi
       </a>
     </div>
   );
