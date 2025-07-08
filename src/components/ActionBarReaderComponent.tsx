@@ -22,12 +22,18 @@ export function ActionBarReaderComponent({
   const readerRef = useRef<any | null>(null);
   const intervalRef = useRef<number | null>(null);
   const retryTimeoutRef = useRef<number | null>(null);
+  const lastRunRef = useRef(0);
 
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
+    const now = Date.now();
+    if (now - lastRunRef.current < 1500) return;
+    lastRunRef.current = now;
     if (readerRef.current) {
-      const { x, y, width, height } = readerRef.current.bars[0].bounds;
+      const bounds = readerRef.current.bars?.[0]?.bounds;
+      if (!bounds) return;
+      const { x, y, width, height } = bounds;
       const captureRegion = a1lib.capture(x, y, width, height);
       const data = readerRef.current.readLife(captureRegion);
       console.log(data);
