@@ -26,12 +26,11 @@ export function ActionBarReaderComponent({
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
-    return;
     if (readerRef.current) {
       const data = readerRef.current.readLife();
       console.log(data);
       if (data) {
-        checkCombat(data);
+        //checkCombat(data);
         setLifeData({
             hp: data.hp ?? 0,
             adrenaline: data.dren ?? 0,
