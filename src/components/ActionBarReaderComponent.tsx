@@ -29,7 +29,7 @@ export function ActionBarReaderComponent({
     console.log('Read Abilities callback called');
     if (readerRef.current) {
       const { x, y, width, height } = readerRef.current;
-      const captureRegion = a1lib.getRegion(x, y, width, height);
+      const captureRegion = a1lib.capture(x, y, width, height);
       const data = readerRef.current.readLife(captureRegion, captureRegion.width, captureRegion.height);
       console.log(data);
       if (data) {
