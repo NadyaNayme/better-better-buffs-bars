@@ -98,16 +98,34 @@ const useStore = create(
               const activeInfo = identifiedActiveBuffs.get(buff.name);
       
               if (buff.buffType === "Meta") {
-                if (activeInfo && activeInfo.foundChild) {
+                if (activeInfo && activeInfo.foundChild) {        
+                  const newScaleDecimal = group.scale / 100.0;
+        
+                  let newlyScaledImageData;
+                  let newlyScaledDesaturatedImageData;
+                  const resizePromises = group.buffs.map(async (buff) => {
+                  const scaledPromise = buff.imageData
+                    ? resizedataURL(buff.imageData, newScaleDecimal)
+                    : Promise.resolve(null);
+                    
+                  const desaturatedPromise = buff.desaturatedImageData
+                    ? resizedataURL(buff.desaturatedImageData, newScaleDecimal)
+                    : Promise.resolve(null);
+
+                  const [scaledResult, desaturatedResult] = await Promise.all([scaledPromise, desaturatedPromise]);
+                  newlyScaledImageData = scaledResult;
+                  newlyScaledDesaturatedImageData = desaturatedResult;
+                  })
+
                   groupDidChange = true;
                   return {
                     ...buff,
                     isActive: true,
                     timeRemaining: activeInfo.time,
-                    imageData: activeInfo.foundChild.imageData,
-                    desaturatedImageData: activeInfo.foundChild.desaturatedImageData,
-                    scaledImageData: '',
-                    scaledDesaturatedImageData: '',
+                    imageData: newlyScaledImageData ?? activeInfo.foundChild.scaledImageData ?? activeInfo.foundChild.imageData,
+                    desaturatedImageData: newlyScaledDesaturatedImageData ?? activeInfo.foundChild.scaledDesaturatedImageData ?? activeInfo.foundChild.desaturatedImageData,
+                    scaledImageData: newlyScaledImageData ?? '',
+                    scaledDesaturatedImageData: newlyScaledDesaturatedImageData ?? '',
                     inactiveCount: 0,
                     lastUpdated: now,
                   };
@@ -338,31 +356,61 @@ const useStore = create(
       },
       rescaleAllGroupsOnLoad: async () => {
         const allGroups = get().groups;
-
-        const updatedGroupsPromises = allGroups.map(async (group) => {
-          const scaleDecimal = group.scale / 100.0;
-          
+      
+        const buffToGroupMap = new Map<string, { group: typeof allGroups[number]; buff: typeof allGroups[number]['buffs'][number] }>();
+        for (const group of allGroups) {
+          for (const buff of group.buffs) {
+            buffToGroupMap.set(buff.name, { group, buff });
+          }
+        }
+      
+        const scaledCache = new Map<string, { scaledImageData: string; scaledDesaturatedImageData: string }>();
+      
+        const updatedGroupsPromises = allGroups.map(async (group) => {  
           const resizedBuffsPromises = group.buffs.map(async (buff) => {
-            const scaledPromise = buff.imageData ? resizedataURL(buff.imageData, scaleDecimal) : Promise.resolve(null);
-            const desaturatedPromise = buff.desaturatedImageData ? resizedataURL(buff.desaturatedImageData, scaleDecimal) : Promise.resolve(null);
-            
-            const [scaledResult, desaturatedResult] = await Promise.all([scaledPromise, desaturatedPromise]);
-            
+            const getScaled = async (name: string) => {
+              if (scaledCache.has(name)) return scaledCache.get(name)!;
+      
+              const entry = buffToGroupMap.get(name);
+              if (!entry) return { scaledImageData: '', scaledDesaturatedImageData: '' };
+      
+              const scale = entry.group.scale / 100.0;
+              const b = entry.buff;
+      
+              const scaled = b.imageData ? await resizedataURL(b.imageData, scale) : null;
+              const desat = b.desaturatedImageData ? await resizedataURL(b.desaturatedImageData, scale) : null;
+      
+              const result = {
+                scaledImageData: scaled?.scaledDataUrl ?? '',
+                scaledDesaturatedImageData: desat?.scaledDataUrl ?? '',
+              };
+      
+              scaledCache.set(name, result);
+              return result;
+            };
+      
+            const selfScaled = await getScaled(buff.name);
+      
+            if (buff.childBuffNames?.length) {
+              for (const childName of buff.childBuffNames) {
+                await getScaled(childName);
+              }
+            }
+      
             return {
               ...buff,
-              scaledImageData: scaledResult?.scaledDataUrl ?? '',
-              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
+              ...selfScaled,
             };
           });
-
+      
           const resizedBuffs = await Promise.all(resizedBuffsPromises);
           return { ...group, buffs: resizedBuffs };
         });
-
+      
         const finalUpdatedGroups = await Promise.all(updatedGroupsPromises);
-        
+      
         set({ groups: finalUpdatedGroups });
-        console.log("All groups have been rescaled on initial load.");
+        console.log("All groups and child buffs have been rescaled on initial load.");
       },
       syncGroupBuffs: () => {
       },
@@ -372,7 +420,7 @@ const useStore = create(
         if (buff) {
           set(state => ({
             groups: state.groups.map(g =>
-              g.id === groupId ? { ...g, buffs: [...g.buffs, buff] } : g
+              g.id === groupId ? { ...g, buffs: [buff, ...g.buffs] } : g
             )
           }));
         }
