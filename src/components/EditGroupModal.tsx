@@ -61,7 +61,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               onChange={(e) => setExplicitInactive(e.target.checked)}
               className="mr-2"
             />
-            <label>Show Inactive Buffs - Inactive Buffs will show with a desaturated icon instead of disappearing.</label>
+            <label><strong>Show Inactive Buffs</strong><br/> Inactive Buffs will show with a desaturated icon instead of disappearing.</label>
           </div>
           <div className="flex items-center">
             <label className="block mb-1">Scale: {scale}%</label>
