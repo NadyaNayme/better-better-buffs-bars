@@ -24,7 +24,7 @@ export function ActionBarReaderComponent({
 
   const readAbilities = useCallback(() => {
     if (readerRef.current) {
-      const data = readerRef.current.read();
+      const data = readerRef.current.readLife();
       if (data && Array.isArray(data)) {
         checkCombat(data);
       }
