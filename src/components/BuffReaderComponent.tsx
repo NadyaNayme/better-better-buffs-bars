@@ -269,8 +269,8 @@ export function BuffReaderComponent({
     if (!resolvedImagesRef.current) return;
  
     const inCombat = useStore.getState().inCombat;
-    if (!inCombat) { 
-      console.log('Not rendering overlays, user is not in combat.')
+    const combatCheck = useStore.getState().combatCheck;
+    if (!inCombat && combatCheck) { 
       return;
     }
 

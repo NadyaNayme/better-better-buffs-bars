@@ -8,7 +8,6 @@ export function useCombatMonitor() {
   const interval = useRef<number | null>(null);
 
   const checkCombat = (data: any) => {
-    console.log(data);
     const { hp, adrenaline, prayer } = data;
 
     const current = { hp, adrenaline, prayer };

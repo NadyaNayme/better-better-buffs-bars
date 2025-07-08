@@ -7,6 +7,9 @@ import SocialButtons from './SocialButtons';
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const enableCombatCheck = useStore(s => s.enableCombatCheck);
+  const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
+
   const enableAlerts = useStore(s => s.enableAlerts);
   const setEnableAlerts = useStore(s => s.setEnableAlerts);
   
@@ -64,6 +67,21 @@ const SettingsPanelComponent: React.FC = () => {
         }}
       >
         <h2>Settings</h2>
+
+        <label style={{
+            display: 'flex',
+            alignItems: 'center'
+        }}>
+          <input
+            type="checkbox"
+            checked={enableCombatCheck}
+            onChange={(e) => setEnableCombatCheck(e.target.checked)}
+            style={{
+                marginRight: '8px'
+            }}
+          />
+          Hide overlays outside of combat
+        </label>
 
         <label style={{
             display: 'flex',

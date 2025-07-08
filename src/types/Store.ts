@@ -11,9 +11,11 @@ export interface Store {
     version: number;
     cooldownColor: Color,
     timeRemainingColor: Color,
+    combatCheck: boolean,
     enableAlerts: boolean,
     alertVolume: number,
     debugMode: boolean,
+    setEnableCombatCheck: (enabled: boolean) => void;
     setEnableAlerts: (enabled: boolean) => void;
     setAlertVolume: (volume: number) => void;
     setDebugMode: (enabled: boolean) => void;
