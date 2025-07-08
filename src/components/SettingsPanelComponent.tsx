@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import useStore from '../store';
-import { SocialButtons } from './components/SocialButtons';
 import { rgbToHex } from '../lib/colorUtils';
 import type { Color } from '../types/Color';
+import SocialButtons from './SocialButtons';
 
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

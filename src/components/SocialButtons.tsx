@@ -1,4 +1,4 @@
-export function SocialButtons() {
+const SocialButtons = () => {
   return (
     <div className="flex gap-4 mt-4">
       <a
@@ -39,3 +39,4 @@ function KofiIcon({ className = '' }: { className?: string }) {
     </svg>
   );
 }
+export default SocialButtons;
