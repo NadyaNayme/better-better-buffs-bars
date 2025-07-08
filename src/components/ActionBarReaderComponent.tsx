@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import * as ActionBar from 'alt1/ability/actionbar';
+import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../hooks/useCombatMonitor';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
@@ -7,14 +7,16 @@ type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 interface ActionBarReaderProps {
   debugMode?: boolean;
   readInterval?: number;
+  a1lib: any;
 }
 
 export function ActionBarReaderComponent({
   debugMode = false,
+  a1lib,
   readInterval = 500,
 }: ActionBarReaderProps) {
   const [status, setStatus] = useState<ReaderStatus>("IDLE");
-  const readerRef = useRef<ActionBar.default | null>(null);
+  const readerRef = useRef<any | null>(null);
   const intervalRef = useRef<number | null>(null);
   const retryTimeoutRef = useRef<number | null>(null);
 
@@ -43,7 +45,7 @@ export function ActionBarReaderComponent({
 
     else if (status === "FINDING ACTION BAR") {
       try {
-        const reader = new ActionBar.default();
+        const reader = new ActionbarReader(a1lib.captureHoldFullRs());
         const found = reader.find();
         if (found) {
           readerRef.current = reader;

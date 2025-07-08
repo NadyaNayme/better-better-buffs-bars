@@ -126,6 +126,7 @@ function App() {
       )}
       <ActionBarReaderComponent 
             debugMode={debugMode}
+            a1lib={a1lib}
           />
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
