@@ -194,9 +194,23 @@ const useStore = create(
               if (recentlyUpdated) return buff;
               if (buff.isStack) return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
+                const newTime = buff.cooldownRemaining - 1;
+
+                if (newTime === buff.alertThreshold && !buff.hasAlerted && alertsMap[buff.name]) {
+                  const sound = new Audio(alertsMap[buff.name]);
+                  sound.volume = 100; //TODO: Update to let users set volume
+                  sound.play().catch(() => {});
+                  return {
+                    ...buff,
+                    timeRemaining: newTime,
+                    lastUpdated: now,
+                    hasAlerted: newTime === buff.alertThreshold ? true : false,
+                  };
+                }
+
                  return {
                   ...buff,
-                  cooldownRemaining: buff.cooldownRemaining - 1,
+                  cooldownRemaining: newTime,
                 };
               }
               return buff;
