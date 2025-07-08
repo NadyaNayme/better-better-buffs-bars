@@ -65,7 +65,7 @@ export function ActionBarReaderComponent({
             sound.volume = alertVolume / 100;
             sound.play().catch(() => {});
             hasPotted.current = true;
-        } else if (data.pray >= 0.40 && (hasPotted || hasRanOutOfPrayer)) {
+        } else if (data.pray >= 0.31 && (hasPotted || hasRanOutOfPrayer)) {
             hasPotted.current = false;
         }
     }
