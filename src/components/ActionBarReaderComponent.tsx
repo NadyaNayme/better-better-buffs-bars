@@ -45,7 +45,7 @@ export function ActionBarReaderComponent({
     console.log('Captured a region');
     const data: {hp: number, dren: number, pray: number } = await new Promise((resolve) => {
         setTimeout(() => {
-          const result = readerRef.current.readLife(captureRegion);
+          const result = readerRef.current.readLife(captureRegion, x, y);
           resolve(result);
         }, 0);
       });
