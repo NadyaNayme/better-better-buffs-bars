@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import useStore from "../store";
 
 export function useCombatMonitor() {
@@ -7,7 +7,7 @@ export function useCombatMonitor() {
   const interval = useRef<number | null>(null);
   const lastCheck = useRef<number>(0);
 
-  const checkCombat = (data: any) => {
+  const checkCombat = useCallback((data: any) => {
     const now = Date.now();
     const { hp, adrenaline, prayer } = data;
 
@@ -28,7 +28,7 @@ export function useCombatMonitor() {
       lastChange.current = now;
       lastValues.current = current;
     }
-  };
+  }, []);
 
   useEffect(() => {
     interval.current = window.setInterval(() => {
