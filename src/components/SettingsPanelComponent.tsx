@@ -92,22 +92,22 @@ const SettingsPanelComponent: React.FC = () => {
           />
         </label>
 
+        <hr />
+
         <label style={{
             display: 'flex',
             alignItems: 'center'
         }}>
+          Time Remaining Color:
           <input
-            type="checkbox"
-            checked={debugMode}
-            onChange={(e) => setDebugMode(e.target.checked)}
+            type="color"
+            value={rgbToHex(timeRemainingColor)}
+            onChange={handleColorChange(setTimeRemainingColor)}
             style={{
-                marginRight: '8px'
+                marginLeft: '8px'
             }}
           />
-          Enable Debug Mode
-        </label>
-
-        <hr />
+        </label>        
 
         <label style={{
             display: 'flex',
@@ -124,21 +124,21 @@ const SettingsPanelComponent: React.FC = () => {
           />
         </label>
 
+        <hr /> 
         <br />
-
         <label style={{
             display: 'flex',
             alignItems: 'center'
         }}>
-          Time Remaining Color:
           <input
-            type="color"
-            value={rgbToHex(timeRemainingColor)}
-            onChange={handleColorChange(setTimeRemainingColor)}
+            type="checkbox"
+            checked={debugMode}
+            onChange={(e) => setDebugMode(e.target.checked)}
             style={{
-                marginLeft: '8px'
+                marginRight: '8px'
             }}
           />
+          Enable Debug Mode
         </label>
       </div>
     </>
