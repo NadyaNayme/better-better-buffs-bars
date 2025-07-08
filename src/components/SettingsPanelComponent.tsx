@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import useStore from '../store';
-import { rgbToHex } from '../lib/colorUtils';
-import type { Color } from '../types/Color';
+import CheckboxSetting from './CheckboxSetting';
+import RangeSetting from './RangeSetting';
+import ColorSetting from './ColorSetting';
 import SocialButtons from './SocialButtons';
 
 const SettingsPanelComponent: React.FC = () => {
@@ -37,17 +38,6 @@ const SettingsPanelComponent: React.FC = () => {
 
   const togglePanel = () => setIsOpen(!isOpen);
 
-  const handleColorChange = useCallback(
-    (setter: (color: Color) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const hex = e.target.value;
-      const r = parseInt(hex.slice(1, 3), 16);
-      const g = parseInt(hex.slice(3, 5), 16);
-      const b = parseInt(hex.slice(5, 7), 16);
-      setter({ r, g, b });
-    },
-    []
-  );
-
   return (
     <>
       <button
@@ -81,108 +71,49 @@ const SettingsPanelComponent: React.FC = () => {
       >
         <h2>Settings</h2>
 
-        <label style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-          <input
-            type="checkbox"
-            checked={combatCheck}
-            onChange={(e) => setEnableCombatCheck(e.target.checked)}
-            style={{
-                marginRight: '8px'
-            }}
-          />
-          Hide overlays outside of combat
-        </label>
+        <CheckboxSetting
+          label="Hide overlays outside of combat"
+          checked={combatCheck}
+          onChange={setEnableCombatCheck}
+        />
 
-        <label style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-          <input
-            type="checkbox"
-            checked={enableAlerts}
-            onChange={(e) => setEnableAlerts(e.target.checked)}
-            style={{
-                marginRight: '8px'
-            }}
-          />
-          Enable Alerts
-        </label>
+        <CheckboxSetting
+          label="Enable Alerts"
+          checked={enableAlerts}
+          onChange={setEnableAlerts}
+        />
 
-        <label style={{
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
-          Alert Volume: {alertVolume}
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={alertVolume}
-            onChange={(e) => setAlertVolume(Number(e.target.value))}
-          />
-        </label>
+        <RangeSetting
+          label="Alert Volume"
+          value={alertVolume}
+          onChange={setAlertVolume}
+        />
 
-        <br />
-        <hr />
-        <br />
+        <br /><hr /><br />
 
-        <label style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-          Time Remaining Color:
-          <input
-            type="color"
-            value={rgbToHex(timeRemainingColor)}
-            onChange={handleColorChange(setTimeRemainingColor)}
-            style={{
-                marginLeft: '8px'
-            }}
-          />
-        </label>        
+        <ColorSetting
+          label="Time Remaining Color:"
+          value={timeRemainingColor}
+          onChange={setTimeRemainingColor}
+        />
 
-        <label style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-          Cooldown Color:
-          <input
-            type="color"
-            value={rgbToHex(cooldownColor)}
-            onChange={handleColorChange(setCooldownColor)}
-            style={{
-                marginLeft: '8px'
-            }}
-          />
-        </label>
-        <br />
-        <hr /> 
-        <br />
-        <label style={{
-            display: 'flex',
-            alignItems: 'center'
-        }}>
-          <input
-            type="checkbox"
-            checked={debugMode}
-            onChange={(e) => setDebugMode(e.target.checked)}
-            style={{
-                marginRight: '8px'
-            }}
-          />
-          Enable Debug Mode
-        </label>
-        <br />
-        <hr />
-        <br />
-        <div style={{
-            textAlign: 'center',
-            width: '100%',
-        }}>
-            <SocialButtons />
+        <ColorSetting
+          label="Cooldown Color:"
+          value={cooldownColor}
+          onChange={setCooldownColor}
+        />
+
+        <br /><hr /><br />
+
+        <CheckboxSetting
+          label="Enable Debug Mode"
+          checked={debugMode}
+          onChange={setDebugMode}
+        />
+
+        <br /><hr /><br />
+        <div style={{ textAlign: 'center', width: '100%' }}>
+          <SocialButtons />
         </div>
       </div>
     </>
