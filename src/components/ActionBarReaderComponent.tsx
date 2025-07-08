@@ -28,8 +28,8 @@ export function ActionBarReaderComponent({
   const readAbilities = useCallback(() => {
     console.log('Read Abilities callback called');
     if (readerRef.current) {
-      const { x, y, width, height } = readerRef.current;
-      const captureRegion = a1lib.capture(x, y, width, height);
+      const { captureRect } = readerRef.current;
+      const captureRegion = a1lib.capture(captureRect.x, captureRect.y, captureRect.width, captureRect.height);
       const data = readerRef.current.readLife(captureRegion, captureRegion.width, captureRegion.height);
       console.log(data);
       if (data) {
