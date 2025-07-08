@@ -28,18 +28,12 @@ export function ActionBarReaderComponent({
     const now = Date.now();
     if (now - lastRunRef.current < 1500) return;
     lastRunRef.current = now;
-  
-    const bounds = readerRef.current.bars?.[0]?.bounds;
-    if (!bounds) return;
-
-    const { x, y, width, height } = bounds;
 
     try {
     console.log('Going to attempt a capture');
-    const captureRegion = a1lib.capture(x, y, width, height);
     const data: {hp: number, dren: number, pray: number } = await new Promise((resolve) => {
         setTimeout(() => {
-          const result = readerRef.current.readLife(captureRegion);
+          const result = readerRef.current.readLife();
           resolve(result);
         }, 0);
       });
