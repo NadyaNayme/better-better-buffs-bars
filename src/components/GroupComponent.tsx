@@ -259,7 +259,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   return (
     <div className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">{group.name} {group.enabled ? '' : ' - Disabled'}</h2>
+        <h3 className="text-xl font-bold">{group.name} {group.enabled ? '' : ' - Disabled'}</h3>
         <div className="flex gap-2">
           {alt1Ready && (
             <button
