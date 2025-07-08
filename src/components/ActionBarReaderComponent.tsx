@@ -13,7 +13,7 @@ interface ActionBarReaderProps {
 export function ActionBarReaderComponent({
   debugMode = false,
   a1lib,
-  readInterval = 4000,
+  readInterval = 1000,
 }: ActionBarReaderProps) {
   const [status, setStatus] = useState<ReaderStatus>("IDLE");
   const [lifeData, setLifeData] = useState<{ hp: number; adrenaline: number; prayer: number } | null>(null);
@@ -30,7 +30,7 @@ export function ActionBarReaderComponent({
         return;
     }
     const now = Date.now();
-    if (now - lastRunRef.current < 1500) return;
+    if (now - lastRunRef.current < 1000) return;
     lastRunRef.current = now;
   
     const bounds = readerRef.current.bars?.[0]?.bounds;
@@ -42,16 +42,10 @@ export function ActionBarReaderComponent({
     isReadingRef.current = true;
     const captureRegion = a1lib.capture(x, y, width, height);
     const data: {hp: number, dren: number, pray: number } = readerRef.current.actionbarReader.read(captureRegion, x, y);
-    console.log(data);
 
     if (data) {
         checkCombat(data);
         setLifeData({
-        hp: data.hp ?? 0,
-        adrenaline: data.dren ?? 0,
-        prayer: data.pray ?? 0,
-        });
-        console.log({
         hp: data.hp ?? 0,
         adrenaline: data.dren ?? 0,
         prayer: data.pray ?? 0,
