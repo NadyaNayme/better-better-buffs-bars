@@ -24,6 +24,7 @@ export function ActionBarReaderComponent({
   const checkCombat = useCombatMonitor();
 
   const readAbilities = useCallback(() => {
+    console.log(readerRef.current);
     if (readerRef.current) {
       const { x, y, width, height } = readerRef.current;
       const captureRegion = a1lib.getRegion(x, y, width, height);
@@ -72,7 +73,7 @@ export function ActionBarReaderComponent({
       }
     }
 
-    else if (status === "READING" && intervalRef.current === null) {
+    else if (status === "READING") {
         intervalRef.current = window.setInterval(readAbilities, readInterval);
     }
 
