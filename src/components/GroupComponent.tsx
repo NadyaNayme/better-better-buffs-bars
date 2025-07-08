@@ -11,9 +11,11 @@ interface GroupComponentProps {
   group: Group;
   a1lib: any;
   alt1Ready: any;
+  inCombat: boolean;
+  combatCheck: boolean;
 }
 
-const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready  }) => {
+const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck }) => {
   const { cooldownColor, timeRemainingColor } = useStore();
   const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
@@ -62,7 +64,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
 
   useEffect(() => {
     if (!alt1Ready || !a1lib || !window.alt1) return;
-    if (!group.enabled) {
+    if (!group.enabled || !inCombat && combatCheck) {
       window.alt1.overLayClearGroup(`region${group.id}`);
       window.alt1.overLayRefreshGroup(`region${group.id}`);
       group.buffs.forEach(buff => {
@@ -239,7 +241,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
       }
     }
 
-  }, [alt1Ready, a1lib, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, group.buffs]);
+  }, [alt1Ready, a1lib, inCombat, combatCheck, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, group.buffs]);
 
   const onDragEnd = (event: any) => {
     const { active, over } = event;

@@ -27,7 +27,9 @@ function App() {
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
   const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
-  const { debugMode } = useStore();
+  const inCombat = useStore((state: any) => state.inCombat);
+  const combatCheck = useStore((state: any) => state.combatCheck);
+  const debugMode = useStore((state: any) => state.debugMode);
 
   const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
     syncIdentifiedBuffs(foundBuffsMap);
@@ -106,7 +108,7 @@ function App() {
 
       <div className="space-y-8">
         {groups.map((group: any) => (
-          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} />
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} />
         ))}
       </div>
       <CooldownTimer/>
