@@ -102,13 +102,6 @@ export function ActionBarReaderComponent({
         <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
           <p style={{ margin: 0, fontWeight: 'bold' }}>Action Bar Reader</p>
           <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
-          {lifeData && (
-            <div style={{ fontSize: '0.9em', marginTop: '4px' }}>
-              <p style={{ margin: 0 }}>HP: {lifeData.hp}</p>
-              <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline}</p>
-              <p style={{ margin: 0 }}>Prayer: {lifeData.prayer}</p>
-            </div>
-          )}
         </div>
         {status === "ERROR" && (
           <div style={{ color: "red" }}>Error finding Action Bar. Please restart overlay.</div>
