@@ -38,7 +38,7 @@ export function ActionBarReaderComponent({
           });
       }
     }
-  }, [checkCombat]);
+  }, []);
 
   useEffect(() => {
     const cleanup = () => {
