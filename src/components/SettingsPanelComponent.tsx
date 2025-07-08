@@ -6,18 +6,20 @@ import type { Color } from '../types/Color';
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    enableAlerts,
-    alertVolume,
-    debugMode,
-    cooldownColor,
-    timeRemainingColor,
-    setEnableAlerts,
-    setAlertVolume,
-    setDebugMode,
-    setCooldownColor,
-    setTimeRemainingColor,
-  } = useStore();
+  const enableAlerts = useStore(s => s.enableAlerts);
+  const setEnableAlerts = useStore(s => s.setEnableAlerts);
+  
+  const alertVolume = useStore(s => s.alertVolume);
+  const setAlertVolume = useStore(s => s.setAlertVolume);
+  
+  const debugMode = useStore(s => s.debugMode);
+  const setDebugMode = useStore(s => s.setDebugMode);
+  
+  const cooldownColor = useStore(s => s.cooldownColor);
+  const setCooldownColor = useStore(s => s.setCooldownColor);
+  
+  const timeRemainingColor = useStore(s => s.timeRemainingColor);
+  const setTimeRemainingColor = useStore(s => s.setTimeRemainingColor);
 
   const togglePanel = () => setIsOpen(!isOpen);
 
@@ -61,18 +63,25 @@ const SettingsPanelComponent: React.FC = () => {
       >
         <h2>Settings</h2>
 
-        <label>
+        <label style={{
+            display: 'flex',
+            alignItems: 'center'
+        }}>
           <input
             type="checkbox"
             checked={enableAlerts}
             onChange={(e) => setEnableAlerts(e.target.checked)}
+            style={{
+                marginRight: '8px'
+            }}
           />
           Enable Alerts
         </label>
 
-        <br />
-
-        <label>
+        <label style={{
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
           Alert Volume: {alertVolume}
           <input
             type="range"
@@ -83,36 +92,52 @@ const SettingsPanelComponent: React.FC = () => {
           />
         </label>
 
-        <br />
-
-        <label>
+        <label style={{
+            display: 'flex',
+            alignItems: 'center'
+        }}>
           <input
             type="checkbox"
             checked={debugMode}
             onChange={(e) => setDebugMode(e.target.checked)}
+            style={{
+                marginRight: '8px'
+            }}
           />
           Enable Debug Mode
         </label>
 
         <hr />
 
-        <label>
+        <label style={{
+            display: 'flex',
+            alignItems: 'center'
+        }}>
           Cooldown Color:
           <input
             type="color"
             value={rgbToHex(cooldownColor)}
             onChange={handleColorChange(setCooldownColor)}
+            style={{
+                marginLeft: '8px'
+            }}
           />
         </label>
 
         <br />
 
-        <label>
+        <label style={{
+            display: 'flex',
+            alignItems: 'center'
+        }}>
           Time Remaining Color:
           <input
             type="color"
             value={rgbToHex(timeRemainingColor)}
             onChange={handleColorChange(setTimeRemainingColor)}
+            style={{
+                marginLeft: '8px'
+            }}
           />
         </label>
       </div>
