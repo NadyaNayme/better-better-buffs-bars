@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import ActionbarReader from 'alt1/ability';
+import ActionbarReader from 'alt1/ability/actionbar';
 import { useCombatMonitor } from '../hooks/useCombatMonitor';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
@@ -24,7 +24,7 @@ export function ActionBarReaderComponent({
 
   const readAbilities = useCallback(() => {
     if (readerRef.current) {
-      const data = readerRef.current.readLife();
+      const data = readerRef.current.read();
       if (data && Array.isArray(data)) {
         checkCombat(data);
       }
@@ -45,7 +45,7 @@ export function ActionBarReaderComponent({
 
     else if (status === "FINDING ACTION BAR") {
       try {
-        const reader = new ActionbarReader(a1lib.captureHoldFullRs());
+        const reader = new ActionbarReader();
         const found = reader.find();
         if (found) {
           readerRef.current = reader;
