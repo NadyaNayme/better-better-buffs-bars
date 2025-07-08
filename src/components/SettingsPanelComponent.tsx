@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import useStore from '../store';
 import { rgbToHex } from '../lib/colorUtils';
 import type { Color } from '../types/Color';
@@ -7,33 +7,46 @@ import SocialButtons from './SocialButtons';
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const combatCheck = useStore(s => s.combatCheck);
-  const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
-
-  const enableAlerts = useStore(s => s.enableAlerts);
-  const setEnableAlerts = useStore(s => s.setEnableAlerts);
-  
-  const alertVolume = useStore(s => s.alertVolume);
-  const setAlertVolume = useStore(s => s.setAlertVolume);
-  
-  const debugMode = useStore(s => s.debugMode);
-  const setDebugMode = useStore(s => s.setDebugMode);
-  
-  const cooldownColor = useStore(s => s.cooldownColor);
-  const setCooldownColor = useStore(s => s.setCooldownColor);
-  
-  const timeRemainingColor = useStore(s => s.timeRemainingColor);
-  const setTimeRemainingColor = useStore(s => s.setTimeRemainingColor);
+  const {
+    combatCheck,
+    setEnableCombatCheck,
+    enableAlerts,
+    setEnableAlerts,
+    alertVolume,
+    setAlertVolume,
+    debugMode,
+    setDebugMode,
+    cooldownColor,
+    setCooldownColor,
+    timeRemainingColor,
+    setTimeRemainingColor,
+  } = useStore(state => ({
+    combatCheck: state.combatCheck,
+    setEnableCombatCheck: state.setEnableCombatCheck,
+    enableAlerts: state.enableAlerts,
+    setEnableAlerts: state.setEnableAlerts,
+    alertVolume: state.alertVolume,
+    setAlertVolume: state.setAlertVolume,
+    debugMode: state.debugMode,
+    setDebugMode: state.setDebugMode,
+    cooldownColor: state.cooldownColor,
+    setCooldownColor: state.setCooldownColor,
+    timeRemainingColor: state.timeRemainingColor,
+    setTimeRemainingColor: state.setTimeRemainingColor,
+  }));
 
   const togglePanel = () => setIsOpen(!isOpen);
 
-  const handleColorChange = (setter: (color: Color) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const hex = e.target.value;
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    setter({ r, g, b });
-  };
+  const handleColorChange = useCallback(
+    (setter: (color: Color) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      const hex = e.target.value;
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      setter({ r, g, b });
+    },
+    []
+  );
 
   return (
     <>
