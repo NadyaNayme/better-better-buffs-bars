@@ -12,6 +12,7 @@ import Debug from './components/Debug';
 import { type Group } from './types/Group';
 import GroupComponent from './components/GroupComponent';
 import SettingsPanelComponent from './components/SettingsPanelComponent';
+import { ActionBarReaderComponent } from './components/ActionBarReaderComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -123,6 +124,9 @@ function App() {
           <ThresholdEditor/>
         </>
       )}
+      <ActionBarReaderComponent 
+            debugMode={debugMode}
+          />
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
             debugMode={debugMode}

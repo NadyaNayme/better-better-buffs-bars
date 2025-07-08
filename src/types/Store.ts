@@ -17,6 +17,8 @@ export interface Store {
     setEnableAlerts: (enabled: boolean) => void;
     setAlertVolume: (volume: number) => void;
     setDebugMode: (enabled: boolean) => void;
+    inCombat: boolean,
+    setInCombat: (value: boolean) => void;
     setVersion: (version: number) => void;
     setBuffsFromJsonIfNewer: () => void;
     syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;

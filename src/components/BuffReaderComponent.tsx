@@ -267,7 +267,13 @@ export function BuffReaderComponent({
 
   const processReaderData = useCallback((detectedBuffs: any[]) => {
     if (!resolvedImagesRef.current) return;
-  
+ 
+    const inCombat = useStore.getState().inCombat;
+    if (!inCombat) { 
+      console.log('Not rendering overlays, user is not in combat.')
+      return;
+    }
+
     const groups = useStore.getState().groups;
     const allBuffs = useStore.getState().buffs;
   

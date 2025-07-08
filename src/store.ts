@@ -49,6 +49,8 @@ const useStore = create(
       setEnableAlerts: (enabled: boolean) => set({ enableAlerts: enabled }),
       setAlertVolume: (volume: number) => set({ alertVolume: volume }),
       setDebugMode: (enabled: boolean) => set({ debugMode: enabled }),
+      inCombat: false,
+      setInCombat: (value: boolean) => set({ inCombat: value }),
       setBuffsFromJsonIfNewer: () => {
         const version = get().version;
         const jsonVersion = buffsData.version;
