@@ -92,7 +92,9 @@ const SettingsPanelComponent: React.FC = () => {
           />
         </label>
 
+        <br />
         <hr />
+        <br />
 
         <label style={{
             display: 'flex',
@@ -123,7 +125,7 @@ const SettingsPanelComponent: React.FC = () => {
             }}
           />
         </label>
-
+        <br />
         <hr /> 
         <br />
         <label style={{
