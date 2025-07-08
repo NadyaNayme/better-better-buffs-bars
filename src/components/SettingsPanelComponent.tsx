@@ -35,8 +35,8 @@ const SettingsPanelComponent: React.FC = () => {
         onClick={togglePanel}
         style={{
           position: 'fixed',
-          top: '1rem',
-          left: '1rem',
+          bottom: '1rem',
+          right: '1rem',
           zIndex: 1000,
         }}
       >

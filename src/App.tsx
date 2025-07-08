@@ -117,7 +117,7 @@ function App() {
         title={modalContext === 'group' ? 'Enter Group Name' : 'Enter Profile Name'}
         placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
       />
-      (debugMode && {
+      {(debugMode && 
         <>
       <Debug />
       <BuffReaderComponent 
@@ -129,7 +129,7 @@ function App() {
       />
       <ThresholdEditor/>
       </>
-      })
+      )}
     </div>
   );
 }
