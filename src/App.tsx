@@ -26,7 +26,6 @@ function App() {
   const syncGroupBuffs = useStore((state: any) => state.syncGroupBuffs);
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
-  const setInCombat = useStore((state: any) => state.setInCombat);
   const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
   const inCombat = useStore((state: any) => state.inCombat);
   const combatCheck = useStore((state: any) => state.combatCheck);
@@ -35,10 +34,6 @@ function App() {
   const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
     syncIdentifiedBuffs(foundBuffsMap);
   }, [syncIdentifiedBuffs]);
-
-  const onCombatCheck = useCallback((inCombat: boolean) => {
-    setInCombat(inCombat);
-  }, [setInCombat]);
 
   const openModalForGroup = () => {
     setModalContext('group');
