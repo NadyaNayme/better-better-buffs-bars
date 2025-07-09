@@ -1,5 +1,5 @@
 {
-  "version": 87,
+  "version": 88,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -332,8 +332,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
-      "noNumberDisplay": true,
-      "isUtility": true
+      "noNumberDisplay": true
     },
     {
       "name": "Bonfire Boost",
@@ -1395,8 +1394,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
-      "noNumberDisplay": true,
-      "isUtility": true
+      "noNumberDisplay": true
     },
     {
       "name": "Weapon Poison",
