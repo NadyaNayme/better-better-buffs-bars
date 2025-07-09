@@ -79,7 +79,7 @@ function clearAllDebuffs(lastDetectedRef: any) {
   return cleared;
 }
 
-export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {readInterval: number, debugMode: boolean}) => {
+export const TargetMobReaderComponent = ({ readInterval = 100, debugMode }: {readInterval: number, debugMode: boolean}) => {
   const [{ status, error }, dispatch] = useReducer(reducer, initialState);
   const {
     lastMobNameplatePos,
