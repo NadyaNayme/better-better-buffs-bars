@@ -136,31 +136,6 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
     if (status === 'IDLE') {
       loadImages();
     }
-  }, [status, loadImages]);
-
-  useEffect(() => {
-    if (status !== "LOADING_IMAGES") return;
-  
-    const loadImages = async () => {
-      try {
-        const loadedModules = await Promise.all(Object.values(enemyDebuffImages));
-        const resolvedMap = new Map<string, any>();
-        Object.keys(enemyDebuffImages).forEach((name, index) => {
-          resolvedMap.set(name, loadedModules[index]);
-        });
-        resolvedImagesRef.current = resolvedMap;
-        debugLog(`✅ Enemy Debuff reference images loaded successfully.`)
-        dispatch({ type: "IMAGES_LOADED" });
-      } catch (error) {
-        console.error("Failed to load images:", error);
-        dispatch({ type: "ERROR" });
-      }
-    };
-  
-    loadImages();
-  }, [status]);
-
-  useEffect(() => {
     if (status === 'FINDING_NAMEPLATE') {
       const interval = setInterval(() => findTargetPosition(), 2000);
       return () => clearInterval(interval);
@@ -171,16 +146,15 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
       return () => clearInterval(intervalRef.current);
     }
     return () => {
-      if (intervalRef.current !== 0) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = 0;
-      }
+      clearInterval(intervalRef.current);
+      intervalRef.current = 0;
+      debugLog('[Target Mob Reader] Clearing read interval.');
     };
-  }, [status, findTargetPosition, readTarget, readInterval]);
+  }, [status, loadImages, findTargetPosition, readTarget, readInterval]);
 
   const handleScanClick = () => {
     setLastMobNameplatePos(null);
-    dispatch({ type: 'FINDING_NAMEPLATE' });
+    dispatch({ type: 'LOADED_IMAGES' });
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) syncIdentifiedBuffs(cleared);
   };
