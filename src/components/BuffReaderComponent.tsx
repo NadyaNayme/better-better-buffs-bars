@@ -99,6 +99,7 @@ import Stunned from '../assets/data/Stunned.data.png';
 import Sunshine from '../assets/data/Sunshine.data.png';
 import SuperAntifire from '../assets/data/Super_Anti-Fire_Active.data.png';
 import SupremeOverload from '../assets/data/supreme_overload.data.png';
+import TemporalAnomaly from '../assets/data/Temporal_Anomaly.data.png';
 import ThreadsOfFate from '../assets/data/Threads_of_Fate.data.png';
 import TimeRift from '../assets/data/Time_rift.data.png';
 import Torment from '../assets/data/Torment.data.png';
@@ -207,6 +208,7 @@ const buffImagePromises = {
   'Sunshine': Sunshine,
   'Super Antifire': SuperAntifire,
   'Supreme Overload': SupremeOverload,
+  'Temporal Anomaly': TemporalAnomaly,
   'Threads of Fate': ThreadsOfFate,
   'Time Rift': TimeRift,
   'Torment': Torment,
