@@ -43,35 +43,19 @@ function enemyDebuffDetection({
   if (!image) return;
 
   const isDetected = captureRegion.findSubimage(image).length > 0;
-  const previouslyDetected = lastDetectedRef.current[name] ?? false;
-
-  if (isDetected) {
-    useStore.getState().syncIdentifiedBuffs(
-      new Map([
-        [
-          name,
-          {
-            name,
-            isActive: true,
-          },
-        ],
-      ])
-    );
-  } else if (previouslyDetected) {
-    useStore.getState().syncIdentifiedBuffs(
-      new Map([
-        [
-          name,
-          {
-            name,
-            isActive: false
-          },
-        ],
-      ])
-    );
-  }
-
   lastDetectedRef.current[name] = isDetected;
+
+  useStore.getState().syncIdentifiedBuffs(
+    new Map([
+      [
+        name,
+        {
+          name,
+          isActive: isDetected,
+        },
+      ],
+    ])
+  );
 }
 
   export const TargetMobReaderComponent = ({ readInterval = 1000, debugMode, a1lib }: TargetMobReaderProps) => {
@@ -105,21 +89,20 @@ function enemyDebuffDetection({
     
       const result = readerRef.current.read();
       if (!result || !readerRef.current.lastpos) {
-        // Clear all debuffs if no valid target found
-        ['Bloat', 'Death Mark', 'Vulnerability'].forEach(name => {
-          if (lastDetectedRef.current[name]) {
-            lastDetectedRef.current[name] = false;
-            useStore.getState().syncIdentifiedBuffs(
-              new Map([
-                [name, { name, isActive: false }]
-              ])
-            );
-          }
+        useStore.getState().syncIdentifiedBuffs(
+          new Map(
+            Object.keys(enemyDebuffImages).map(name => [
+              name,
+              { name, isActive: false }
+            ])
+          )
+        );
+        Object.keys(enemyDebuffImages).forEach(name => {
+          lastDetectedRef.current[name] = false;
         });
         return;
       }
     
-      // Update state since we have a valid read
       state.current.hp = result.hp;
       state.current.name = result.name;
       setLastMobNameplatePos(readerRef.current.lastpos);
@@ -138,11 +121,18 @@ function enemyDebuffDetection({
         target_display_loc.h
       );
     
-      // Run debuff detections
       enemyDebuffDetection({ name: 'Bloat', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
       enemyDebuffDetection({ name: 'Death Mark', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
       enemyDebuffDetection({ name: 'Vulnerability', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
     
+    }, []);
+
+    useEffect(() => {
+      lastDetectedRef.current = {
+        'Bloat': false,
+        'Death Mark': false,
+        'Vulnerability': false,
+      };
     }, []);
   
     useEffect(() => {
