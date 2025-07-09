@@ -539,7 +539,7 @@ const useStore = create(
       lastMobNameplatePos: null,
       targetReaderStatus: "IDLE",
       setTargetReaderStatus: (status: string) => set({ targetReaderStatus: status }),
-      setLastMobNameplatePos: (pos: a1lib.PointLike) => set({ lastMobNameplatePos: pos })
+      setLastMobNameplatePos: (pos: a1lib.PointLike | null) => set({ lastMobNameplatePos: pos })
     }),
     {
       name: 'buff-tracker-storage',
@@ -556,7 +556,7 @@ const useStore = create(
         alertVolume: state.alertVolume,
         debugMode: state.debugMode,
         combatCheck: state.combatCheck,
-        lastMobNameplatePos: state.lastMobNameplatePos,
+        lastMobNameplatePos: state.lastMobNameplatePos
       }),
     } as PersistOptions<Store>
   )

@@ -106,7 +106,11 @@ interface TargetMobReaderComponent {
   
     useEffect(() => {
         if (targetReaderStatus === "IDLE") {
-          findTargetPosition();
+          if (lastMobNameplatePos === null) {
+            findTargetPosition();
+          } else {
+            setTargetReaderStatus("LOADING IMAGES");
+          }
         } else if (targetReaderStatus === "LOADING IMAGES") {
             const loadImages = async () => {
               const imageNames = Object.keys(enemyDebuffImages);
