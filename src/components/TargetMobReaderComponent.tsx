@@ -54,6 +54,19 @@ function getDebuffUpdates({
   return updates.size > 0 ? updates : null;
 }
 
+function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean>>): Map<string, { name: string; isActive: boolean }> {
+  const cleared = new Map<string, { name: string; isActive: boolean }>();
+
+  for (const name of Object.keys(enemyDebuffImages)) {
+    if (lastDetectedRef.current[name] !== false) {
+      lastDetectedRef.current[name] = false;
+      cleared.set(name, { name, isActive: false });
+    }
+  }
+
+  return cleared;
+}
+
   export const TargetMobReaderComponent = ({ readInterval = 300, debugMode, a1lib }: TargetMobReaderProps) => {
     const {
       lastMobNameplatePos,
@@ -141,6 +154,11 @@ function getDebuffUpdates({
         
         if (debuffUpdates) {
           syncIdentifiedBuffs(debuffUpdates);
+        }
+      } else if (resolvedImagesRef.current) {
+        const cleared = clearAllDebuffs(lastDetectedRef);
+        if (cleared.size > 0) {
+          syncIdentifiedBuffs(cleared);
         }
       }
         
