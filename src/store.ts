@@ -106,8 +106,8 @@ const useStore = create(
                     timeRemaining: activeInfo.time,
                     imageData: activeInfo.foundChild.imageData,
                     desaturatedImageData: activeInfo.foundChild.desaturatedImageData,
-                    scaledImageData: '',
-                    scaledDesaturatedImageData: '',
+                    scaledImageData: activeInfo.foundChild.scaledImageData,
+                    scaledDesaturatedImageData: activeInfo.foundChild.scaledDesaturatedImageData,
                     inactiveCount: 0,
                     lastUpdated: now,
                   };
@@ -306,34 +306,71 @@ const useStore = create(
           }),
         }));
         if (updates.scale !== undefined) {
-          const groupToProcess = get().groups.find(g => g.id === id);
+          const state = get();
+          const groupToProcess = state.groups.find(g => g.id === id);
           if (!groupToProcess) return;
-
+        
           const newScaleDecimal = updates.scale / 100.0;
-
-          const resizePromises = groupToProcess.buffs.map(async (buff) => {
-            const scaledPromise = buff.imageData
-              ? resizedataURL(buff.imageData, newScaleDecimal)
-              : Promise.resolve(null);
-              
-            const desaturatedPromise = buff.desaturatedImageData
-              ? resizedataURL(buff.desaturatedImageData, newScaleDecimal)
-              : Promise.resolve(null);
-
-            const [scaledResult, desaturatedResult] = await Promise.all([scaledPromise, desaturatedPromise]);
-
+          const updatedBuffsSet = new Map<string, any>();
+        
+          // Step 1: Resize main buffs in group
+          const resizedBuffs = await Promise.all(
+            groupToProcess.buffs.map(async (buff) => {
+              const scaled = buff.imageData
+                ? await resizedataURL(buff.imageData, newScaleDecimal)
+                : null;
+        
+              const desat = buff.desaturatedImageData
+                ? await resizedataURL(buff.desaturatedImageData, newScaleDecimal)
+                : null;
+        
+              const updatedBuff = {
+                ...buff,
+                scaledImageData: scaled?.scaledDataUrl ?? '',
+                scaledDesaturatedImageData: desat?.scaledDataUrl ?? '',
+              };
+        
+              updatedBuffsSet.set(buff.name, updatedBuff);
+        
+              // Step 2: If Meta, resize all children (but do NOT update group)
+              if (buff.buffType === 'Meta' && Array.isArray(buff.childBuffNames)) {
+                for (const childName of buff.childBuffNames) {
+                  const globalBuff = state.buffs.find(b => b.name === childName);
+                  if (!globalBuff) continue;
+        
+                  const scale = newScaleDecimal; // Use Meta's group scale
+                  const childScaled = globalBuff.imageData
+                    ? await resizedataURL(globalBuff.imageData, scale)
+                    : null;
+                  const childDesat = globalBuff.desaturatedImageData
+                    ? await resizedataURL(globalBuff.desaturatedImageData, scale)
+                    : null;
+        
+                  const updatedChild = {
+                    ...globalBuff,
+                    scaledImageData: childScaled?.scaledDataUrl ?? '',
+                    scaledDesaturatedImageData: childDesat?.scaledDataUrl ?? '',
+                  };
+        
+                  updatedBuffsSet.set(childName, updatedChild);
+                }
+              }
+        
+              return updatedBuff;
+            })
+          );
+        
+          // Step 3: Commit updates to state
+          set((prevState) => {
             return {
-              ...buff,
-              scaledImageData: scaledResult?.scaledDataUrl ?? '',
-              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
+              groups: prevState.groups.map(g =>
+                g.id === id ? { ...g, buffs: resizedBuffs } : g
+              ),
+              buffs: prevState.buffs.map(b =>
+                updatedBuffsSet.has(b.name) ? updatedBuffsSet.get(b.name)! : b
+              ),
             };
           });
-
-          const resizedBuffs = await Promise.all(resizePromises);
-
-          set((state) => ({
-            groups: state.groups.map(g => (g.id === id ? { ...g, buffs: resizedBuffs } : g)),
-          }));
         }
       },
       rescaleAllGroupsOnLoad: async () => {
