@@ -30,7 +30,6 @@ const PopupModal: React.FC<PopupModalProps> = ({
     if (inputValue.trim()) {
       onSubmit(inputValue.trim());
       onClose();
-      toast.success(`${title} Created`);
     } else {
       alert('Name cannot be empty.');
     }

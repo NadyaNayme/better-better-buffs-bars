@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import useStore from '../store';
 import ConfirmModal from './ConfirmModal';
 import type { Group } from '../types/Group';
+import { toast } from 'sonner';
 
 interface EditGroupModalComponentProps {
   group: Group;
@@ -26,6 +27,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
 
   const handleDelete = () => {
     deleteGroup(group.id);
+    toast.info(`Group ${group.name} Deleted`);
     onClose();
   };
 

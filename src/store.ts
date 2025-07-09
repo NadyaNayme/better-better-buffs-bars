@@ -267,6 +267,7 @@ const useStore = create(
           activeProfile: state.activeProfile === id ? null : state.activeProfile,
           groups: state.activeProfile === id ? [] : state.groups,
         }));
+        toast.info(`Profile Deleted`);
       },
       editProfile: (id, newName) => {
         set((state) => ({
