@@ -13,7 +13,7 @@ const enemyDebuffImages = {
     'Vulnerability': Vulnerability,
 }
 
-type ReaderStatus = "LOADING IMAGES" | "READING" | "ERROR";
+type ReaderStatus = "IDLE" | "LOADING IMAGES" | "FINDING NAMEPLATE" | "READING" | "ERROR";
 
 interface TargetMobReaderProps {
     debugMode: boolean;
@@ -177,10 +177,12 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
   
     useEffect(() => {
       if (targetReaderStatus === "IDLE") {
-        if (!resolvedImagesRef.current) {
+        if (lastMobNameplatePos) {
+          setTargetReaderStatus("READING");
+        } else if (!resolvedImagesRef.current) {
           setTargetReaderStatus("LOADING IMAGES");
         } else {
-          setTargetReaderStatus("READING");
+          setTargetReaderStatus("FINDING NAMEPLATE");
         }
       }
       if (targetReaderStatus === "LOADING IMAGES" && !resolvedImagesRef.current) {
@@ -217,8 +219,35 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
       };
     }, [targetReaderStatus, readInterval, readTarget, setTargetReaderStatus]);
 
+    useEffect(() => {
+      if (targetReaderStatus !== "FINDING NAMEPLATE") return;
+    
+      const interval = setInterval(() => {
+        const result = readerRef.current.read();
+        if (result) {
+          console.log("[Nameplate] Found target:", result.name);
+          setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
+          setLastMobNameplatePos(readerRef.current.lastpos);
+          setTargetReaderStatus("READING");
+        } else {
+          console.log("[Nameplate] Still searching...");
+        }
+      }, 3000);
+    
+      return () => clearInterval(interval);
+    }, [targetReaderStatus, setLastMobNameplatePos, setTargetReaderStatus]);
+
     const handleScanClick = () => {
       setLastMobNameplatePos(null);
+      for (const name of Object.keys(enemyDebuffImages)) {
+        lastDetectedRef.current[name] = false;
+      }
+    
+      const cleared = new Map<string, { name: string; isActive: boolean }>();
+      for (const name of Object.keys(enemyDebuffImages)) {
+        cleared.set(name, { name, isActive: false });
+      }
+      syncIdentifiedBuffs(cleared);
       if (!resolvedImagesRef.current) {
         setTargetReaderStatus("LOADING IMAGES");
       } else {
