@@ -79,7 +79,6 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
   
     const [targetData, setTargetData] = useState<{ hp: number | string; name: string }>({ hp: 'Not Found', name: 'Not Found' });
     const readerRef = useRef<TargetMobReader>(new TargetMobReader());
-    const intervalRef = useRef<number | null>(null);
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
 
     const lastDetectedRef = useRef<Record<string, boolean>>({});
@@ -207,22 +206,20 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
             }
           };
           loadImages();
-      } else if (targetReaderStatus === "READING" && intervalRef.current === null) {
-        debugLog("[Target Reader] Starting read interval...");
-        intervalRef.current = setInterval(readTarget, readInterval);
-      } else if (targetReaderStatus !== "READING" && intervalRef.current !== null) {
-        debugLog("[Target Reader] Clearing read interval.");
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
       }
+    }, [targetReaderStatus, readInterval, readTarget, setTargetReaderStatus]);
+
+    useEffect(() => {
+      if (targetReaderStatus !== "READING") return;
+    
+      debugLog("[Target Reader] Starting dedicated read interval...");
+      const id = setInterval(readTarget, readInterval);
     
       return () => {
-        if (intervalRef.current !== null) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
+        debugLog("[Target Reader] Cleaning up read interval.");
+        clearInterval(id);
       };
-    }, [targetReaderStatus, readInterval, readTarget, setTargetReaderStatus]);
+    }, [targetReaderStatus, readInterval, readTarget]);
 
     useEffect(() => {
       if (targetReaderStatus !== "FINDING NAMEPLATE") return;
