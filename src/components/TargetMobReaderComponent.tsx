@@ -44,17 +44,22 @@ interface TargetMobReaderComponent {
     const findTargetPosition = useCallback(() => {
       setTargetReaderStatus("FINDING NAMEPLATE");
   
-      const newPos = readerRef.current.read();
-      if (newPos) {
-        state.current.hp = newPos.hp;
-        state.current.name = newPos.name;
+      const result = readerRef.current.read();
+      if (result) {
+        state.current.hp = result.hp;
+        state.current.name = result.name;
         setLastMobNameplatePos(readerRef.current.lastpos);
         setTargetReaderStatus("READING");
       }
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
     const readTarget = useCallback(() => {
-      const result = readerRef.current.read();
+        const result = readerRef.current.read();
+        if (result) {
+          state.current.hp = result.hp;
+          state.current.name = result.name;
+          setLastMobNameplatePos(readerRef.current.lastpos);
+        }
 
       if (readerRef.current.lastpos && state.current?.name) {
         const target_display_loc = {
