@@ -29,7 +29,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     }
   
     setIsUpdatingPosition(true);
-    window.alt1.setTooltip('Press Alt+1 to save position');
+    window.alt1.setTooltip("Press Alt+1 (or Alt1's main hotkey if rebound) to save position");
   
     let alt1Pressed = false;
     const alt1Listener = () => {
