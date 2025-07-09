@@ -36,18 +36,36 @@ function reducer(state: any, action: {status?: any, error?: any, type: any}) {
   }
 }
 
-function getDebuffUpdates({ imageMap, captureRegion, lastDetectedRef }: {imageMap: any, captureRegion: any, lastDetectedRef: any}) {
-  const updates = new Map();
+function getDebuffUpdates({
+  imageMap,
+  captureRegion,
+  lastDetectedRef,
+}: {
+  imageMap: Map<string, any>;
+  captureRegion: any;
+  lastDetectedRef: React.RefObject<Record<string, boolean>>;
+}): Map<string, { name: string; isActive: boolean; time: number }> {
+  const updates = new Map<string, { name: string; isActive: boolean; time: number }>();
+
   for (const name of Object.keys(enemyDebuffImages)) {
     const image = imageMap.get(name);
     if (!image) continue;
+
     const isDetected = captureRegion.findSubimage(image).length > 0;
-    if (isDetected !== lastDetectedRef.current[name]) {
-      lastDetectedRef.current[name] = isDetected;
-      updates.set(name, { name, isActive: isDetected, time: 3000 });
+    const previouslyDetected = lastDetectedRef.current[name] ?? false;
+
+    lastDetectedRef.current[name] = isDetected;
+
+    if (isDetected !== previouslyDetected) {
+      updates.set(name, {
+        name,
+        isActive: isDetected,
+        time: isDetected ? 3000 : 0,
+      });
     }
   }
-  return updates.size > 0 ? updates : null;
+
+  return updates;
 }
 
 function clearAllDebuffs(lastDetectedRef: any) {
