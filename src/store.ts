@@ -256,6 +256,7 @@ const useStore = create(
                 };
               }
               if (buff.isStack) return buff;
+              if (buff.buffType === "Enemy Debuff") return buff;
               if (buff.cooldownRemaining && buff.cooldownRemaining > 0 && buff.cooldownRemaining < 60) {
                 const newTime = buff.cooldownRemaining - 1;
                  return {
