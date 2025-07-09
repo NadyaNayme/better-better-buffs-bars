@@ -32,7 +32,7 @@ export function useCombatMonitor() {
 
   useEffect(() => {
     interval.current = window.setInterval(() => {
-      if (Date.now() - lastChange.current > 2500) {
+      if (Date.now() - lastChange.current > 3500) {
         useStore.getState().setInCombat(false);
       }
     }, 500);
