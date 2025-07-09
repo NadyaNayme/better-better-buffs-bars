@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
 import TargetMobReader from 'alt1/targetmob';
 import useStore from '../store';
 import a1lib from 'alt1';
@@ -28,7 +28,7 @@ interface TargetMobReaderComponent {
     setLastMobNameplatePos: (pos: a1lib.PointLike | null) => void;
 }
 
-function detectAllEnemyDebuffs({
+function getDebuffUpdates({
   imageMap,
   captureRegion,
   lastDetectedRef,
@@ -36,8 +36,8 @@ function detectAllEnemyDebuffs({
   imageMap: Map<string, any>;
   captureRegion: any;
   lastDetectedRef: React.RefObject<Record<string, boolean>>;
-}) {
-  const updates: [string, { name: string; isActive: boolean }][] = [];
+}): Map<string, { name: string; isActive: boolean }> | null {
+  const updates = new Map<string, { name: string; isActive: boolean }>();
 
   for (const name of Object.keys(enemyDebuffImages)) {
     const image = imageMap.get(name);
@@ -47,20 +47,11 @@ function detectAllEnemyDebuffs({
 
     if (isDetected !== lastDetectedRef.current[name]) {
       lastDetectedRef.current[name] = isDetected;
-
-      updates.push([
-        name,
-        {
-          name,
-          isActive: isDetected,
-        },
-      ]);
+      updates.set(name, { name, isActive: isDetected });
     }
   }
 
-  if (updates.length > 0) {
-    useStore.getState().syncIdentifiedBuffs(new Map(updates));
-  }
+  return updates.size > 0 ? updates : null;
 }
 
   export const TargetMobReaderComponent = ({ readInterval = 300, debugMode, a1lib }: TargetMobReaderProps) => {
@@ -69,9 +60,10 @@ function detectAllEnemyDebuffs({
       setLastMobNameplatePos,
       targetReaderStatus,
       setTargetReaderStatus,
+      syncIdentifiedBuffs,
     } = useStore();
   
-    const state = useRef<{ hp: number; name: string }>({ hp: 0, name: '' });
+    const [targetData, setTargetData] = useState<{ hp: number | string; name: string }>({ hp: 'Not Found', name: 'Not Found' });
     const readerRef = useRef<TargetMobReader>(new TargetMobReader());
     const intervalRef = useRef<number | null>(null);
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
@@ -83,8 +75,8 @@ function detectAllEnemyDebuffs({
   
       const result = readerRef.current.read();
       if (result) {
-        state.current.hp = result.hp;
-        state.current.name = result.name;
+        targetData.hp = result.hp;
+        targetData.name = result.name;
         setLastMobNameplatePos(readerRef.current.lastpos);
       }
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
@@ -93,15 +85,16 @@ function detectAllEnemyDebuffs({
       const result = readerRef.current.read();
     
       if (result) {
-        state.current.hp = result.hp ?? '';
-        state.current.name = result.name ?? '';
+        setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
         setLastMobNameplatePos(readerRef.current.lastpos);
       }
+
+      const currentPos = readerRef.current.lastpos ?? lastMobNameplatePos;
     
-      if (readerRef.current.lastpos) {
+      if (currentPos && resolvedImagesRef.current) {
         const target_display_loc = {
-          x: readerRef.current.lastpos.x - 120,
-          y: readerRef.current.lastpos.y + 20,
+          x: currentPos.x - 120,
+          y: currentPos.y + 20,
           w: 150,
           h: 60,
         };
@@ -112,25 +105,19 @@ function detectAllEnemyDebuffs({
           target_display_loc.w,
           target_display_loc.h
         );
-        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: captureRegion, lastDetectedRef: lastDetectedRef});
-      } else if (lastMobNameplatePos) {
-        const target_display_loc = {
-          x: lastMobNameplatePos.x - 120,
-          y: lastMobNameplatePos.y + 20,
-          w: 150,
-          h: 60,
-        };
-      
-        const captureRegion = a1lib.captureHold(
-          target_display_loc.x,
-          target_display_loc.y,
-          target_display_loc.w,
-          target_display_loc.h
-        );
-        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: captureRegion, lastDetectedRef: lastDetectedRef});
+  
+        const debuffUpdates = getDebuffUpdates({
+            imageMap: resolvedImagesRef.current, 
+            captureRegion: captureRegion, 
+            lastDetectedRef: lastDetectedRef
+        });
+        
+        if (debuffUpdates) {
+          syncIdentifiedBuffs(debuffUpdates);
+        }
       }
         
-    }, []);
+    }, [a1lib, lastMobNameplatePos, setLastMobNameplatePos, syncIdentifiedBuffs]);
 
     useEffect(() => {
       lastDetectedRef.current = {
@@ -141,65 +128,50 @@ function detectAllEnemyDebuffs({
     }, []);
   
     useEffect(() => {
-        if (targetReaderStatus === "IDLE") {
-          if (lastMobNameplatePos === null) {
-            findTargetPosition();
-          } else {
-            setTargetReaderStatus("LOADING IMAGES");
-          }
-        } else if (targetReaderStatus === "LOADING IMAGES") {
-            const loadImages = async () => {
-              const imageNames = Object.keys(enemyDebuffImages);
-              const promises = Object.values(enemyDebuffImages);
-              try {
-                const loadedModules = await Promise.all(promises);
-                const resolvedMap = new Map<string, any>();
-                imageNames.forEach((name, index) => {
-                  resolvedMap.set(name, loadedModules[index]);
-                });
-                resolvedImagesRef.current = resolvedMap;
-                console.log("✅ Enemy Debuff reference images loaded successfully.");
-                setTargetReaderStatus("READING");
-              } catch (error) {
-                console.error("Failed to load enemy debuff reference images:", error);
-                setTargetReaderStatus("ERROR");
-              }
-            };
-            loadImages();
-          } else if (
-          targetReaderStatus === "READING" &&
-          intervalRef.current === null &&
-          readerRef.current
-        ) {
-          console.log("[Target Reader] Starting read interval...");
-          intervalRef.current = setInterval(() => {
-            readTarget();
-          }, readInterval);
-        } else if (
-          targetReaderStatus !== "READING" &&
-          intervalRef.current !== null
-        ) {
-          console.log("[Target Reader] Clearing read interval.");
+      if (targetReaderStatus === "LOADING IMAGES" && !resolvedImagesRef.current) {
+          const loadImages = async () => {
+            try {
+              const loadedModules = await Promise.all(Object.values(enemyDebuffImages));
+              const resolvedMap = new Map<string, any>();
+              Object.keys(enemyDebuffImages).forEach((name, index) => {
+                resolvedMap.set(name, loadedModules[index]);
+              });
+              resolvedImagesRef.current = resolvedMap;
+              console.log("✅ Enemy Debuff reference images loaded successfully.");
+              setTargetReaderStatus("READING");
+            } catch (error) {
+              console.error("Failed to load enemy debuff reference images:", error);
+              setTargetReaderStatus("ERROR");
+            }
+          };
+          loadImages();
+      } else if (targetReaderStatus === "READING" && intervalRef.current === null) {
+        console.log("[Target Reader] Starting read interval...");
+        intervalRef.current = setInterval(readTarget, readInterval);
+      } else if (targetReaderStatus !== "READING" && intervalRef.current !== null) {
+        console.log("[Target Reader] Clearing read interval.");
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    
+      return () => {
+        if (intervalRef.current !== null) {
           clearInterval(intervalRef.current);
           intervalRef.current = null;
         }
-      
-        return () => {
-          if (intervalRef.current !== null) {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-          }
-        };
-      }, [targetReaderStatus, findTargetPosition, readTarget]);
+      };
+    }, [targetReaderStatus, readInterval, readTarget, setTargetReaderStatus]);
+
+    const handleScanClick = () => {
+      setLastMobNameplatePos(null);
+      findTargetPosition();
+    };
   
     return (
         <>
       <div>
         <button
-          onClick={() => {
-            setLastMobNameplatePos(null);
-            setTargetReaderStatus("IDLE");
-          }}
+          onClick={handleScanClick}
           style={{
             padding: "6px 12px",
             backgroundColor: "#222",
@@ -221,8 +193,8 @@ function detectAllEnemyDebuffs({
 
         {targetReaderStatus === "READING" && (
             <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
-            <p style={{ margin: 0 }}>Name: {state.current.name ?? "Not Found"}</p>
-            <p style={{ margin: 0 }}>HP: {state.current.hp ?? "Not Found"}</p>
+            <p style={{ margin: 0 }}>Name: {targetData.name ?? "Not Found"}</p>
+            <p style={{ margin: 0 }}>HP: {targetData.hp ?? "Not Found"}</p>
             <p style={{ margin: 0 }}>
                 LastPos:{" "}
                 {lastMobNameplatePos ? `(${lastMobNameplatePos.x}, ${lastMobNameplatePos.y})` : "Nameplate not found"}
