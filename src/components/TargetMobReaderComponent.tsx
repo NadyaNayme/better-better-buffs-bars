@@ -98,23 +98,7 @@ function detectAllEnemyDebuffs({
         setLastMobNameplatePos(readerRef.current.lastpos);
       }
     
-      if (!readerRef.current.lastpos || !state.current.name) {
-        console.log("[TargetMobReader] No target found — clearing buffs");
-    
-        const clearBuffs: [string, { name: string; isActive: boolean; timeRemaining: number }][] =
-        Object.keys(enemyDebuffImages).map(name => {
-          return [name, { name, isActive: false, timeRemaining: 0 }];
-        });
-    
-        useStore.getState().syncIdentifiedBuffs(new Map(clearBuffs));
-    
-        Object.keys(enemyDebuffImages).forEach(name => {
-          lastDetectedRef.current[name] = false;
-        });
-    
-        return;
-      }
-    
+      if (readerRef.current.lastpos) {
         const target_display_loc = {
           x: readerRef.current.lastpos.x - 120,
           y: readerRef.current.lastpos.y + 20,
@@ -122,14 +106,30 @@ function detectAllEnemyDebuffs({
           h: 60,
         };
       
-        const targetDebuffs = a1lib.captureHold(
+        const captureRegion = a1lib.captureHold(
           target_display_loc.x,
           target_display_loc.y,
           target_display_loc.w,
           target_display_loc.h
         );
+        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: captureRegion, lastDetectedRef: lastDetectedRef});
+      } else if (lastMobNameplatePos) {
+        const target_display_loc = {
+          x: lastMobNameplatePos.x - 120,
+          y: lastMobNameplatePos.y + 20,
+          w: 150,
+          h: 60,
+        };
       
-        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
+        const captureRegion = a1lib.captureHold(
+          target_display_loc.x,
+          target_display_loc.y,
+          target_display_loc.w,
+          target_display_loc.h
+        );
+        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: captureRegion, lastDetectedRef: lastDetectedRef});
+      }
+        
     }, []);
 
     useEffect(() => {
