@@ -1,44 +1,47 @@
-import { useRef, useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useStore from "../store";
 
-export function useCombatMonitor() {
-  const lastValues = useRef<{ hp: number; dren: number; pray: number } | null>(null);
-  const lastChange = useRef<number>(Date.now());
-  const interval = useRef<number | null>(null);
-  const lastCheck = useRef<number>(0);
+let isMonitoring = false;
+let globalInterval: number | null = null;
+let globalLastChange = Date.now();
+let globalLastValues: { hp: number; dren: number; pray: number } | null = null;
+let globalLastCheck = 0;
 
+export function useCombatMonitor() {
   const checkCombat = useCallback((data: any) => {
     const now = Date.now();
     const { hp, dren, pray } = data;
 
-    if (now - lastCheck.current < 500) return;
-    lastCheck.current = now;
+    if (now - globalLastCheck < 500) return;
+    globalLastCheck = now;
 
-    const current = { hp, dren, pray };
-    const previous = lastValues.current;
-
+    const previous = globalLastValues;
     const changed =
-      !previous ||
-      hp !== previous.hp ||
-      dren !== previous.dren ||
-      pray !== previous.pray;
+      !previous || hp !== previous.hp || dren !== previous.dren || pray !== previous.pray;
 
     if (changed) {
       useStore.getState().setInCombat(true);
-      lastChange.current = now;
-      lastValues.current = current;
+      globalLastChange = now;
+      globalLastValues = { hp, dren, pray };
     }
   }, []);
 
   useEffect(() => {
-    interval.current = window.setInterval(() => {
-      if (Date.now() - lastChange.current > 3500) {
+    if (isMonitoring) return;
+
+    isMonitoring = true;
+    globalInterval = window.setInterval(() => {
+      if (Date.now() - globalLastChange > 3500) {
         useStore.getState().setInCombat(false);
       }
     }, 500);
 
     return () => {
-      if (interval.current) clearInterval(interval.current);
+      if (globalInterval !== null) {
+        clearInterval(globalInterval);
+        globalInterval = null;
+        isMonitoring = false;
+      }
     };
   }, []);
 
