@@ -94,7 +94,6 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
   const lastDetectedRef = useRef({ Bloat: false, 'Death Mark': false, Vulnerability: false });
 
   const loadImages = useCallback(async () => {
-    dispatch({ type: 'START' });
     try {
       const LOADED_IMAGES = await Promise.all(Object.values(enemyDebuffImages));
       const map: Map<string, any> = new Map();
@@ -148,27 +147,30 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
     }
   }, [lastMobNameplatePos, setLastMobNameplatePos, syncIdentifiedBuffs]);
 
+  // START → load images
   useEffect(() => {
-    if (status === 'START') {
-      loadImages();
-    }
-    if (status === 'FINDING_NAMEPLATE') {
-      const interval = setInterval(() => findTargetPosition(), 2000);
-      return () => clearInterval(interval);
-    }
-    if (status === 'READING' && intervalRef.current === 0) {
-      debugLog('[Target Mob Reader] Starting read interval...')
-      intervalRef.current = setInterval(readTarget, readInterval);
-      return () => clearInterval(intervalRef.current);
-    }
+    if (status === 'START') loadImages();
+  }, [status, loadImages]);
+
+  // FINDING_NAMEPLATE → start polling for nameplate
+  useEffect(() => {
+    if (status !== 'FINDING_NAMEPLATE') return;
+    const id = setInterval(findTargetPosition, 2000);
+    return () => clearInterval(id);
+  }, [status, findTargetPosition]);
+
+  // READING → start interval for reading debuffs
+  useEffect(() => {
+    if (status !== 'READING') return;
+    debugLog('[Target Mob Reader] Starting read interval...');
+    const id = setInterval(readTarget, readInterval);
+    intervalRef.current = id;
     return () => {
-      if (intervalRef.current !== 0) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = 0;
-        debugLog('[Target Mob Reader] Clearing read interval.');
-      }
+      clearInterval(id);
+      intervalRef.current = 0;
+      debugLog('[Target Mob Reader] Clearing read interval.');
     };
-  }, [status, loadImages, findTargetPosition, readTarget, readInterval]);
+  }, [status, readTarget, readInterval]);
 
   const handleScanClick = () => {
     setTargetData({ hp: 0, name: 'Not Found' });
