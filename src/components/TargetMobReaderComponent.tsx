@@ -99,19 +99,16 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const readTarget = useCallback(() => {
     const result = readerRef.current.read();
-    debugLog(result);
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
       setLastMobNameplatePos(readerRef.current.lastpos);
     }
     const pos = readerRef.current.lastpos ?? lastMobNameplatePos;
-    debugLog(pos);
-    debugLog(resolvedImagesRef.current);
     if (pos && resolvedImagesRef.current) {
       const region = a1lib.captureHold(pos.x - 120, pos.y + 20, 150, 60);
       const updates = getDebuffUpdates({ imageMap: resolvedImagesRef.current, captureRegion: region, lastDetectedRef });
       if (updates) syncIdentifiedBuffs(updates);
-    } else if (resolvedImagesRef.current) {
+    } else {
       const cleared = clearAllDebuffs(lastDetectedRef);
       if (cleared.size > 0) syncIdentifiedBuffs(cleared);
     }
@@ -165,7 +162,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const handleScanClick = () => {
     setLastMobNameplatePos(null);
-    dispatch({ type: 'IDLE' });
+    dispatch({ type: 'FINDING_NAMEPLATE' });
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) syncIdentifiedBuffs(cleared);
   };
