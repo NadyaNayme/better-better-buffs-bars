@@ -451,7 +451,13 @@ const useStore = create(
             .filter((b): b is Buff => Boolean(b));
         
           const group = get().groups.filter(g => g.id === groupId)[0];
-          group.children = childBuffs;
+          const existingChildren = group.children ?? [];
+          const mergedChildren = [...existingChildren, ...childBuffs];
+          const uniqueChildren = Array.from(
+            new Map(mergedChildren.map(b => [b.id, b])).values()
+          );
+          
+          group.children = uniqueChildren;
         }
       
         set(state => ({
@@ -539,7 +545,7 @@ const useStore = create(
         });
       },
       lastMobNameplatePos: null,
-      targetReaderStatus: "IDLE",
+      targetReaderStatus: "LOADING IMAGES",
       setTargetReaderStatus: (status: string) => set({ targetReaderStatus: status }),
       setLastMobNameplatePos: (pos: a1lib.PointLike | null) => set({ lastMobNameplatePos: pos })
     }),

@@ -13,7 +13,7 @@ const enemyDebuffImages = {
     'Vulnerability': Vulnerability,
 }
 
-type ReaderStatus = "IDLE" | "LOADING IMAGES" | "FINDING NAMEPLATE" | "READING" | "ERROR";
+type ReaderStatus = "LOADING IMAGES" | "READING" | "ERROR";
 
 interface TargetMobReaderProps {
     debugMode: boolean;
@@ -82,9 +82,11 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
 
     const lastDetectedRef = useRef<Record<string, boolean>>({});
+
+    setTargetReaderStatus("LOADING IMAGES");
   
     const findTargetPosition = useCallback(() => {
-      setTargetReaderStatus("FINDING NAMEPLATE");
+      setTargetReaderStatus("READING");
   
       const result = readerRef.current.read();
       if (result) {
