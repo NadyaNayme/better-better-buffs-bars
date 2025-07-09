@@ -241,7 +241,6 @@ export function BuffReaderComponent({
   const resolvedImagesRef = useRef<Map<string, any> | null>(null);
   const intervalRef = useRef<number | null>(null);
   const findRetryTimeoutRef = useRef<number | null>(null);
-  const lastFoundChildren = new Map<string, string>();
 
   const updateDebugData = (buffName: string, fail: number, pass: number) => {
     if (!enableDebug) return;
@@ -297,12 +296,7 @@ export function BuffReaderComponent({
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
               const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
-              if (!childData) break;
-  
-              const lastFound = lastFoundChildren.get(name);
-  
-              if (lastFound !== childName || finalPayloadMap.get(name)?.time !== time) {
-                lastFoundChildren.set(name, childName);
+              if (childData) {
                 finalPayloadMap.set(name, {
                   name,
                   time: time,
