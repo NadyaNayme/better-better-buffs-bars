@@ -49,7 +49,6 @@ interface TargetMobReaderComponent {
         state.current.hp = result.hp;
         state.current.name = result.name;
         setLastMobNameplatePos(readerRef.current.lastpos);
-        setTargetReaderStatus("READING");
       }
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
@@ -128,7 +127,7 @@ interface TargetMobReaderComponent {
                 });
                 resolvedImagesRef.current = resolvedMap;
                 console.log("✅ Enemy Debuff reference images loaded successfully.");
-                setTargetReaderStatus("FINDING NAMEPLATE");
+                setTargetReaderStatus("READING");
               } catch (error) {
                 console.error("Failed to load enemy debuff reference images:", error);
                 setTargetReaderStatus("ERROR");
