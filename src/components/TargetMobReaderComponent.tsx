@@ -84,7 +84,10 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
     const lastDetectedRef = useRef<Record<string, boolean>>({});
   
     const findTargetPosition = useCallback(() => {
-      setTargetReaderStatus("READING");
+      if (!resolvedImagesRef.current) {
+        setTargetReaderStatus("LOADING IMAGES");
+        return;
+      }
   
       const result = readerRef.current.read();
       if (result) {
@@ -209,7 +212,11 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
 
     const handleScanClick = () => {
       setLastMobNameplatePos(null);
-      findTargetPosition();
+      if (!resolvedImagesRef.current) {
+        setTargetReaderStatus("LOADING IMAGES");
+      } else {
+        setTargetReaderStatus("READING");
+      }
     };
   
     return (
