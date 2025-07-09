@@ -83,22 +83,19 @@ interface TargetMobReaderComponent {
       
         const targetIsDeathMarked = targetDebuffs.findSubimage(deathMark).length > 0;
         if (targetIsDeathMarked !== lastDetectedRef.current) {
-          lastDetectedRef.current = targetIsDeathMarked
+          lastDetectedRef.current = targetIsDeathMarked;
         
-          if (targetIsDeathMarked) {
-              useStore.getState().syncIdentifiedBuffs(
-              new Map([
-                [
-                  "Death Mark",
-                  {
-                    name: "Death Mark",
-                    timeRemaining: targetIsDeathMarked ? 60000 : 0,
-                    isActive: targetIsDeathMarked 
-                  },
-                ],
-              ])
-            );
-          }
+          useStore.getState().syncIdentifiedBuffs(
+            new Map([
+              [
+                "Death Mark",
+                {
+                  name: "Death Mark",
+                  isActive: targetIsDeathMarked,
+                },
+              ],
+            ])
+          );
         }
     }
 
