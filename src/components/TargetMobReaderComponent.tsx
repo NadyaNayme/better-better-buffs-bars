@@ -15,13 +15,13 @@ const enemyDebuffImages = {
 };
 
 const initialState = {
-  status: 'IDLE',
+  status: 'START',
   error: null,
 };
 
 function reducer(state: any, action: {status?: any, error?: any, type: any}) {
   switch (action.type) {
-    case 'IDLE':
+    case 'START':
       return { status: 'LOADING_IMAGES', error: null };
     case 'LOADED_IMAGES':
       return { status: 'FINDING_NAMEPLATE', error: null };
@@ -30,7 +30,7 @@ function reducer(state: any, action: {status?: any, error?: any, type: any}) {
     case 'ERROR':
       return { status: 'ERROR', error: action.error };
     case 'RESET':
-      return { status: 'IDLE', error: null };
+      return { status: 'START', error: null };
     default:
       return state;
   }
@@ -94,7 +94,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
   const lastDetectedRef = useRef({ Bloat: false, 'Death Mark': false, Vulnerability: false });
 
   const loadImages = useCallback(async () => {
-    dispatch({ type: 'IDLE' });
+    dispatch({ type: 'START' });
     try {
       const LOADED_IMAGES = await Promise.all(Object.values(enemyDebuffImages));
       const map: Map<string, any> = new Map();
@@ -110,7 +110,10 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
     const result = readerRef.current.read();
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
-      setLastMobNameplatePos(readerRef.current.lastpos);
+      const newPos = readerRef.current.lastpos;
+      if (newPos && (!lastMobNameplatePos || newPos.x !== lastMobNameplatePos.x || newPos.y !== lastMobNameplatePos.y)) {
+        setLastMobNameplatePos(newPos);
+      }
       dispatch({ type: 'NAMEPLATE_FOUND' });
     }
   }, [setLastMobNameplatePos]);
@@ -119,13 +122,16 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
     const result = readerRef.current.read();
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
-      setLastMobNameplatePos(readerRef.current.lastpos);
+      const newPos = readerRef.current.lastpos;
+      if (newPos && (!lastMobNameplatePos || newPos.x !== lastMobNameplatePos.x || newPos.y !== lastMobNameplatePos.y)) {
+        setLastMobNameplatePos(newPos);
+      }
     }
     const pos = readerRef.current.lastpos ?? lastMobNameplatePos;
     if (pos && resolvedImagesRef.current) {
       const region = a1lib.captureHold(pos.x - 120, pos.y + 20, 150, 60);
       const updates = getDebuffUpdates({ imageMap: resolvedImagesRef.current, captureRegion: region, lastDetectedRef });
-      if (updates) syncIdentifiedBuffs(updates);
+      if (updates.size > 0) syncIdentifiedBuffs(updates);
     } else {
       const cleared = clearAllDebuffs(lastDetectedRef);
       if (cleared.size > 0) syncIdentifiedBuffs(cleared);
@@ -133,7 +139,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
   }, [lastMobNameplatePos, setLastMobNameplatePos, syncIdentifiedBuffs]);
 
   useEffect(() => {
-    if (status === 'IDLE') {
+    if (status === 'START') {
       loadImages();
     }
     if (status === 'FINDING_NAMEPLATE') {
@@ -146,9 +152,11 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
       return () => clearInterval(intervalRef.current);
     }
     return () => {
-      clearInterval(intervalRef.current);
-      intervalRef.current = 0;
-      debugLog('[Target Mob Reader] Clearing read interval.');
+      if (intervalRef.current !== 0) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = 0;
+        debugLog('[Target Mob Reader] Clearing read interval.');
+      }
     };
   }, [status, loadImages, findTargetPosition, readTarget, readInterval]);
 
