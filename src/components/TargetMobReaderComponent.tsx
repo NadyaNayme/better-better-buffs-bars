@@ -90,6 +90,7 @@ interface TargetMobReaderComponent {
                 "Death Mark",
                 {
                   name: "Death Mark",
+                  timeRemaining: 60000,
                   isActive: true
                 },
               ],
@@ -102,6 +103,7 @@ interface TargetMobReaderComponent {
                     "Death Mark",
                     {
                       name: "Death Mark",
+                      timeRemaining: 0,
                       isActive: false
                     },
                   ],
