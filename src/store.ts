@@ -6,6 +6,7 @@ import { type Group } from './types/Group';
 import { type Store } from './types/Store';
 import { createBlankBuff } from './lib/createBlankBuff';
 import { alertsMap } from './lib/alerts';
+import { toast } from 'sonner';
 
 function resizedataURL(dataUrl: string, scale: number): Promise<{ scaledDataUrl: string; width: number; height: number }> {
     return new Promise((resolve, reject) => {
@@ -247,6 +248,7 @@ const useStore = create(
         const profile = get().profiles.find(p => p.id === id);
         if (profile) {
           set({ groups: profile.groups, activeProfile: id });
+          toast.success(`${profile.name} Loaded`);
         }
       },
       saveProfile: () => {

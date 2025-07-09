@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import useStore from '../store';
 import type { Profile } from '../types/Profile';
+import { toast } from 'sonner';
 
 type ProfileManagerProps = {
   openModalForProfile: () => void;
@@ -10,7 +11,6 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
   const {
     profiles,
     activeProfile,
-    createProfile,
     loadProfile,
     deleteProfile,
     editProfile,
@@ -22,6 +22,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
   const handleUpdateLoadedProfile = () => {
     if (activeProfile) {
       saveProfile(activeProfile);
+      toast.success('Profile Updated');
     }
   };
 

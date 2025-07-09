@@ -13,6 +13,7 @@ import { type Group } from './types/Group';
 import GroupComponent from './components/GroupComponent';
 import SettingsPanelComponent from './components/SettingsPanelComponent';
 import { ActionBarReaderComponent } from './components/ActionBarReaderComponent';
+import { Toaster } from 'sonner';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -113,6 +114,7 @@ function App() {
       </div>
       <CooldownTimer/>
       <SettingsPanelComponent />
+      <Toaster position="bottom-left" richColors />
       <PopupModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

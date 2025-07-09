@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 
 type PopupModalProps = {
   isOpen: boolean;
@@ -29,6 +30,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
     if (inputValue.trim()) {
       onSubmit(inputValue.trim());
       onClose();
+      toast.success(`${title} Created`);
     } else {
       alert('Name cannot be empty.');
     }
