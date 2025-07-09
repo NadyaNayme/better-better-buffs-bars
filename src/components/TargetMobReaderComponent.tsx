@@ -4,8 +4,8 @@ import useStore from '../store';
 import a1lib from 'alt1';
 
 import Bloated from '../assets/data/bloated.data.png';
-import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
+import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
 
 const enemyDebuffImages = {
     'Bloated': Bloated,
@@ -54,6 +54,7 @@ interface TargetMobReaderComponent {
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
     const readTarget = useCallback(() => {
+      if (!resolvedImagesRef.current) return;
         const result = readerRef.current.read();
         if (result) {
           state.current.hp = result.hp;
@@ -75,9 +76,13 @@ interface TargetMobReaderComponent {
           target_display_loc.w,
           target_display_loc.h,
         );
+
+        const deathMark = resolvedImagesRef.current.get(enemyDebuffImages['Death Mark']);
+        if (!deathMark) return;
       
         const targetIsDeathMarked =
-          targetDebuffs.findSubimage(enemyDebuffImages['Death Mark']).length > 0;
+          targetDebuffs.findSubimage(deathMark).length > 0;
+          console.log(targetIsDeathMarked);
       
         if (targetIsDeathMarked) {
             useStore.getState().syncIdentifiedBuffs(
