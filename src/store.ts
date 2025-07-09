@@ -443,6 +443,7 @@ const useStore = create(
         enableAlerts: state.enableAlerts,
         alertVolume: state.alertVolume,
         debugMode: state.debugMode,
+        combatCheck: state.combatCheck,
       }),
     } as PersistOptions<Store>
   )
