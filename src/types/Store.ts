@@ -28,6 +28,7 @@ export interface Store {
     createProfile: (name: string) => void;
     loadProfile: (id: string) => void;
     deleteProfile: (id: string) => void;
+    saveProfile: (id: string) => void;
     editProfile: (id: string, newName: string) => void;
     createGroup: (name: string) => void;
     deleteGroup: (id: string) => void;

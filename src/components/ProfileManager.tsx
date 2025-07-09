@@ -14,15 +14,14 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
     loadProfile,
     deleteProfile,
     editProfile,
+    saveProfile,
   } = useStore();
-  const [newProfileName, setNewProfileName] = useState('');
   const [editingProfile, setEditingProfile] = useState('');
   const [editingProfileName, setEditingProfileName] = useState('');
 
-  const handleCreateProfile = () => {
-    if (newProfileName.trim()) {
-      createProfile(newProfileName);
-      setNewProfileName('');
+  const handleUpdateLoadedProfile = () => {
+    if (activeProfile) {
+      saveProfile(activeProfile);
     }
   };
 
@@ -46,7 +45,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
         <button onClick={openModalForProfile} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Create New Profile
         </button>
-        <button onClick={handleSaveEdit} disabled={!activeProfile} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
+        <button onClick={handleUpdateLoadedProfile} disabled={!activeProfile} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50">
           Update Loaded Profile
         </button>
       </div>
@@ -87,7 +86,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
                   <>
                   <span className="mr-2">{p.name}</span>
                     <button onClick={() => handleEdit(p)} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
-                      Edit
+                      Rename
                     </button>
                     <button onClick={() => deleteProfile(p.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
                       Delete
@@ -99,7 +98,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
           </div>
         </div>
       ) : (
-        <p>No profiles created yet. Name and save a profile to get started.</p>
+        <p>No profiles created yet.</p>
       )}
     </div>
   );
