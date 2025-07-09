@@ -77,7 +77,7 @@ interface TargetMobReaderComponent {
           target_display_loc.h,
         );
 
-        const deathMark = resolvedImagesRef.current.get(enemyDebuffImages['Death Mark']);
+        const deathMark = resolvedImagesRef.current.get('Death Mark');
         if (!deathMark) return;
       
         const targetIsDeathMarked =
