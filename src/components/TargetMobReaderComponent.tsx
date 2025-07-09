@@ -118,6 +118,7 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
           });
           
           if (debuffUpdates) {
+            console.log("Initial read. Updating:", Array.from(debuffUpdates.entries()));
             syncIdentifiedBuffs(debuffUpdates);
           }
         }
@@ -156,11 +157,13 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
         });
         
         if (debuffUpdates) {
+          console.log("Existing read loop:", Array.from(debuffUpdates.entries()));
           syncIdentifiedBuffs(debuffUpdates);
         }
       } else if (resolvedImagesRef.current) {
         const cleared = clearAllDebuffs(lastDetectedRef);
         if (cleared.size > 0) {
+          console.log("Clearing all enemy debuffs as no target mob reader position exists");
           syncIdentifiedBuffs(cleared);
         }
       }
@@ -241,15 +244,11 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
     const handleScanClick = () => {
       setLastMobNameplatePos(null);
       setTargetReaderStatus("FINDING NAMEPLATE");
-      for (const name of Object.keys(enemyDebuffImages)) {
-        lastDetectedRef.current[name] = false;
+      const cleared = clearAllDebuffs(lastDetectedRef);
+      if (cleared.size > 0) {
+        console.log("User is clearing enemy debuffs:", Array.from(cleared.entries()));
+        syncIdentifiedBuffs(cleared);
       }
-    
-      const cleared = new Map<string, { name: string; isActive: boolean, time: number }>();
-      for (const name of Object.keys(enemyDebuffImages)) {
-        cleared.set(name, { name, isActive: false, time: 0 });
-      }
-      syncIdentifiedBuffs(cleared);
     };
   
     return (
