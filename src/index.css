@@ -87,6 +87,10 @@ select {
   .grid-cols-12-dynamic {
     grid-template-columns: repeat(var(--buff-rows), var(--buff-min-width));
   }
+
+  .buff-grid {
+    grid-template-columns: repeat(12,minmax(0,27px));
+  }
 }
 
 .cache-break {
