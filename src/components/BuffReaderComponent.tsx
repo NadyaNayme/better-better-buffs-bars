@@ -47,6 +47,7 @@ import DwarfWeedIncense from '../assets/data/Dwarf_Weed_Incense_Sticks.data.png'
 import EnhancedExcalibur from '../assets/data/Enhanced_Excalibur-scuffed.data.png';
 import ElderOverload from '../assets/data/Elder_Overload.data.png';
 import ErethdorsGrimoire from '../assets/data/Erethdor\'s_grimoire.data.png';
+import FamiliarSummoned from '../assets/data/Familiar_Summoned.data.png';
 import FellstalkIncense from '../assets/data/Fellstalk_Incense_Sticks.data.png';
 import Freedom from '../assets/data/Freedom.data.png';
 import FulArrows from '../assets/data/ful_arrows.data.png';
@@ -156,6 +157,7 @@ const buffImagePromises = {
   'Enhanced Excalibur': EnhancedExcalibur,
   'Elder Overload': ElderOverload,
   'Erethdors Grimoire': ErethdorsGrimoire,
+  'Familiar Summoned': FamiliarSummoned,
   'Freedom': Freedom,
   'Ful Arrows': FulArrows,
   'Gladiators Rage': GladiatorsRage,
