@@ -134,6 +134,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
           resolvedMap.set(name, loadedModules[index]);
         });
         resolvedImagesRef.current = resolvedMap;
+        debugLog(`✅ Enemy Debuff reference images loaded successfully.`)
         dispatch({ type: "IMAGES_LOADED" });
       } catch (error) {
         console.error("Failed to load images:", error);
@@ -149,13 +150,13 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
       const interval = setInterval(() => findTargetPosition(), 2000);
       return () => clearInterval(interval);
     }
-    if (status === 'READING' && intervalRef.current === null) {
+    if (status === 'READING' && intervalRef.current === 0) {
       debugLog('[Target Mob Reader] Starting read interval...')
       intervalRef.current = setInterval(readTarget, readInterval);
       return () => clearInterval(intervalRef.current);
     }
     return () => {
-      if (intervalRef.current !== null) {
+      if (intervalRef.current !== 0) {
         clearInterval(intervalRef.current);
         intervalRef.current = 0;
       }
@@ -164,7 +165,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const handleScanClick = () => {
     setLastMobNameplatePos(null);
-    dispatch({ type: 'LOADED_IMAGES' });
+    dispatch({ type: 'IDLE' });
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) syncIdentifiedBuffs(cleared);
   };
