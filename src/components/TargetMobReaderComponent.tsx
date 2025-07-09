@@ -50,21 +50,11 @@ interface TargetMobReaderComponent {
         state.current.name = newPos.name;
         setLastMobNameplatePos(readerRef.current.lastpos);
         setTargetReaderStatus("READING");
-      } else {
-        setTargetReaderStatus("ERROR");
       }
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
     const readTarget = useCallback(() => {
-      if (!lastMobNameplatePos) {
-        setTargetReaderStatus("ERROR");
-        return;
-      }
-  
       const result = readerRef.current.read();
-      if (!result || !result.name) {
-        setTargetReaderStatus("ERROR");
-      }
 
       if (readerRef.current.lastpos && state.current?.name) {
         const target_display_loc = {
