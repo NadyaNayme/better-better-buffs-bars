@@ -43,23 +43,35 @@ function enemyDebuffDetection({
   if (!image) return;
 
   const isDetected = captureRegion.findSubimage(image).length > 0;
+  const previouslyDetected = lastDetectedRef.current[name] ?? false;
 
-  if (isDetected !== lastDetectedRef.current[name]) {
-    lastDetectedRef.current[name] = isDetected;
-
+  if (isDetected) {
     useStore.getState().syncIdentifiedBuffs(
       new Map([
         [
           name,
           {
             name,
-            isActive: isDetected,
-            timeRemaining: isDetected ? 60000 : 0,
+            isActive: true,
+          },
+        ],
+      ])
+    );
+  } else if (previouslyDetected) {
+    useStore.getState().syncIdentifiedBuffs(
+      new Map([
+        [
+          name,
+          {
+            name,
+            isActive: false
           },
         ],
       ])
     );
   }
+
+  lastDetectedRef.current[name] = isDetected;
 }
 
   export const TargetMobReaderComponent = ({ readInterval = 1000, debugMode, a1lib }: TargetMobReaderProps) => {
