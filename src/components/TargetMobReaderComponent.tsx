@@ -183,6 +183,7 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
           setTargetReaderStatus("LOADING IMAGES");
         } else {
           setTargetReaderStatus("FINDING NAMEPLATE");
+          findTargetPosition();
         }
       }
       if (targetReaderStatus === "LOADING IMAGES" && !resolvedImagesRef.current) {
