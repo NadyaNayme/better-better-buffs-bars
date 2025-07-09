@@ -63,7 +63,7 @@ const BuffComponent: React.FC<BuffComponentProps> = ({ buff, desaturated, scale,
       }}
     >
       <img src={imageUrl} alt={buff.name} title={buff.name} data-pass={effectivePass} data-fail={effectiveFail} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
-      {buff.timeRemaining != null && !(buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark" || buff.buffType === "Enemy Debuffs") && (
+      {buff.timeRemaining != null && !(buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark" || buff.buffType === "Enemy Debuff") && (
         <div className="absolute pointer-events-none bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
           {formatTime(buff.timeRemaining)}
         </div>
