@@ -8,7 +8,7 @@ import DeathMark from '../assets/data/Death_Mark.data.png';
 import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
 
 const enemyDebuffImages = {
-    'Bloated': Bloated,
+    'Bloat': Bloated,
     'Death Mark': DeathMark,
     'Vulnerability': Vulnerability,
 }
@@ -19,14 +19,48 @@ interface TargetMobReaderProps {
     debugMode: boolean;
     readInterval?: number;
     a1lib: any;
-  }
+}
 
 interface TargetMobReaderComponent {
     lastMobNameplatePos: a1lib.PointLike | null;
     targetReaderStatus: ReaderStatus;
     setTargetReaderStatus: (status: ReaderStatus) => void;
     setLastMobNameplatePos: (pos: a1lib.PointLike | null) => void;
+}
+
+function enemyDebuffDetection({
+  name,
+  imageMap,
+  captureRegion,
+  lastDetectedRef,
+}: {
+  name: string;
+  imageMap: Map<string, any>;
+  captureRegion: any;
+  lastDetectedRef: React.RefObject<Record<string, boolean>>;
+}) {
+  const image = imageMap.get(name);
+  if (!image) return;
+
+  const isDetected = captureRegion.findSubimage(image).length > 0;
+
+  if (isDetected !== lastDetectedRef.current[name]) {
+    lastDetectedRef.current[name] = isDetected;
+
+    useStore.getState().syncIdentifiedBuffs(
+      new Map([
+        [
+          name,
+          {
+            name,
+            isActive: isDetected,
+            timeRemaining: isDetected ? 60000 : 0,
+          },
+        ],
+      ])
+    );
   }
+}
 
   export const TargetMobReaderComponent = ({ readInterval = 1000, debugMode, a1lib }: TargetMobReaderProps) => {
     const {
@@ -41,7 +75,7 @@ interface TargetMobReaderComponent {
     const intervalRef = useRef<number | null>(null);
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
 
-    const lastDetectedRef = useRef(false);
+    const lastDetectedRef = useRef<Record<string, boolean>>({});
   
     const findTargetPosition = useCallback(() => {
       setTargetReaderStatus("LOADING IMAGES");
@@ -78,25 +112,9 @@ interface TargetMobReaderComponent {
           target_display_loc.h,
         );
 
-        const deathMark = resolvedImagesRef.current.get('Death Mark');
-        if (!deathMark) return;
-      
-        const targetIsDeathMarked = targetDebuffs.findSubimage(deathMark).length > 0;
-        if (targetIsDeathMarked !== lastDetectedRef.current) {
-          lastDetectedRef.current = targetIsDeathMarked;
-        
-          useStore.getState().syncIdentifiedBuffs(
-            new Map([
-              [
-                "Death Mark",
-                {
-                  name: "Death Mark",
-                  isActive: targetIsDeathMarked,
-                },
-              ],
-            ])
-          );
-        }
+        enemyDebuffDetection({name: 'Bloat', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
+        enemyDebuffDetection({name: 'Death Mark', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
+        enemyDebuffDetection({name: 'Vulnerability', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
     }
 
     }, [lastMobNameplatePos, setTargetReaderStatus]);
