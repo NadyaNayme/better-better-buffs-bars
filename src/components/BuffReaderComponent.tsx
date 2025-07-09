@@ -283,6 +283,7 @@ export function BuffReaderComponent({
         if (!trackedBuff) continue;
         if (isDebuff && trackedBuff.buffType === "Buff") continue;
         if (!isDebuff && trackedBuff.buffType === "Debuff") continue;
+        if (trackedBuff.buffType === "Enemy Debuff") continue;
   
         const { passThreshold, failThreshold } = useStore.getState().getBuffThresholds(trackedBuff.name);
   
