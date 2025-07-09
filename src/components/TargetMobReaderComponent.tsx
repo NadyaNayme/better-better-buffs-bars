@@ -6,6 +6,7 @@ import a1lib from 'alt1';
 import Bloated from '../assets/data/bloated.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
 import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
+import { debugLog } from '../lib/debugLog';
 
 const enemyDebuffImages = {
     'Bloat': Bloated,
@@ -118,12 +119,12 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
           });
           
           if (debuffUpdates) {
-            console.log("Initial read. Updating:", Array.from(debuffUpdates.entries()));
+            debugLog("Initial read. Updating:", Array.from(debuffUpdates.entries()));
             syncIdentifiedBuffs(debuffUpdates);
           }
         }
       }
-    }, [setLastMobNameplatePos, setTargetReaderStatus]);
+    }, [setLastMobNameplatePos, setTargetReaderStatus, lastMobNameplatePos]);
   
     const readTarget = useCallback(() => {
       const result = readerRef.current.read();
@@ -157,13 +158,13 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
         });
         
         if (debuffUpdates) {
-          console.log("Existing read loop:", Array.from(debuffUpdates.entries()));
+          debugLog("Existing read loop:", Array.from(debuffUpdates.entries()));
           syncIdentifiedBuffs(debuffUpdates);
         }
       } else if (resolvedImagesRef.current) {
         const cleared = clearAllDebuffs(lastDetectedRef);
         if (cleared.size > 0) {
-          console.log("Clearing all enemy debuffs as no target mob reader position exists");
+          debugLog("Clearing all enemy debuffs as no target mob reader position exists");
           syncIdentifiedBuffs(cleared);
         }
       }
@@ -198,7 +199,7 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
                 resolvedMap.set(name, loadedModules[index]);
               });
               resolvedImagesRef.current = resolvedMap;
-              console.log("✅ Enemy Debuff reference images loaded successfully.");
+              debugLog("✅ Enemy Debuff reference images loaded successfully.");
               setTargetReaderStatus("READING");
             } catch (error) {
               console.error("Failed to load enemy debuff reference images:", error);
@@ -207,10 +208,10 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
           };
           loadImages();
       } else if (targetReaderStatus === "READING" && intervalRef.current === null) {
-        console.log("[Target Reader] Starting read interval...");
+        debugLog("[Target Reader] Starting read interval...");
         intervalRef.current = setInterval(readTarget, readInterval);
       } else if (targetReaderStatus !== "READING" && intervalRef.current !== null) {
-        console.log("[Target Reader] Clearing read interval.");
+        debugLog("[Target Reader] Clearing read interval.");
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
@@ -229,12 +230,12 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
       const interval = setInterval(() => {
         const result = readerRef.current.read();
         if (result) {
-          console.log("[Nameplate] Found target:", result.name);
+          debugLog("[Nameplate] Found target:", result.name);
           setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
           setLastMobNameplatePos(readerRef.current.lastpos);
           setTargetReaderStatus("READING");
         } else {
-          console.log("[Nameplate] Still searching...");
+          debugLog("[Nameplate] Still searching...");
         }
       }, 3000);
     
@@ -246,7 +247,7 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
       setTargetReaderStatus("FINDING NAMEPLATE");
       const cleared = clearAllDebuffs(lastDetectedRef);
       if (cleared.size > 0) {
-        console.log("User is clearing enemy debuffs:", Array.from(cleared.entries()));
+        debugLog("User is clearing enemy debuffs:", Array.from(cleared.entries()));
         syncIdentifiedBuffs(cleared);
       }
     };
