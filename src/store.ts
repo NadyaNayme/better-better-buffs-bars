@@ -197,7 +197,6 @@ const useStore = create(
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
 
                   if (buff.isStack) return buff;
-                  if (buff.buffType === "Enemy Debuff") return buff;
       
                   if (newTime === 0) {
                     groupDidChange = true;
