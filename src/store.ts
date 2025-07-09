@@ -106,8 +106,8 @@ const useStore = create(
                     timeRemaining: activeInfo.time,
                     imageData: activeInfo.foundChild.imageData,
                     desaturatedImageData: activeInfo.foundChild.desaturatedImageData,
-                    scaledImageData: '',
-                    scaledDesaturatedImageData: '',
+                    scaledImageData: activeInfo.foundChild.scaledImageData,
+                    scaledDesaturatedImageData: activeInfo.foundChild.scaledDesaturatedImageData,
                     inactiveCount: 0,
                     lastUpdated: now,
                   };
