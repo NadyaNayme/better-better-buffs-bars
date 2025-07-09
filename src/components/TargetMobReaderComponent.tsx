@@ -36,8 +36,8 @@ function getDebuffUpdates({
   imageMap: Map<string, any>;
   captureRegion: any;
   lastDetectedRef: React.RefObject<Record<string, boolean>>;
-}): Map<string, { name: string; isActive: boolean }> | null {
-  const updates = new Map<string, { name: string; isActive: boolean }>();
+}): Map<string, { name: string; isActive: boolean, time: number }> | null {
+  const updates = new Map<string, { name: string; isActive: boolean, time: number }>();
 
   for (const name of Object.keys(enemyDebuffImages)) {
     const image = imageMap.get(name);
@@ -47,7 +47,7 @@ function getDebuffUpdates({
 
     if (isDetected !== lastDetectedRef.current[name]) {
       lastDetectedRef.current[name] = isDetected;
-      updates.set(name, { name, isActive: isDetected });
+      updates.set(name, { name, isActive: isDetected, time: 3000 });
     }
   }
 
@@ -55,12 +55,12 @@ function getDebuffUpdates({
 }
 
 function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean>>): Map<string, { name: string; isActive: boolean }> {
-  const cleared = new Map<string, { name: string; isActive: boolean }>();
+  const cleared = new Map<string, { name: string; isActive: boolean, time: 0 }>();
 
   for (const name of Object.keys(enemyDebuffImages)) {
     if (lastDetectedRef.current[name] !== false) {
       lastDetectedRef.current[name] = false;
-      cleared.set(name, { name, isActive: false });
+      cleared.set(name, { name, isActive: false, time: 0 });
     }
   }
 
@@ -245,9 +245,9 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
         lastDetectedRef.current[name] = false;
       }
     
-      const cleared = new Map<string, { name: string; isActive: boolean }>();
+      const cleared = new Map<string, { name: string; isActive: boolean, time: number }>();
       for (const name of Object.keys(enemyDebuffImages)) {
-        cleared.set(name, { name, isActive: false });
+        cleared.set(name, { name, isActive: false, time: 0 });
       }
       syncIdentifiedBuffs(cleared);
     };
