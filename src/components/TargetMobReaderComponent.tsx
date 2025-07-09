@@ -189,6 +189,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode }: {rea
       <button onClick={handleScanClick}>🔍 Scan for Nameplate</button>
       {debugMode && (
         <>
+        <p>Be sure your Target Nameplate is <strong>locked</strong>. You can do this by unlocking your interface so that the lock icon appears on the nameplate then unlocking the nameplate and dragging it to a specific spot on your interface. Leave the Nameplate unlocked and lock your Interface to remove the lock icon from the nameplate.</p>
           <div>Status: {status}</div>
           <div>Name: {targetData.name}</div>
           <div>HP: {targetData.hp}</div>
