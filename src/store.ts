@@ -369,13 +369,21 @@ const useStore = create(
       // Buffs
       addBuffToGroup: (groupId, buffId) => {
         const buff = get().buffs.find(b => b.id === buffId);
-        if (buff) {
-          set(state => ({
-            groups: state.groups.map(g =>
-              g.id === groupId ? { ...g, buffs: [...g.buffs, buff] } : g
-            )
-          }));
-        }
+        if (!buff) return;
+      
+        set(state => ({
+          groups: state.groups.map(g => {
+            if (g.id !== groupId) return g;
+      
+            const nonBlankBuffs = g.buffs.filter(b => b.name !== "Blank");
+            const blankBuff = g.buffs.find(b => b.name === "Blank");
+      
+            return {
+              ...g,
+              buffs: [...nonBlankBuffs, buff, ...(blankBuff ? [blankBuff] : [])],
+            };
+          }),
+        }));
       },
       removeBuffFromGroup: (groupId, buffId) => {
         set(state => ({
