@@ -93,8 +93,8 @@ function detectAllEnemyDebuffs({
       const result = readerRef.current.read();
     
       if (result) {
-        state.current.hp = result.hp;
-        state.current.name = result.name;
+        state.current.hp = result.hp ?? '';
+        state.current.name = result.name ?? '';
         setLastMobNameplatePos(readerRef.current.lastpos);
       }
     
@@ -115,7 +115,6 @@ function detectAllEnemyDebuffs({
         return;
       }
     
-      if (readerRef.current.lastpos && state.current?.name && resolvedImagesRef.current) {
         const target_display_loc = {
           x: readerRef.current.lastpos.x - 120,
           y: readerRef.current.lastpos.y + 20,
@@ -130,8 +129,7 @@ function detectAllEnemyDebuffs({
           target_display_loc.h
         );
       
-        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
-      }
+        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current as Map<string, any>, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
     }, []);
 
     useEffect(() => {
