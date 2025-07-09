@@ -8,6 +8,7 @@ import { createBlankBuff } from './lib/createBlankBuff';
 import { alertsMap } from './lib/alerts';
 import { toast } from 'sonner';
 import { debug } from 'alt1/ocr';
+import type { Buff } from './types/Buff';
 
 function getRandomStringFromArray(arr: string[]) {
   if (arr.length === 0) {
@@ -127,15 +128,18 @@ const useStore = create(
       
               if (buff.buffType === "Meta") {
                 if (activeInfo && activeInfo.foundChild) {
+                  const foundChildBuff = group.children.find(
+                    child => child.name === activeInfo.foundChild.name
+                  ) as Buff;
                   groupDidChange = true;
                   return {
                     ...buff,
                     isActive: true,
                     timeRemaining: activeInfo.time,
-                    imageData: activeInfo.foundChild.imageData,
-                    desaturatedImageData: activeInfo.foundChild.desaturatedImageData,
-                    scaledImageData: '',
-                    scaledDesaturatedImageData: '',
+                    imageData: foundChildBuff.imageData,
+                    desaturatedImageData: foundChildBuff.desaturatedImageData,
+                    scaledImageData: foundChildBuff.scaledImageData ?? '',
+                    scaledDesaturatedImageData: foundChildBuff.scaledDesaturatedImageData ?? '',
                     inactiveCount: 0,
                     lastUpdated: now,
                   };
@@ -368,29 +372,66 @@ const useStore = create(
       },
       rescaleAllGroupsOnLoad: async () => {
         const allGroups = get().groups;
-
+      
         const updatedGroupsPromises = allGroups.map(async (group) => {
           const scaleDecimal = group.scale / 100.0;
-          
+      
+          // Resize main buffs
           const resizedBuffsPromises = group.buffs.map(async (buff) => {
-            const scaledPromise = buff.imageData ? resizedataURL(buff.imageData, scaleDecimal) : Promise.resolve(null);
-            const desaturatedPromise = buff.desaturatedImageData ? resizedataURL(buff.desaturatedImageData, scaleDecimal) : Promise.resolve(null);
-            
-            const [scaledResult, desaturatedResult] = await Promise.all([scaledPromise, desaturatedPromise]);
-            
+            const scaledPromise = buff.imageData
+              ? resizedataURL(buff.imageData, scaleDecimal)
+              : Promise.resolve(null);
+            const desaturatedPromise = buff.desaturatedImageData
+              ? resizedataURL(buff.desaturatedImageData, scaleDecimal)
+              : Promise.resolve(null);
+      
+            const [scaledResult, desaturatedResult] = await Promise.all([
+              scaledPromise,
+              desaturatedPromise,
+            ]);
+      
             return {
               ...buff,
               scaledImageData: scaledResult?.scaledDataUrl ?? '',
               scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
             };
           });
-
-          const resizedBuffs = await Promise.all(resizedBuffsPromises);
-          return { ...group, buffs: resizedBuffs };
+      
+          // Resize children if present
+          const resizedChildrenPromises = group.children?.map(async (child) => {
+            const scaledPromise = child.imageData
+              ? resizedataURL(child.imageData, scaleDecimal)
+              : Promise.resolve(null);
+            const desaturatedPromise = child.desaturatedImageData
+              ? resizedataURL(child.desaturatedImageData, scaleDecimal)
+              : Promise.resolve(null);
+      
+            const [scaledResult, desaturatedResult] = await Promise.all([
+              scaledPromise,
+              desaturatedPromise,
+            ]);
+      
+            return {
+              ...child,
+              scaledImageData: scaledResult?.scaledDataUrl ?? '',
+              scaledDesaturatedImageData: desaturatedResult?.scaledDataUrl ?? '',
+            };
+          }) ?? [];
+      
+          const [resizedBuffs, resizedChildren] = await Promise.all([
+            Promise.all(resizedBuffsPromises),
+            Promise.all(resizedChildrenPromises),
+          ]);
+      
+          return {
+            ...group,
+            buffs: resizedBuffs,
+            children: resizedChildren.length > 0 ? resizedChildren : undefined,
+          };
         });
-
+      
         const finalUpdatedGroups = await Promise.all(updatedGroupsPromises);
-        
+      
         set({ groups: finalUpdatedGroups });
         console.log("All groups have been rescaled on initial load.");
       },
@@ -400,6 +441,15 @@ const useStore = create(
       addBuffToGroup: (groupId, buffId) => {
         const buff = get().buffs.find(b => b.id === buffId);
         if (!buff) return;
+
+        if (buff.buffType === 'Meta' && buff.childBuffNames) {
+          const childBuffs = buff.childBuffNames
+            .map(childName => get().buffs.find(b => b.name === childName))
+            .filter((b): b is Buff => Boolean(b));
+        
+          const group = get().groups.filter(g => g.id === groupId)[0];
+          group.children = childBuffs;
+        }
       
         set(state => ({
           groups: state.groups.map(g => {
@@ -416,11 +466,29 @@ const useStore = create(
         }));
       },
       removeBuffFromGroup: (groupId, buffId) => {
-        set(state => ({
-          groups: state.groups.map(g =>
-            g.id === groupId ? { ...g, buffs: g.buffs.filter(b => b.id !== buffId) } : g
-          )
-        }));
+        set(state => {
+          return {
+            groups: state.groups.map(group => {
+              if (group.id !== groupId) return group;
+              const buffToRemove = group.buffs.find(b => b.id === buffId);
+              const updatedBuffs = group.buffs.filter(b => b.id !== buffId);
+      
+              if (!buffToRemove || buffToRemove.buffType !== "Meta") {
+                return { ...group, buffs: updatedBuffs };
+              }
+              const childNamesToRemove = buffToRemove.childBuffNames ?? [];
+              const updatedChildren = group.children?.filter(
+                child => !childNamesToRemove.includes(child.name)
+              ) ?? [];
+      
+              return {
+                ...group,
+                buffs: updatedBuffs,
+                children: updatedChildren,
+              };
+            })
+          };
+        });
       },
       reorderBuffsInGroup: (groupId, oldIndex, newIndex) => {
         set(state => {
