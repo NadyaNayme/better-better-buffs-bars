@@ -119,7 +119,6 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const readTarget = useCallback(() => {
     const result = readerRef.current.read();
-    debugLog(result);
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
       const newPos = readerRef.current.lastpos;
