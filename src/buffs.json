@@ -1,5 +1,5 @@
 {
-  "version": 91,
+  "version": 92,
   "buffs": [
     {
       "id": "meta-overhead-prayers",
@@ -330,7 +330,7 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": false,
-      "buffType": "Enemy debuff",
+      "buffType": "Enemy Debuff",
       "isActive": false,
       "noNumberDisplay": true
     },
@@ -447,7 +447,7 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": false,
-      "buffType": "Enemy debuff",
+      "buffType": "Enemy Debuff",
       "isActive": false,
       "noNumberDisplay": true
     },
@@ -1392,7 +1392,7 @@
       "timeRemaining": 0,
       "isPermanent": false,
       "hasAlert": false,
-      "buffType": "Enemy debuff",
+      "buffType": "Enemy Debuff",
       "isActive": false,
       "noNumberDisplay": true
     },
