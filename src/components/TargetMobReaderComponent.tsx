@@ -40,6 +40,8 @@ interface TargetMobReaderComponent {
     const readerRef = useRef<TargetMobReader>(new TargetMobReader());
     const intervalRef = useRef<number | null>(null);
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
+
+    const lastDetectedRef = useRef(false);
   
     const findTargetPosition = useCallback(() => {
       setTargetReaderStatus("LOADING IMAGES");
@@ -79,38 +81,26 @@ interface TargetMobReaderComponent {
         const deathMark = resolvedImagesRef.current.get('Death Mark');
         if (!deathMark) return;
       
-        const targetIsDeathMarked =
-          targetDebuffs.findSubimage(deathMark).length > 0;
-          console.log(targetIsDeathMarked);
-      
-        if (targetIsDeathMarked) {
-            useStore.getState().syncIdentifiedBuffs(
-            new Map([
-              [
-                "Death Mark",
-                {
-                  name: "Death Mark",
-                  timeRemaining: 60000,
-                  isActive: true
-                },
-              ],
-            ])
-          );
-        } else {
-            useStore.getState().syncIdentifiedBuffs(
-                new Map([
-                  [
-                    "Death Mark",
-                    {
-                      name: "Death Mark",
-                      timeRemaining: 0,
-                      isActive: false
-                    },
-                  ],
-                ])
-              );
+        const targetIsDeathMarked = targetDebuffs.findSubimage(deathMark).length > 0;
+        if (targetIsDeathMarked !== lastDetectedRef.current) {
+          lastDetectedRef.current = targetIsDeathMarked
+        
+          if (targetIsDeathMarked) {
+              useStore.getState().syncIdentifiedBuffs(
+              new Map([
+                [
+                  "Death Mark",
+                  {
+                    name: "Death Mark",
+                    timeRemaining: targetIsDeathMarked ? 60000 : 0,
+                    isActive: targetIsDeathMarked 
+                  },
+                ],
+              ])
+            );
+          }
         }
-      }
+    }
 
     }, [lastMobNameplatePos, setTargetReaderStatus]);
   
