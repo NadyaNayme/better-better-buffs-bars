@@ -71,13 +71,40 @@ function getDebuffUpdates({
     const lastDetectedRef = useRef<Record<string, boolean>>({});
   
     const findTargetPosition = useCallback(() => {
-      setTargetReaderStatus("LOADING IMAGES");
+      setTargetReaderStatus("FINDING NAMEPLATE");
   
       const result = readerRef.current.read();
       if (result) {
-        targetData.hp = result.hp;
-        targetData.name = result.name;
+        setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
         setLastMobNameplatePos(readerRef.current.lastpos);
+      } else {
+        const currentPos = readerRef.current.lastpos ?? lastMobNameplatePos;
+    
+        if (currentPos && resolvedImagesRef.current) {
+          const target_display_loc = {
+            x: currentPos.x - 120,
+            y: currentPos.y + 20,
+            w: 150,
+            h: 60,
+          };
+        
+          const captureRegion = a1lib.captureHold(
+            target_display_loc.x,
+            target_display_loc.y,
+            target_display_loc.w,
+            target_display_loc.h
+          );
+    
+          const debuffUpdates = getDebuffUpdates({
+              imageMap: resolvedImagesRef.current, 
+              captureRegion: captureRegion, 
+              lastDetectedRef: lastDetectedRef
+          });
+          
+          if (debuffUpdates) {
+            syncIdentifiedBuffs(debuffUpdates);
+          }
+        }
       }
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
