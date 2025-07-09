@@ -164,7 +164,10 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
     setLastMobNameplatePos(null);
     dispatch({ type: 'LOADED_IMAGES' });
     const cleared = clearAllDebuffs(lastDetectedRef);
-    if (cleared.size > 0) syncIdentifiedBuffs(cleared);
+    if (cleared.size > 0) {
+      syncIdentifiedBuffs(cleared);
+      debugLog(`[Target Mob Reader] Force clearing enemy debuffs.`)
+    }
   };
 
   return (
