@@ -239,6 +239,7 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
 
     const handleScanClick = () => {
       setLastMobNameplatePos(null);
+      setTargetReaderStatus("FINDING NAMEPLATE");
       for (const name of Object.keys(enemyDebuffImages)) {
         lastDetectedRef.current[name] = false;
       }
@@ -248,11 +249,6 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
         cleared.set(name, { name, isActive: false });
       }
       syncIdentifiedBuffs(cleared);
-      if (!resolvedImagesRef.current) {
-        setTargetReaderStatus("LOADING IMAGES");
-      } else {
-        setTargetReaderStatus("READING");
-      }
     };
   
     return (
