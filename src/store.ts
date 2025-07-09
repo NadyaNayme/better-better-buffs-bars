@@ -464,6 +464,7 @@ const useStore = create(
             };
           }),
         }));
+        get().rescaleAllGroupsOnLoad();
       },
       removeBuffFromGroup: (groupId, buffId) => {
         set(state => {
