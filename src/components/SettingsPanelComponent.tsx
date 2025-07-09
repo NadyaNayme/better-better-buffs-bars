@@ -60,6 +60,7 @@ const SettingsPanelComponent: React.FC = () => {
         }}
       >
         <h2>Settings</h2>
+        <h3>Version 0.3.2</h3>
 
         <CheckboxSetting
           label="Hide overlays outside of combat"

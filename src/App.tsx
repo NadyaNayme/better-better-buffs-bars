@@ -88,9 +88,11 @@ function App() {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen p-8">
-      <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold">Better Buffs Bar - 0.3.0b</h1>
-      </header>
+      <div className="space-y-8">
+        {groups.map((group: any) => (
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} />
+        ))}
+      </div>
 
       {!alt1Detected && (
         <p className="text-red-500 text-center mb-8 font-bold">Alt1 not detected. Please open this app inside Alt1.</p>
@@ -107,12 +109,6 @@ function App() {
       <div className="mb-8">
       <p>Sort buffs within a group by drag & dropping using <em>left click</em>.</p>
       <p>Delete buffs from a group using <em>right click</em>.</p>
-      </div>
-
-      <div className="space-y-8">
-        {groups.map((group: any) => (
-          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} />
-        ))}
       </div>
       <CooldownTimer/>
       <SettingsPanelComponent />
