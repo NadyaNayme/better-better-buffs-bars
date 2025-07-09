@@ -120,11 +120,17 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const readTarget = useCallback(() => {
     const result = readerRef.current.read();
+    debugLog(result);
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
       const newPos = readerRef.current.lastpos;
       if (newPos && (!lastMobNameplatePos || newPos.x !== lastMobNameplatePos.x || newPos.y !== lastMobNameplatePos.y)) {
         setLastMobNameplatePos(newPos);
+      }
+    } else {
+      setTargetData({ hp: 0, name: 'Not Found' });
+      if (lastMobNameplatePos !== null) {
+        setLastMobNameplatePos(null);
       }
     }
     const pos = readerRef.current.lastpos ?? lastMobNameplatePos;
@@ -133,6 +139,10 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
       const updates = getDebuffUpdates({ imageMap: resolvedImagesRef.current, captureRegion: region, lastDetectedRef });
       if (updates.size > 0) syncIdentifiedBuffs(updates);
     } else {
+      setTargetData({ hp: 0, name: 'Not Found' });
+      if (lastMobNameplatePos !== null) {
+        setLastMobNameplatePos(null);
+      }
       const cleared = clearAllDebuffs(lastDetectedRef);
       if (cleared.size > 0) syncIdentifiedBuffs(cleared);
     }
@@ -161,7 +171,10 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
   }, [status, loadImages, findTargetPosition, readTarget, readInterval]);
 
   const handleScanClick = () => {
-    setLastMobNameplatePos(null);
+    setTargetData({ hp: 0, name: 'Not Found' });
+    if (lastMobNameplatePos !== null) {
+      setLastMobNameplatePos(null);
+    }
     dispatch({ type: 'LOADED_IMAGES' });
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) {
