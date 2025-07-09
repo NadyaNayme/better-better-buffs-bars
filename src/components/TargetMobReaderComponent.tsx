@@ -28,37 +28,42 @@ interface TargetMobReaderComponent {
     setLastMobNameplatePos: (pos: a1lib.PointLike | null) => void;
 }
 
-function enemyDebuffDetection({
-  name,
+function detectAllEnemyDebuffs({
   imageMap,
   captureRegion,
   lastDetectedRef,
 }: {
-  name: string;
   imageMap: Map<string, any>;
   captureRegion: any;
   lastDetectedRef: React.RefObject<Record<string, boolean>>;
 }) {
-  const image = imageMap.get(name);
-  if (!image) return;
+  const updates: [string, { name: string; isActive: boolean }][] = [];
 
-  const isDetected = captureRegion.findSubimage(image).length > 0;
-  lastDetectedRef.current[name] = isDetected;
+  for (const name of Object.keys(enemyDebuffImages)) {
+    const image = imageMap.get(name);
+    if (!image) continue;
 
-  useStore.getState().syncIdentifiedBuffs(
-    new Map([
-      [
+    const isDetected = captureRegion.findSubimage(image).length > 0;
+
+    if (isDetected !== lastDetectedRef.current[name]) {
+      lastDetectedRef.current[name] = isDetected;
+
+      updates.push([
         name,
         {
           name,
           isActive: isDetected,
         },
-      ],
-    ])
-  );
+      ]);
+    }
+  }
+
+  if (updates.length > 0) {
+    useStore.getState().syncIdentifiedBuffs(new Map(updates));
+  }
 }
 
-  export const TargetMobReaderComponent = ({ readInterval = 1000, debugMode, a1lib }: TargetMobReaderProps) => {
+  export const TargetMobReaderComponent = ({ readInterval = 300, debugMode, a1lib }: TargetMobReaderProps) => {
     const {
       lastMobNameplatePos,
       setLastMobNameplatePos,
@@ -85,46 +90,48 @@ function enemyDebuffDetection({
     }, [setLastMobNameplatePos, setTargetReaderStatus]);
   
     const readTarget = useCallback(() => {
-      if (!resolvedImagesRef.current) return;
-    
       const result = readerRef.current.read();
-      if (!result || !readerRef.current.lastpos) {
-        useStore.getState().syncIdentifiedBuffs(
-          new Map(
-            Object.keys(enemyDebuffImages).map(name => [
-              name,
-              { name, isActive: false }
-            ])
-          )
-        );
+    
+      if (result) {
+        state.current.hp = result.hp;
+        state.current.name = result.name;
+        setLastMobNameplatePos(readerRef.current.lastpos);
+      }
+    
+      if (!readerRef.current.lastpos || !state.current.name) {
+        console.log("[TargetMobReader] No target found — clearing buffs");
+    
+        const clearBuffs: [string, { name: string; isActive: boolean; timeRemaining: number }][] =
+        Object.keys(enemyDebuffImages).map(name => {
+          return [name, { name, isActive: false, timeRemaining: 0 }];
+        });
+    
+        useStore.getState().syncIdentifiedBuffs(new Map(clearBuffs));
+    
         Object.keys(enemyDebuffImages).forEach(name => {
           lastDetectedRef.current[name] = false;
         });
+    
         return;
       }
     
-      state.current.hp = result.hp;
-      state.current.name = result.name;
-      setLastMobNameplatePos(readerRef.current.lastpos);
-    
-      const target_display_loc = {
-        x: readerRef.current.lastpos.x - 120,
-        y: readerRef.current.lastpos.y + 20,
-        w: 150,
-        h: 60,
-      };
-    
-      const targetDebuffs = a1lib.captureHold(
-        target_display_loc.x,
-        target_display_loc.y,
-        target_display_loc.w,
-        target_display_loc.h
-      );
-    
-      enemyDebuffDetection({ name: 'Bloat', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
-      enemyDebuffDetection({ name: 'Death Mark', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
-      enemyDebuffDetection({ name: 'Vulnerability', imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef });
-    
+      if (readerRef.current.lastpos && state.current?.name && resolvedImagesRef.current) {
+        const target_display_loc = {
+          x: readerRef.current.lastpos.x - 120,
+          y: readerRef.current.lastpos.y + 20,
+          w: 150,
+          h: 60,
+        };
+      
+        const targetDebuffs = a1lib.captureHold(
+          target_display_loc.x,
+          target_display_loc.y,
+          target_display_loc.w,
+          target_display_loc.h
+        );
+      
+        detectAllEnemyDebuffs({imageMap: resolvedImagesRef.current, captureRegion: targetDebuffs, lastDetectedRef: lastDetectedRef});
+      }
     }, []);
 
     useEffect(() => {
