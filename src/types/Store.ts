@@ -2,6 +2,7 @@ import type { Buff } from './Buff';
 import type { Profile } from './Profile';
 import type { Group } from './Group';
 import type { Color } from './Color';
+import a1lib from 'alt1';
 
 export interface Store {
     groups: Group[];
@@ -44,4 +45,8 @@ export interface Store {
     setCustomThreshold: (buffName: string, thresholds: { passThreshold: number, failThreshold: number }) => void;
     getBuffThresholds: (buffName: string) => { passThreshold: number; failThreshold: number };
     removeCustomThreshold: (buffName: string) => void;
+    lastMobNameplatePos: a1lib.PointLike | null;
+    targetReaderStatus: string;
+    setLastMobNameplatePos: (pos: a1lib.PointLike | null) => void;
+    setTargetReaderStatus: (status: string) => void;
 }

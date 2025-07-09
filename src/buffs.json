@@ -332,6 +332,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
+      "noNumberDisplay": true,
       "isUtility": true
     },
     {
@@ -449,7 +450,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
-      "isUtility": true
+      "noNumberDisplay": true
     },
     {
       "id": "meta-death-spark",
@@ -1394,6 +1395,7 @@
       "hasAlert": false,
       "buffType": "Enemy debuff",
       "isActive": false,
+      "noNumberDisplay": true,
       "isUtility": true
     },
     {

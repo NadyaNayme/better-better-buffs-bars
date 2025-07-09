@@ -7,7 +7,7 @@ import { type Store } from './types/Store';
 import { createBlankBuff } from './lib/createBlankBuff';
 import { alertsMap } from './lib/alerts';
 import { toast } from 'sonner';
-import { debug } from 'alt1/ocr';
+import a1lib from 'alt1';
 import type { Buff } from './types/Buff';
 
 function getRandomStringFromArray(arr: string[]) {
@@ -320,6 +320,7 @@ const useStore = create(
           scale: 100,
           explicitInactive: false,
           enabled: true,
+          children: []
         };
         set((state) => ({ groups: [...state.groups, newGroup] }));
       },
@@ -426,7 +427,7 @@ const useStore = create(
           return {
             ...group,
             buffs: resizedBuffs,
-            children: resizedChildren.length > 0 ? resizedChildren : undefined,
+            children: resizedChildren.length > 0 ? resizedChildren : [],
           };
         });
       
@@ -535,6 +536,10 @@ const useStore = create(
           return { customThresholds: updated };
         });
       },
+      lastMobNameplatePos: null,
+      targetReaderStatus: "IDLE",
+      setTargetReaderStatus: (status: string) => set({ targetReaderStatus: status }),
+      setLastMobNameplatePos: (pos: a1lib.PointLike) => set({ lastMobNameplatePos: pos })
     }),
     {
       name: 'buff-tracker-storage',
@@ -551,6 +556,7 @@ const useStore = create(
         alertVolume: state.alertVolume,
         debugMode: state.debugMode,
         combatCheck: state.combatCheck,
+        lastMobNameplatePos: state.lastMobNameplatePos,
       }),
     } as PersistOptions<Store>
   )

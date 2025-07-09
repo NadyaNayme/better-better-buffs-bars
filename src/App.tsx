@@ -14,6 +14,7 @@ import GroupComponent from './components/GroupComponent';
 import SettingsPanelComponent from './components/SettingsPanelComponent';
 import { ActionBarReaderComponent } from './components/ActionBarReaderComponent';
 import { toast, Toaster } from 'sonner';
+import { TargetMobReaderComponent } from './components/TargetMobReaderComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -129,6 +130,10 @@ function App() {
             debugMode={debugMode}
             a1lib={a1lib}
           />
+      <TargetMobReaderComponent
+          debugMode={debugMode}
+          a1lib={a1lib}
+      />
       <BuffReaderComponent 
             onBuffsIdentified={handleBuffsIdentified}
             debugMode={debugMode}
