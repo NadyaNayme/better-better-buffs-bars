@@ -1,7 +1,6 @@
 import { useEffect, useRef, useCallback, useReducer, useState } from 'react';
 import TargetMobReader from 'alt1/targetmob';
 import useStore from '../store';
-import a1lib from 'alt1';
 
 import Bloated from '../assets/data/bloated.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
@@ -79,7 +78,7 @@ function clearAllDebuffs(lastDetectedRef: any) {
   return cleared;
 }
 
-export const TargetMobReaderComponent = ({ readInterval = 100, debugMode }: {readInterval: number, debugMode: boolean}) => {
+export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib }: {readInterval: number, debugMode: boolean, a1lib: any}) => {
   const [{ status, error }, dispatch] = useReducer(reducer, initialState);
   const {
     lastMobNameplatePos,

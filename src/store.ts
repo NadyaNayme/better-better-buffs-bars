@@ -131,18 +131,25 @@ const useStore = create(
                   const foundChildBuff = group.children.find(
                     child => child.name === activeInfo.foundChild.name
                   ) as Buff;
-                  groupDidChange = true;
-                  return {
-                    ...buff,
-                    isActive: true,
-                    timeRemaining: activeInfo.time,
-                    imageData: foundChildBuff.imageData,
-                    desaturatedImageData: foundChildBuff.desaturatedImageData,
-                    scaledImageData: foundChildBuff.scaledImageData ?? '',
-                    scaledDesaturatedImageData: foundChildBuff.scaledDesaturatedImageData ?? '',
-                    inactiveCount: 0,
-                    lastUpdated: now,
-                  };
+                  const shouldUpdate =
+                  !buff.isActive ||
+                  buff.timeRemaining !== activeInfo.time ||
+                  buff.imageData !== foundChildBuff.imageData ||
+                  buff.scaledImageData !== foundChildBuff.scaledImageData;
+                  if (shouldUpdate) {
+                    groupDidChange = true;
+                    return {
+                      ...buff,
+                      isActive: true,
+                      timeRemaining: activeInfo.time,
+                      imageData: foundChildBuff.imageData,
+                      desaturatedImageData: foundChildBuff.desaturatedImageData,
+                      scaledImageData: foundChildBuff.scaledImageData ?? '',
+                      scaledDesaturatedImageData: foundChildBuff.scaledDesaturatedImageData ?? '',
+                      inactiveCount: 0,
+                      lastUpdated: now,
+                    };
+                  }
                 } else if (buff.isActive) {
                   const timeSinceLastUpdate = now - (buff.lastUpdated ?? 0);
                   if (timeSinceLastUpdate > 400) {
