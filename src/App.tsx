@@ -98,17 +98,17 @@ function App() {
       </div>
 
       <div className="mb-8">
+        <button onClick={openModalForGroup} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+          Create Group
+        </button>
+      </div>
+
+      <div className="mb-8">
         <p>Sort buffs within a group by drag & dropping using <em>left click</em>.</p>
         <p>Delete buffs from a group using <em>right click</em>.</p>
       </div>
 
       <ProfileManager openModalForProfile={openModalForProfile} />
-
-      <div className="mb-8">
-        <button onClick={openModalForGroup} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
-          Create New Group
-        </button>
-      </div>
       <CooldownTimer/>
       <SettingsPanelComponent />
       <Toaster position="bottom-left" richColors />
