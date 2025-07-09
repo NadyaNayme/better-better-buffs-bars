@@ -42,7 +42,7 @@ interface TargetMobReaderComponent {
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
   
     const findTargetPosition = useCallback(() => {
-      setTargetReaderStatus("FINDING NAMEPLATE");
+      setTargetReaderStatus("LOADING IMAGES");
   
       const result = readerRef.current.read();
       if (result) {
@@ -116,7 +116,7 @@ interface TargetMobReaderComponent {
     useEffect(() => {
         if (targetReaderStatus === "IDLE") {
           findTargetPosition();
-        }   else if (targetReaderStatus === "LOADING IMAGES") {
+        } else if (targetReaderStatus === "LOADING IMAGES") {
             const loadImages = async () => {
               const imageNames = Object.keys(enemyDebuffImages);
               const promises = Object.values(enemyDebuffImages);
@@ -127,10 +127,10 @@ interface TargetMobReaderComponent {
                   resolvedMap.set(name, loadedModules[index]);
                 });
                 resolvedImagesRef.current = resolvedMap;
-                console.log("✅ Reference images loaded successfully.");
+                console.log("✅ Enemy Debuff reference images loaded successfully.");
                 setTargetReaderStatus("FINDING NAMEPLATE");
               } catch (error) {
-                console.error("Failed to load reference images:", error);
+                console.error("Failed to load enemy debuff reference images:", error);
                 setTargetReaderStatus("ERROR");
               }
             };
