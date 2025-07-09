@@ -176,6 +176,13 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
     }, []);
   
     useEffect(() => {
+      if (targetReaderStatus === "IDLE") {
+        if (!resolvedImagesRef.current) {
+          setTargetReaderStatus("LOADING IMAGES");
+        } else {
+          setTargetReaderStatus("READING");
+        }
+      }
       if (targetReaderStatus === "LOADING IMAGES" && !resolvedImagesRef.current) {
           const loadImages = async () => {
             try {

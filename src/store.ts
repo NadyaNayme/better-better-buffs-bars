@@ -545,7 +545,7 @@ const useStore = create(
         });
       },
       lastMobNameplatePos: null,
-      targetReaderStatus: "LOADING IMAGES",
+      targetReaderStatus: "IDLE",
       setTargetReaderStatus: (status: string) => set({ targetReaderStatus: status }),
       setLastMobNameplatePos: (pos: a1lib.PointLike | null) => set({ lastMobNameplatePos: pos })
     }),
