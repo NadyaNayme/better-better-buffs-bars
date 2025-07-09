@@ -1,8 +1,12 @@
 # Better Better Buffs Bar
 
-**This plugin is currently in BETA. Some features may not exist, were removed, or are broken.** 
+**This plugin is currently in Public Beta.** All known bugs have been fixed but there may still be unknown or unencountered bugs. Some buffs may need further threshold adjustments to avoid false positives / false negatives. Sometimes those thresholds aren't impossible to make 100% reliable (eg. Quiver) so are not considered bugged.
 
-Track only the buffs that actually matter.
+This is a from-the-ground rewrite of the old Better Buffs Bars. The performance has been improved by over 800%, features are less buggy, it shouldn't make you lag anymore, it won't be delayed if you try and track more than 6-7 buffs at a time. You can have as many buff bars as you like and optional audio alerts will let you know when certain, upkeepable buffs are falling off or if you're running low on prayer.
+
+It's better in pretty much every measurable way - except that the app no longer blends in with the NIS interface. That is something I plan to support but it is low priority.
+
+Enjoy.
 
 
 ## How to Install & Required Settings
