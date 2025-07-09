@@ -107,8 +107,6 @@ import UndeadSlayer from '../assets/data/Undead_Slayer.data.png';
 import VengefulGhost from '../assets/data/vengeful_ghost-top.data.png';
 import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
 import WenArrows from '../assets/data/wen_arrows.data.png';
-import { resizedataURL } from '../lib/resizeDataURL';
-import type { Group } from '../types/Group';
 
 const isAlt1 = typeof window.alt1 !== "undefined";
 
@@ -267,7 +265,7 @@ export function BuffReaderComponent({
     return `Min: ${min}, Max: ${max}, Avg: ${avg}`;
   };
 
-  const processReaderData = useCallback(async (detectedBuffs: any[]) => {
+  const processReaderData = useCallback((detectedBuffs: any[]) => {
     if (!resolvedImagesRef.current) return;
 
     const groups = useStore.getState().groups;
@@ -275,13 +273,6 @@ export function BuffReaderComponent({
   
     const trackedBuffMap = new Map(groups.flatMap(g => g.buffs).map(b => [b.name, b]));
     const finalPayloadMap = new Map<string, any>();
-
-    const buffToGroupMap = new Map<string, Group>();
-    for (const group of groups) {
-      for (const buff of group.buffs) {
-        buffToGroupMap.set(buff.name, group);
-      }
-    }    
   
     for (const detected of detectedBuffs) {
       for (const [name, trackedBuff] of trackedBuffMap.entries()) {
@@ -306,15 +297,12 @@ export function BuffReaderComponent({
               const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
               if (childData) {
-                console.log(childData.scaledImageData);
                 finalPayloadMap.set(name, {
                   name,
                   time: time,
                   foundChild: {
                     imageData: childData.scaledImageData ?? childData.imageData,
                     desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
-                    scaledImageData: childData.scaledImageData,
-                    scaledDesaturatedImageData: childData.scaledDesaturatedImageData
                   }
                 });
               }
