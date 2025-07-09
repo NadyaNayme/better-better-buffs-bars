@@ -301,6 +301,7 @@ export function BuffReaderComponent({
                   name,
                   time: time,
                   foundChild: {
+                    name: childData.name,
                     imageData: childData.scaledImageData ?? childData.imageData,
                     desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
                   }
