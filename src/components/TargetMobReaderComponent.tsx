@@ -99,11 +99,14 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
 
   const readTarget = useCallback(() => {
     const result = readerRef.current.read();
+    debugLog(result);
     if (result) {
       setTargetData({ hp: result.hp ?? '', name: result.name ?? '' });
       setLastMobNameplatePos(readerRef.current.lastpos);
     }
     const pos = readerRef.current.lastpos ?? lastMobNameplatePos;
+    debugLog(pos);
+    debugLog(resolvedImagesRef.current);
     if (pos && resolvedImagesRef.current) {
       const region = a1lib.captureHold(pos.x - 120, pos.y + 20, 150, 60);
       const updates = getDebuffUpdates({ imageMap: resolvedImagesRef.current, captureRegion: region, lastDetectedRef });
@@ -147,6 +150,7 @@ export const TargetMobReaderComponent = ({ readInterval = 300, debugMode }: {rea
       return () => clearInterval(interval);
     }
     if (status === 'READING' && intervalRef.current === null) {
+      debugLog('[Target Mob Reader] Starting read interval...')
       intervalRef.current = setInterval(readTarget, readInterval);
       return () => clearInterval(intervalRef.current);
     }
