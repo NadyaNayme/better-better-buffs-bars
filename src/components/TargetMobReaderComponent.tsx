@@ -82,8 +82,6 @@ function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean
     const resolvedImagesRef = useRef<Map<string, any> | null>(null);
 
     const lastDetectedRef = useRef<Record<string, boolean>>({});
-
-    setTargetReaderStatus("LOADING IMAGES");
   
     const findTargetPosition = useCallback(() => {
       setTargetReaderStatus("READING");
