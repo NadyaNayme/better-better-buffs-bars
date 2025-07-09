@@ -18,8 +18,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         { src: 'appconfig.json', dest: '.' },
-        { src: 'icon.png', dest: '.' },
-        { src: './assets/audio/*.mp3', dest: './assets/audio/'}
+        { src: 'icon.png', dest: '.' }
       ]
     })
   ],

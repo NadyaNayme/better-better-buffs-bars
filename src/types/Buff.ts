@@ -25,4 +25,5 @@ export interface Buff {
     childBuffNames?: string[];
     isStack?: boolean;
     noNumberDisplay?: boolean;
+    categories?: string[];
   }
