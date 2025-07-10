@@ -1,4 +1,4 @@
-import { useStore, type StateCreator } from 'zustand';
+import { type StateCreator } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { type Store } from '../types/Store';
 import { type Group } from '../types/Group';

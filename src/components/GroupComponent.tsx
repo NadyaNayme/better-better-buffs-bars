@@ -6,6 +6,7 @@ import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
 import type { Group } from '../types/Group';
+import { useAlt1OverlayRenderer } from '../hooks/useAlt1OverlayRenderer';
 
 interface GroupComponentProps {
   group: Group;
@@ -21,23 +22,6 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
-
-  const buffsToRender = useMemo(() => {
-    return group.buffs.filter(buff => {
-      if (group.explicitInactive) return true;
-      return buff.isActive || (buff.cooldownRemaining ?? 0) > 0;
-    }).map(buff => ({
-      id: buff.id,
-      name: buff.name,
-      isActive: buff.isActive,
-      cooldownRemaining: buff.cooldownRemaining,
-      timeRemaining: buff.timeRemaining,
-      scaledImageData: buff.scaledImageData,
-      scaledDesaturatedImageData: buff.scaledDesaturatedImageData,
-      imageData: buff.imageData,
-      desaturatedImageData: buff.desaturatedImageData,
-    }));
-  }, [group.buffs, group.explicitInactive]);
 
   const updateOverlayPosition = async () => {
     if (!a1lib || !window.alt1) {
@@ -72,193 +56,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     console.log(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
   };
 
-  const formatTime = (seconds: number) => {
-    if (seconds <= 0) return '';
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return mins > 0 ? `${mins}m` : `${secs}`;
-  };
-
-  useEffect(() => {
-    if (!alt1Ready || !a1lib || !window.alt1) return;
-    if (!group.enabled || !inCombat && combatCheck) {
-      window.alt1.overLayClearGroup(`region${group.id}`);
-      window.alt1.overLayRefreshGroup(`region${group.id}`);
-      group.buffs.forEach(buff => {
-        window.alt1.overLayClearGroup(`${group.id}-${buff.name}-text`);
-        window.alt1.overLayRefreshGroup(`${group.id}-${buff.name}-text`);
-      });
-      return;
-    }
-  
-    const overlayPosition = group.overlayPosition;
-    const x = overlayPosition?.x ?? 15;
-    const y = overlayPosition?.y ?? 15;
-  
-    const region = group.id;
-    const baseSize = 27 * (group.scale / 100);
-    const spacing = baseSize + 1;
-    const cols = group.buffsPerRow || 8;
-
-    group.buffs.map((buff) => {
-      if (!buff.isActive && !group.explicitInactive && !(buff.noNumberDisplay)) {
-        window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
-        window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
-      }
-    })
-
-    const buffsToDraw = group.buffs.filter(buff => {
-      if (buff.noNumberDisplay || group.explicitInactive) {
-        return true;
-      }
-      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      return buff.isActive || isOnCooldown;
-    });
-
-    window.alt1.overLaySetGroup(`region${region}`);
-    window.alt1.overLayFreezeGroup(`region${region}`);
-    window.alt1.overLayClearGroup(`region${region}`);
-
-    buffsToDraw.forEach((buff, index) => {
-      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      const col = index % cols;
-      const row = Math.floor(index / cols);
-      const drawX = x + col * spacing;
-      const drawY = y + row * spacing;
-    
-      window.alt1.overLaySetGroup(`${region}-${buff.name}-text`);
-      window.alt1.overLayFreezeGroup(`${region}-${buff.name}-text`);
-
-      window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
-      window.alt1.overLaySetGroupZIndex(`${region}-${buff.name}-text`, 3);
-
-      const timeToDisplay = isOnCooldown ? buff.cooldownRemaining : (buff.timeRemaining ?? '');
-      const textColor = isOnCooldown
-        ? a1lib.mixColor(cooldownColor.r, cooldownColor.g, cooldownColor.b)
-        : a1lib.mixColor(timeRemainingColor.r, timeRemainingColor.g, timeRemainingColor.b);
-
-      if (buff.noNumberDisplay) {
-        return;
-      }
-
-      let formattedTime = formatTime(Number(timeToDisplay));
-
-      window.alt1.overLayTextEx(
-        formattedTime,
-        textColor,
-        Math.floor(10 * (group.scale / 100)),
-        Math.floor(drawX + ((group.scale / 100) * (19 - formattedTime.length))),
-        Math.floor(drawY + ((group.scale / 100) * 19)),
-        100,
-        '',
-        true,                     
-        true
-      );
-      window.alt1.overLayRefreshGroup(`${region}-${buff.name}-text`);
-    });
-
-  
-    window.alt1.overLaySetGroup(`region${region}`);
-    window.alt1.overLayFreezeGroup(`region${region}`);
-    window.alt1.overLayClearGroup(`region${region}`);
-
-    let loadedCount = 0;
-    const imagesToLoad = group.buffs.length;
-
-    const checkAndRefresh = () => {
-      if (loadedCount === imagesToLoad) {
-        window.alt1.overLayRefreshGroup(`region${region}`);
-      }
-    };
-  
-    buffsToDraw.forEach((buff, index) => {
-
-      if (buff.buffType === "Meta" && !buff.imageData) {
-        loadedCount++;
-        checkAndRefresh();
-        return;
-      }
-
-      const img = new Image();
-      const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      const useDesaturatedImage = isOnCooldown || (group.explicitInactive && !buff.isActive);
-      const activeImageData = buff.scaledImageData || buff.imageData;
-      const inactiveImageData = buff.scaledDesaturatedImageData || buff.desaturatedImageData;
-      const imageDataBase64 = useDesaturatedImage ? inactiveImageData : activeImageData;
-
-      const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
-
-      if (!rawBase64) {
-        loadedCount++;
-        checkAndRefresh();
-        return;
-      }
-  
-      const col = index % cols;
-      const row = Math.floor(index / cols);
-      const drawX = x + col * spacing;
-      const drawY = y + row * spacing;
-  
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (ctx === null) return;
-        ctx.drawImage(img, 0, 0);
-  
-        const imageData = ctx.getImageData(0, 0, img.width, img.height);
-        const encoded = a1lib.encodeImageString(imageData);
-  
-        window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 1200);
-        
-        loadedCount++;
-        checkAndRefresh();
-      };
-
-      img.onerror = () => {
-        console.error(`Failed to load image for buff: ${buff.name}`);
-        loadedCount++;
-        checkAndRefresh();
-      };
-  
-      img.src = imageDataBase64;
-    });
-
-    const globalBuffs = useStore.getState().buffs;
-    const blankBuff = globalBuffs.find(b => b.name === "Blank");
-    
-    if (blankBuff?.imageData || blankBuff?.scaledImageData) {
-      const img = new Image();
-      const imageDataBase64 = blankBuff.scaledImageData ?? blankBuff.imageData;
-      const rawBase64 = imageDataBase64?.replace(/^data:image\/png;base64,/, '');
-    
-      if (rawBase64) {
-        const index = buffsToDraw.length;
-        const col = index % cols;
-        const row = Math.floor(index / cols);
-        const drawX = x + col * spacing;
-        const drawY = y + row * spacing;
-    
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          const ctx = canvas.getContext('2d');
-          if (ctx === null) return;
-          ctx.drawImage(img, 0, 0);
-          const imageData = ctx.getImageData(0, 0, img.width, img.height);
-          const encoded = a1lib.encodeImageString(imageData);
-    
-          window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 1200);
-          window.alt1.overLayRefreshGroup(`region${region}`);
-        };
-    
-        img.src = imageDataBase64;
-      }
-    }
-
-  }, [alt1Ready, a1lib, inCombat, combatCheck, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, buffsToRender]);
+  useAlt1OverlayRenderer(group, {
+    alt1Ready,
+    a1lib,
+    inCombat,
+    combatCheck,
+    cooldownColor,
+    timeRemainingColor,
+  });
 
   const onDragEnd = (event: any) => {
     const { active, over } = event;
