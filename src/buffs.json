@@ -1,5 +1,5 @@
 {
-  "version": 106,
+  "version": 107,
   "buffs": [
     {
       "name": "Adrenaline Potion",
@@ -524,6 +524,7 @@
       "hasAlert": false,
       "buffType": "Buff",
       "isActive": false,
+      "isUtility": true,
       "categories": ["Prayer"]
     },
     {

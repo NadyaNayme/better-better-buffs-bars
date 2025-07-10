@@ -19,9 +19,7 @@ interface SyncResult {
 }
 
 function buffsDidChange(prev: Buff[], next: Buff[]): boolean {
-    const now = Date.now();
     if (prev.length !== next.length) { 
-        console.log("Buffs changed:", prev, next);
         return true; 
     }
   
@@ -30,25 +28,26 @@ function buffsDidChange(prev: Buff[], next: Buff[]): boolean {
       const b = next[i];
   
       if (a.name !== b.name || a.isActive !== b.isActive) {
-        console.log("Buff changed:", a.name, {
-            prev: a,
-            next: b,
-          });
         return true;
       }
   
       if (a.buffType === "Meta") {
-        if (
-          a.childName !== b.childName ||
-          a.timeRemaining !== b.timeRemaining ||
-          (a.imageData !== b.imageData && b.isActive && now - b.timeRemaining! > 3000)
-        ) {
-        console.log("Buff changed:", a.name, {
-            prev: a,
-            next: b,
-            });
-          return true;
-        }
+        const metaChanged =
+        a.childName !== b.childName ||
+        a.timeRemaining !== b.timeRemaining ||
+        a.imageData !== b.imageData ||
+        a.scaledImageData !== b.scaledImageData ||
+        a.desaturatedImageData !== b.desaturatedImageData ||
+        a.scaledDesaturatedImageData !== b.scaledDesaturatedImageData ||
+        a.isActive !== b.isActive;
+    
+      if (metaChanged) {
+        console.log("Meta buff changed:", a.name, {
+          prev: a,
+          next: b,
+        });
+        return true;
+      }
   
         continue; 
       }
@@ -57,10 +56,6 @@ function buffsDidChange(prev: Buff[], next: Buff[]): boolean {
         a.timeRemaining !== b.timeRemaining ||
         a.cooldownRemaining !== b.cooldownRemaining
       ) {
-        console.log("Buff changed:", a.name, {
-            prev: a,
-            next: b,
-          });
         return true;
       }
     }

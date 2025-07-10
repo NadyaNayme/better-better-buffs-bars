@@ -1,6 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import useStore from '../store';
 import { alertsMap } from '../lib/alerts';
+
+const lastTickedMap = new Map<string, number>();
 
 export function useCooldownTicker() {
   const groups = useStore((state) => state.groups);
@@ -8,13 +10,23 @@ export function useCooldownTicker() {
   const alertVolume = useStore((state) => state.alertVolume);
   const updateGroup = useStore((state) => state.updateGroup);
 
+  const lastRunRef = useRef(0);
+
   const tickCooldownTimers = useCallback(() => {
     const now = Date.now();
+
+    if (now - lastRunRef.current < 1000) {
+        return;
+    }
+
+    lastRunRef.current = now;
 
     groups.forEach((group) => {
       let didChange = false;
 
       const updatedBuffs = group.buffs.map((buff) => {
+        const key = `${group.id}-${buff.name}`;
+        const lastTick = lastTickedMap.get(key) ?? 0;
         const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
         if (recentlyUpdated) return buff;
 
@@ -30,6 +42,7 @@ export function useCooldownTicker() {
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
           didChange = true;
+          lastTickedMap.set(key, now);
           return {
             ...buff,
             lastUpdated: now,
@@ -44,9 +57,11 @@ export function useCooldownTicker() {
         if (
           buff.cooldownRemaining &&
           buff.cooldownRemaining > 0 &&
-          buff.cooldownRemaining < 60
+          buff.cooldownRemaining < 60 &&
+          now - lastTick >= 1000
         ) {
           didChange = true;
+          lastTickedMap.set(key, now);
           return {
             ...buff,
             cooldownRemaining: buff.cooldownRemaining - 1,
@@ -60,7 +75,7 @@ export function useCooldownTicker() {
         updateGroup(group.id, { buffs: updatedBuffs });
       }
     });
-  }, [groups, enableAlerts, alertVolume, updateGroup]);
+  }, []);
 
   return tickCooldownTimers;
 }
