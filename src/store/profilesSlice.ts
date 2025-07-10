@@ -9,7 +9,7 @@ export interface ProfilesSlice {
   activeProfile: string | null;
   createProfile: (name: string) => void;
   loadProfile: (id: string) => void;
-  saveProfile: () => Promise<void>;
+  saveProfile: (id: string) => Promise<void>;
   deleteProfile: (id: string) => void;
   editProfile: (id: string, newName: string) => void;
 }

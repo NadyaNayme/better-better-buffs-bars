@@ -8,7 +8,7 @@ import Anticipation from '../assets/data/Anticipation.data.png';
 import Antifire from '../assets/data/antifire_top.data.png';
 import Antipoison from '../assets/data/Anti-poison_Active.data.png';
 import Aura from '../assets/data/Aura.data.png';
-import BalanceByForce from '../assets/data/balance_by_force-beta.data.png';
+import BalanceByForce from '../assets/data/balance_by_force.data.png';
 import Barricade from '../assets/data/Barricade.data.png';
 import Berserk from '../assets/data/Berserk.data.png';
 import BikArrows from '../assets/data/bik_arrows.data.png';
@@ -17,6 +17,7 @@ import BlackstoneArrows from '../assets/data/blackstone_arrows.data.png';
 import Bloated from '../assets/data/bloated.data.png';
 import BlueVirus from '../assets/data/Blue_virus.data.png';
 import BonfireBoost from '../assets/data/Bonfire_Boost.data.png';
+import Cease from '../assets/data/Cease.data.png';
 import ChronicleAttraction from '../assets/data/Chronicle_Attraction.data.png';
 import CrystalMask from '../assets/data/Crystal_Mask.data.png';
 import CrystalRain from '../assets/data/Crystal_Rain-minimal.data.png';
@@ -24,8 +25,10 @@ import Darkness from '../assets/data/Darkness.data.png';
 import DeathGuard from '../assets/data/Death_Guard_Special-top.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';
 import DeathSpark from '../assets/data/Death_Spark.data.png';
+import DeathSparkUnready from '../assets/data/Death_Spark-notready.data.png';
 import DeathsSwiftness from '../assets/data/Deaths_Swiftness-top.data.png';
-import DeathsporeArrows from '../assets/data/deathspore_arrows.data.png';
+import DeathsporeArrows from '../assets/data/deathspore_arrows-quiver.data.png';
+import Debilitate from '../assets/data/Debilitate.data.png';
 import DeflectMagic from '../assets/data/Deflect_Magic.data.png';
 import DeflectMelee from '../assets/data/Deflect_Melee.data.png';
 import DeflectNecromancy from '../assets/data/Deflect_Necromancy.data.png';
@@ -36,11 +39,12 @@ import Devotion from '../assets/data/Devotion.data.png';
 import DiamondBakBolts from '../assets/data/diamond_bak_bolts.data.png';
 import Divert from '../assets/data/Divert.data.png';
 import DragonSlayer from '../assets/data/Dragon_Slayer.data.png';
-import DwarfWeedIncense from '../assets/data/Dwarf_Weed.data.png';
+import DwarfWeedIncense from '../assets/data/Dwarf_Weed_Incense_Sticks.data.png';
 import EnhancedExcalibur from '../assets/data/Enhanced_Excalibur-scuffed.data.png';
 import ElderOverload from '../assets/data/Elder_Overload.data.png';
 import ErethdorsGrimoire from '../assets/data/Erethdor\'s_grimoire.data.png';
-import FellstalkIncense from '../assets/data/Fellstalk.data.png';
+import FamiliarSummoned from '../assets/data/Familiar_Summoned.data.png';
+import FellstalkIncense from '../assets/data/Fellstalk_Incense_Sticks.data.png';
 import Freedom from '../assets/data/Freedom.data.png';
 import FulArrows from '../assets/data/ful_arrows.data.png';
 import GladiatorsRage from '../assets/data/Gladiators_Rage.data.png';
@@ -53,8 +57,8 @@ import IngenuityOfTheHumans from '../assets/data/Ingenuity_of_the_Humans.data.pn
 import Instability from '../assets/data/Instability.data.png';
 import InvokeLordOfBones from '../assets/data/Invoke_Lord_of_Bones.data.png';
 import JasDragonbaneArrows from '../assets/data/jas_dragonbane.data.png';
-import KwuarmIncense from '../assets/data/Kwuarm.data.png';
-import LantadymeIncense from '../assets/data/Lantadyme.data.png';
+import KwuarmIncense from '../assets/data/Kwuarm_Incense_Sticks.data.png';
+import LantadymeIncense from '../assets/data/Lantadyme_Incense_Sticks.data.png';
 import Limitless from '../assets/data/Limitless.data.png';
 import LivingDeath from '../assets/data/Living_Death.data.png';
 import Malevolence from '../assets/data/Malevolence.data.png';
@@ -92,6 +96,7 @@ import Stunned from '../assets/data/Stunned.data.png';
 import Sunshine from '../assets/data/Sunshine.data.png';
 import SuperAntifire from '../assets/data/Super_Anti-Fire_Active.data.png';
 import SupremeOverload from '../assets/data/supreme_overload.data.png';
+import TemporalAnomaly from '../assets/data/Temporal_Anomaly.data.png';
 import ThreadsOfFate from '../assets/data/Threads_of_Fate.data.png';
 import TimeRift from '../assets/data/Time_rift.data.png';
 import Torment from '../assets/data/Torment.data.png';
@@ -101,110 +106,115 @@ import VengefulGhost from '../assets/data/vengeful_ghost-top.data.png';
 import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
 import WenArrows from '../assets/data/wen_arrows.data.png';
 
-const rawImageMap: Record<string, string> = {
-    'Adrenaline Potion': AdrenalinePotion,
-    'Affliction': Affliction,
-    'Aggression Potion': AggressionPotion,
-    'Ancient Elven Ritual Shard': AncientElvenRitualShard,
-    'Anguish': Anguish,
-    'Animate Dead': AnimateDead,
-    'Anticipation': Anticipation,
-    'Antifire': Antifire,
-    'Antipoison': Antipoison,
-    'Aura': Aura,
-    'Balance By Force': BalanceByForce,
-    'Barricade': Barricade,
-    'Berserk': Berserk,
-    'Bik Arrows': BikArrows,
-    'BlackVirus': BlackVirus,
-    'Blackstone Arrows': BlackstoneArrows,
-    'Bloated': Bloated,
-    'Blue Virus': BlueVirus,
-    'Bonfire Boost': BonfireBoost,
-    'Chronicle Attraction': ChronicleAttraction,
-    'Crystal Mask': CrystalMask,
-    'Crystal Rain': CrystalRain,
-    'Darkness': Darkness,
-    'Death Guard': DeathGuard,
-    'Death Mark': DeathMark,
-    'Death Spark': DeathSpark,
-    'Deaths Swiftness': DeathsSwiftness,
-    'Deathspore Arrows': DeathsporeArrows,
-    'Deflect Magic': DeflectMagic,
-    'Deflect Melee': DeflectMelee,
-    'Deflect Necromancy': DeflectNecromancy,
-    'Deflect Ranged': DeflectRanged,
-    'Demon Slayer': DemonSlayer,
-    'Desolation': Desolation,
-    'Devotion': Devotion,
-    'Diamond Bak Bolts': DiamondBakBolts,
-    'Divert': Divert,
-    'Dragon Slayer': DragonSlayer,
-    'DwarfWeed Incense': DwarfWeedIncense,
-    'Enhanced Excalibur': EnhancedExcalibur,
-    'Elder Overload': ElderOverload,
-    'Erethdors Grimoire': ErethdorsGrimoire,
-    'Fellstalk Incense': FellstalkIncense,
-    'Freedom': Freedom,
-    'Ful Arrows': FulArrows,
-    'Gladiators Rage': GladiatorsRage,
-    'Greater Deaths Swiftness': GreaterDeathsSwiftness,
-    'Greater Sunshine': GreaterSunshine,
-    'Green Virus': GreenVirus,
-    'Hydrix Bak Bolts': HydrixBakBolts,
-    'Immortality': Immortality,
-    'Ingenuity of the Humans': IngenuityOfTheHumans,
-    'Instability': Instability,
-    'Invoke Lord of Bones': InvokeLordOfBones,
-    'Jas Dragonbane Arrows': JasDragonbaneArrows,
-    'Kwuarm Incense': KwuarmIncense,
-    'Lantadyme Incense': LantadymeIncense,
-    'Limitless': Limitless,
-    'LivingDeath': LivingDeath,
-    'Malevolence': Malevolence,
-    'Necrosis': Necrosis,
-    'OmniGuard': OmniGuard,
-    'Onyx Bak Bolts': OnyxBakBolts,
-    'Overloaded': Overloaded,
-    'Perfect Equilibrium': PerfectEquilibrium,
-    'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
-    'Powder of Penance': PowderOfPenance,
-    'Powder of Protection': PowderOfProtection,
-    'Powerburst Prevention': PowerburstPrevention,
-    'Prayer Active': PrayerActive,
-    'Prayer Renewal': PrayerRenewal,
-    'Protect From Magic': ProtectFromMagic,
-    'Protect From Melee': ProtectFromMelee,
-    'Protect From Necromancy': ProtectFromNecromancy,
-    'Protect From Ranged': ProtectFromRanged,
-    'Putrid Zombie': PutridZombie,
-    'Red Virus': RedVirus,
-    'Reflect': Reflect,
-    'Residual Soul': ResidualSoul,
-    'Resonance': Resonance,
-    'Ruby Bak Bolts': RubyBakBolts,
-    'Ruination': Ruination,
-    'Seren Godbow': SerenGodbow,
-    'Sign of Life': SignOfLife,
-    'Skeleton Warrior': SkeletonWarrior,
-    'Sorrow': Sorrow,
-    'Soul Split': SoulSplit,
-    'Split Soul': SplitSoul,
-    'Split Soul (ECB)': SplitSoulECB,
-    'Stunned': Stunned,
-    'Sunshine': Sunshine,
-    'Super Antifire': SuperAntifire,
-    'Supreme Overload': SupremeOverload,
-    'Threads of Fate': ThreadsOfFate,
-    'TimeRift': TimeRift,
-    'Torment': Torment,
-    'Turmoil': Turmoil,
-    'Undead Slayer': UndeadSlayer,
-    'Vengeful Ghost': VengefulGhost,
-    'Vulnerability': Vulnerability,
-    'Weapon Poison': Poisonous,
-    'Wen Arrows': WenArrows
-  };
+export const rawImageMap: Record<string, string> = {
+  'Adrenaline Potion': AdrenalinePotion,
+  'Affliction': Affliction,
+  'Aggression Potion': AggressionPotion,
+  'Ancient Elven Ritual Shard': AncientElvenRitualShard,
+  'Anguish': Anguish,
+  'Animate Dead': AnimateDead,
+  'Anticipation': Anticipation,
+  'Antifire': Antifire,
+  'Antipoison': Antipoison,
+  'Aura': Aura,
+  'Balance By Force': BalanceByForce,
+  'Barricade': Barricade,
+  'Berserk': Berserk,
+  'Bik Arrows': BikArrows,
+  'Black Virus': BlackVirus,
+  'Black Stone Arrows': BlackstoneArrows,
+  'Bloated': Bloated,
+  'Blue Virus': BlueVirus,
+  'Bonfire Boost': BonfireBoost,
+  'Cease': Cease,
+  'Chronicle Attraction': ChronicleAttraction,
+  'Crystal Mask': CrystalMask,
+  'Crystal Rain': CrystalRain,
+  'Darkness': Darkness,
+  'Death Guard': DeathGuard,
+  'Death Mark': DeathMark,
+  'Death Spark (Ready)': DeathSpark,
+  'Death Spark (Unready)': DeathSparkUnready,
+  'Deaths Swiftness': DeathsSwiftness,
+  'Deathspore Arrows': DeathsporeArrows,
+  'Debilitate': Debilitate,
+  'Deflect Magic': DeflectMagic,
+  'Deflect Melee': DeflectMelee,
+  'Deflect Necromancy': DeflectNecromancy,
+  'Deflect Ranged': DeflectRanged,
+  'Demon Slayer': DemonSlayer,
+  'Desolation': Desolation,
+  'Devotion': Devotion,
+  'Diamond Bakriminel Bolts (e)': DiamondBakBolts,
+  'Divert': Divert,
+  'Dragon Slayer': DragonSlayer,
+  'Enhanced Excalibur': EnhancedExcalibur,
+  'Elder Overload': ElderOverload,
+  'Erethdors Grimoire': ErethdorsGrimoire,
+  'Familiar Summoned': FamiliarSummoned,
+  'Freedom': Freedom,
+  'Ful Arrows': FulArrows,
+  'Gladiators Rage': GladiatorsRage,
+  'Greater Deaths Swiftness': GreaterDeathsSwiftness,
+  'Greater Sunshine': GreaterSunshine,
+  'Green Virus': GreenVirus,
+  'Hydrix Bakriminel Bolts (e)': HydrixBakBolts,
+  'Immortality': Immortality,
+  'Ingenuity of the Humans': IngenuityOfTheHumans,
+  'Incense Sticks (Dwarf Weed)': DwarfWeedIncense,
+  'Incense Sticks (Fellstalk)': FellstalkIncense,
+  'Incense Sticks (Kwuarm)': KwuarmIncense,
+  'Incense Sticks (Lantadyme)': LantadymeIncense,
+  'Instability': Instability,
+  'Invoke Lord of Bones': InvokeLordOfBones,
+  'Jas Dragonbane Arrows': JasDragonbaneArrows,
+  'Limitless': Limitless,
+  'Living Death': LivingDeath,
+  'Malevolence': Malevolence,
+  'Necrosis': Necrosis,
+  'Omni Guard': OmniGuard,
+  'Onyx Bakriminel Bolts (e)': OnyxBakBolts,
+  'Overload': Overloaded,
+  'Perfect Equilibrium': PerfectEquilibrium,
+  'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
+  'Powder of Penance': PowderOfPenance,
+  'Powder of Protection': PowderOfProtection,
+  'Powerburst Prevention': PowerburstPrevention,
+  'Prayer Active': PrayerActive,
+  'Prayer Renewal': PrayerRenewal,
+  'Protect From Magic': ProtectFromMagic,
+  'Protect From Melee': ProtectFromMelee,
+  'Protect From Necromancy': ProtectFromNecromancy,
+  'Protect From Ranged': ProtectFromRanged,
+  'Putrid Zombie': PutridZombie,
+  'Red Virus': RedVirus,
+  'Reflect': Reflect,
+  'Residual Soul': ResidualSoul,
+  'Resonance': Resonance,
+  'Ruby Bakriminel Bolts (e)': RubyBakBolts,
+  'Ruination': Ruination,
+  'Seren Godbow': SerenGodbow,
+  'Sign of Life': SignOfLife,
+  'Skeleton Warrior': SkeletonWarrior,
+  'Sorrow': Sorrow,
+  'Soul Split': SoulSplit,
+  'Split Soul': SplitSoul,
+  'Split Soul (ECB)': SplitSoulECB,
+  'Stunned': Stunned,
+  'Sunshine': Sunshine,
+  'Super Antifire': SuperAntifire,
+  'Supreme Overload': SupremeOverload,
+  'Temporal Anomaly': TemporalAnomaly,
+  'Threads of Fate': ThreadsOfFate,
+  'Time Rift': TimeRift,
+  'Torment': Torment,
+  'Turmoil': Turmoil,
+  'Undead Slayer': UndeadSlayer,
+  'Vengeful Ghost': VengefulGhost,
+  'Vulnerability': Vulnerability,
+  'Weapon Poison': Poisonous,
+  'Wen Arrows': WenArrows
+};
 
   
 const encodedImageCache = new Map<string, Promise<string>>();

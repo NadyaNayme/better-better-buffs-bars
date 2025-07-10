@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '../store/index';
@@ -21,6 +21,23 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
+
+  const buffsToRender = useMemo(() => {
+    return group.buffs.filter(buff => {
+      if (group.explicitInactive) return true;
+      return buff.isActive || (buff.cooldownRemaining ?? 0) > 0;
+    }).map(buff => ({
+      id: buff.id,
+      name: buff.name,
+      isActive: buff.isActive,
+      cooldownRemaining: buff.cooldownRemaining,
+      timeRemaining: buff.timeRemaining,
+      scaledImageData: buff.scaledImageData,
+      scaledDesaturatedImageData: buff.scaledDesaturatedImageData,
+      imageData: buff.imageData,
+      desaturatedImageData: buff.desaturatedImageData,
+    }));
+  }, [group.buffs, group.explicitInactive]);
 
   const updateOverlayPosition = async () => {
     if (!a1lib || !window.alt1) {
@@ -241,7 +258,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
       }
     }
 
-  }, [alt1Ready, a1lib, inCombat, combatCheck, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, group.buffs]);
+  }, [alt1Ready, a1lib, inCombat, combatCheck, group.id, group.enabled, group.overlayPosition, group.scale, group.buffsPerRow, buffsToRender]);
 
   const onDragEnd = (event: any) => {
     const { active, over } = event;

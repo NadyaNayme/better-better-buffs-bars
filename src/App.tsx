@@ -15,6 +15,7 @@ import SettingsPanelComponent from './components/SettingsPanelComponent';
 import { ActionBarReaderComponent } from './components/ActionBarReaderComponent';
 import { toast, Toaster } from 'sonner';
 import { TargetMobReaderComponent } from './components/TargetMobReaderComponent';
+import { useImageRescaler } from './hooks/useImageRescaler';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -25,10 +26,9 @@ function App() {
   const groups: Group[] = useStore((state: any) => state.groups);
   const createGroup = useStore((state: any) => state.createGroup);
   const createProfile = useStore((state: any) => state.createProfile);
-  const syncGroupBuffs = useStore((state: any) => state.syncGroupBuffs);
   const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
   const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
-  const rescaleAllGroupsOnLoad = useStore(state => state.rescaleAllGroupsOnLoad);
+  const rescaleAllGroups = useImageRescaler();
   const inCombat = useStore((state: any) => state.inCombat);
   const combatCheck = useStore((state: any) => state.combatCheck);
   const debugMode = useStore((state: any) => state.debugMode);
@@ -58,12 +58,8 @@ function App() {
   };
 
   useEffect(() => {
-    rescaleAllGroupsOnLoad();
-  }, [rescaleAllGroupsOnLoad]);
-
-  useEffect(() => {
-    syncGroupBuffs(buffsData.buffs);
-  }, []);
+    rescaleAllGroups();
+  }, [groups, rescaleAllGroups]);
 
   useEffect(() => {
     if (isAlt1Available()) {

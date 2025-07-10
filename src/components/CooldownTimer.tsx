@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import useStore from '../store/index';
+import { useCooldownTicker } from '../hooks/useCooldownTicker';
 
 export function CooldownTimer() {
-  const tickCooldownTimers = useStore(state => state.tickCooldownTimers);
+  const tickCooldownTimers = useCooldownTicker();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-        tickCooldownTimers();
+      tickCooldownTimers();
     }, 1000);
     return () => clearInterval(intervalId);
   }, [tickCooldownTimers]);
