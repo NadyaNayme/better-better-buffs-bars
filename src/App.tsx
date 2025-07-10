@@ -131,6 +131,7 @@ function App() {
             a1lib={a1lib}
           />
       <TargetMobReaderComponent
+          readInterval={100}
           debugMode={debugMode}
           a1lib={a1lib}
       />

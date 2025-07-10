@@ -77,13 +77,6 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
         <div className="flex justify-between items-center mb-4">
           <h4 className="text-white text-md font-bold">Select Buffs</h4>
           <p>Click a buff to start tracking it for this group. <br/>Click it again to stop tracking it.</p>
-          <button
-            onClick={onClose}
-            className="text-white text-2xl hover:text-gray-300"
-            aria-label="Close"
-          >
-            &times;
-          </button>
         </div>
 
         <div className="mb-6">
