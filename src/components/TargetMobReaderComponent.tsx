@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useReducer, useState } from 'react';
 import TargetMobReader from 'alt1/targetmob';
-import useStore from '../store';
+import useStore from '../store/index';
 
 import Bloated from '../assets/data/bloated.data.png';
 import DeathMark from '../assets/data/Death_Mark.data.png';

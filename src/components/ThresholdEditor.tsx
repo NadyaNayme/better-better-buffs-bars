@@ -1,5 +1,5 @@
 import React, { useState, type FormEventHandler } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 
 const ThresholdEditor = () => {
   const buffs = useStore(state => state.buffs);

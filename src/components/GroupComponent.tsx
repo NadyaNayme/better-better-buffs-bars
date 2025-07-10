@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
-import useStore from '../store';
+import useStore from '../store/index';
 import Buff from './Buff';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';

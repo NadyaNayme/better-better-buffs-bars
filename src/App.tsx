@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import useStore from './store';
+import useStore from './store/index';
 import buffsData from './buffs.json';
 import a1lib from 'alt1';
 import { isAlt1Available } from "./lib/alt1Utils";

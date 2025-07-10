@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 import CheckboxSetting from './CheckboxSetting';
 import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';

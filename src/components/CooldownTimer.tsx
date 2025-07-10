@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 
 export function CooldownTimer() {
   const tickCooldownTimers = useStore(state => state.tickCooldownTimers);

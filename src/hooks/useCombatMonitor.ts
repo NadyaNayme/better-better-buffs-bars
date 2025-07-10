@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import useStore from "../store";
+import useStore from "../store/index";
 
 let isMonitoring = false;
 let globalInterval: number | null = null;

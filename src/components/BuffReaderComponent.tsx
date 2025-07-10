@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 import * as BuffReader from 'alt1/buffs';
 
 import AdrenalinePotion from '../assets/data/Adrenaline_Potion.data.png';

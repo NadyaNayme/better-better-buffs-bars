@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 
 interface AddBuffModalComponentProps {
   groupId: string;

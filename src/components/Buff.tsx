@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import useStore from '../store';
+import useStore from '../store/index';
 import type { Buff } from '../types/Buff';
 
 const formatTime = (seconds: number) => {

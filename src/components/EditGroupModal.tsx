@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useStore from '../store';
+import useStore from '../store/index';
 import ConfirmModal from './ConfirmModal';
 import type { Group } from '../types/Group';
 import { toast } from 'sonner';

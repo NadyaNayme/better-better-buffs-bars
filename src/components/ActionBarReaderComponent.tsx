@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../hooks/useCombatMonitor';
 import { alertsMap } from '../lib/alerts';
-import useStore from '../store';
+import useStore from '../store/index';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 
