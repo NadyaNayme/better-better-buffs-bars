@@ -91,7 +91,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     })
 
     const buffsToDraw = group.buffs.filter(buff => {
-      if (buff.noNumberDisplay || group.explicitInactive) {
+      if (buff.noNumberDisplay || group.explicitInactive || buff.isStack) {
         return true;
       }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
