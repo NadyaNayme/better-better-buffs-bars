@@ -36,10 +36,20 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       children: [],
     };
     set((state) => ({ groups: [...state.groups, newGroup] }));
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
+    }
   },
 
   deleteGroup: (id) => {
     set((state) => ({ groups: state.groups.filter((g) => g.id !== id) }));
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
+    }
   },
 
   updateGroup: async (id, updates) => {
@@ -72,6 +82,11 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       set((state) => ({
         groups: state.groups.map((g) => (g.id === id ? { ...g, buffs: resizedBuffs } : g)),
       }));
+    }
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
     }
   },
 
@@ -112,6 +127,11 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         };
       }),
     }));
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
+    }
   },
 
   removeBuffFromGroup: (groupId, buffId) => {
@@ -124,6 +144,11 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         };
       }),
     }));
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
+    }
   },
 
   reorderBuffsInGroup: (groupId, oldIndex, newIndex) => {
@@ -137,6 +162,11 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         groups: state.groups.map((g) => (g.id === groupId ? { ...g, buffs: newBuffs } : g)),
       };
     });
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+        saveProfile(activeProfile);
+    }
   },
   syncIdentifiedBuffs: (identifiedActiveBuffs) => {
     set((state) => {
