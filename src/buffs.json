@@ -904,7 +904,7 @@
       "hasAlert": false,
       "buffType": "Buff",
       "isActive": false,
-      "alwaysActive": true,
+      "alwaysActive": false,
       "isStack": true,
       "categories": ["Necromancy", "Stacks"]
     },
