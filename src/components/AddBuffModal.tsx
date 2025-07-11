@@ -140,6 +140,17 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
             ))
         )}
 
+        <div className="flex justify-start mt-6">
+          <p>Some buffs have been temporarily disabled from being added to new groups while I attempt to fix a flickering issue they cause. If you have these buffs tracking in a group and are experiencing issues it is recommended that you remove them.</p>
+          <ul>
+            <li>Conjure Undead Army</li>
+            <li>Death Spark</li>
+            <li>DPS Prayers</li>
+            <li>Overhead Prayers</li>
+            <li>Quiver (all 3 variants)</li>
+          </ul>
+        </div>
+
         <div className="flex justify-end mt-6">
           <button
             type="button"
