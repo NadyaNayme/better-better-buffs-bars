@@ -91,11 +91,11 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     })
 
     const buffsToDraw = group.buffs.filter(buff => {
-      if (buff.noNumberDisplay || group.explicitInactive || buff.isStack) {
+      if (buff.noNumberDisplay || group.explicitInactive) {
         return true;
       }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      return buff.isActive || isOnCooldown;
+      return buff.isActive || isOnCooldown || buff.isStack;
     });
 
     window.alt1.overLaySetGroup(`region${region}`);
