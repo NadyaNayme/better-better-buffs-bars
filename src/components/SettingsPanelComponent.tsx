@@ -8,6 +8,8 @@ import SocialButtons from './SocialButtons';
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const [showPatchNotes, setShowPatchNotes] = useState(false);
+
   const combatCheck = useStore(s => s.combatCheck);
   const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
 
