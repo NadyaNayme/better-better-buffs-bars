@@ -18,7 +18,7 @@ export interface PatchNote {
       ],
       fixes: [
         `Buffs that are stacks (eg. Necrosis, Residual Souls) now properly go to 0 instead of freezing on the last known stack value.`
-      ]
+      ],
     },
     {
       version: "v0.3.2",
