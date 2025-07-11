@@ -4,9 +4,12 @@ import CheckboxSetting from './CheckboxSetting';
 import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';
 import SocialButtons from './SocialButtons';
+import { PatchNotesComponent } from './PatchNotesComponent';
 
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const [showPatchNotes, setShowPatchNotes] = useState(false);
 
   const combatCheck = useStore(s => s.combatCheck);
   const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
@@ -60,7 +63,12 @@ const SettingsPanelComponent: React.FC = () => {
         }}
       >
         <h2>Settings</h2>
-        <h3>Version 0.3.3</h3>
+        <h3 className="text-zinc-400">
+          <button onClick={() => setShowPatchNotes(true)} className="underline hover:text-white">
+            Version 0.3.3
+          </button>
+        </h3>
+        {showPatchNotes && <PatchNotesComponent onClose={() => setShowPatchNotes(false)} />}
 
         <CheckboxSetting
           label="Hide overlays outside of combat"
