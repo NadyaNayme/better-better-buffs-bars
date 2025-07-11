@@ -95,7 +95,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         return true;
       }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      return buff.isActive || isOnCooldown || buff.isStack;
+      return buff.isActive || isOnCooldown;
     });
 
     window.alt1.overLaySetGroup(`region${region}`);
@@ -114,6 +114,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
 
       window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
       window.alt1.overLaySetGroupZIndex(`${region}-${buff.name}-text`, 3);
+
+      // If the buff is a stack and it has no stacks clear the text
+      if (buff.isStack && buff.timeRemaining === 0) {
+        window.alt1.overLaySetGroup(`${region}-${buff.name}-text`);
+        window.alt1.overLayFreezeGroup(`${region}-${buff.name}-text`);
+        window.alt1.overLayClearGroup(`${region}-${buff.name}-text`);
+        return;
+      }
 
       const timeToDisplay = isOnCooldown ? buff.cooldownRemaining : (buff.timeRemaining ?? '');
       const textColor = isOnCooldown
