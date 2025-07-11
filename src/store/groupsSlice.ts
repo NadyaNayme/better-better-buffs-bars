@@ -4,8 +4,8 @@ import { type Store } from '../types/Store';
 import { type Group } from '../types/Group';
 import { createBlankBuff } from '../lib/createBlankBuff';
 import { resizedataURL } from '../lib/resizeDataURL';
-import { syncIdentifiedBuffsToGroups } from '../lib/buffSyncer';
 import type { Buff } from '../types/Buff';
+import { debugLog } from '../lib/debugLog';
 
 export interface GroupsSlice {
   groups: Group[];
@@ -119,10 +119,15 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
   
         const nonBlankBuffs = g.buffs.filter((b) => b.name !== 'Blank');
         const blank = g.buffs.find((b) => b.name === 'Blank');
+
+        const indexedBuffs = [...nonBlankBuffs, buff, ...(blank ? [blank] : [])].map((buff, index) => ({
+          ...buff,
+          index,
+        }));
   
         return {
           ...g,
-          buffs: [...nonBlankBuffs, buff, ...(blank ? [blank] : [])],
+          buffs: indexedBuffs,
           children: newChildren,
         };
       }),
@@ -158,8 +163,12 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       const newBuffs = [...group.buffs];
       const [moved] = newBuffs.splice(oldIndex, 1);
       newBuffs.splice(newIndex, 0, moved);
+      const indexedBuffs = newBuffs.map((buff, index) => ({
+        ...buff,
+        index,
+      }));
       return {
-        groups: state.groups.map((g) => (g.id === groupId ? { ...g, buffs: newBuffs } : g)),
+        groups: state.groups.map((g) => (g.id === groupId ? { ...g, buffs: indexedBuffs } : g)),
       };
     });
     const saveProfile = get().saveProfile;
@@ -168,16 +177,49 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         saveProfile(activeProfile);
     }
   },
-  syncIdentifiedBuffs: (identifiedActiveBuffs) => {
+  syncIdentifiedBuffs: (payloadMap: Map<string, any>) => {
     set((state) => {
-      const { didChangeMap, updatedGroups } = syncIdentifiedBuffsToGroups(state.groups, identifiedActiveBuffs);
-      if (!didChangeMap.size) return {};
-  
-      return {
-        groups: state.groups.map((group) =>
-          didChangeMap.has(group.id) ? updatedGroups.get(group.id)! : group
-        ),
-      };
+      const masterBuffsMap = new Map(state.buffs.map(b => [b.name, b]));
+
+      let hasAnyChanges = false;
+
+      const newGroups = state.groups.map(group => {
+        let hasChangesInThisGroup = false;
+
+        const newBuffs = group.buffs.map(buff => {
+          if (payloadMap.has(buff.name)) {
+            const updatePayload = payloadMap.get(buff.name);
+
+            if (buff.isActive !== updatePayload.isActive) {
+              hasChangesInThisGroup = true;
+              hasAnyChanges = true;
+
+              return {
+                ...masterBuffsMap.get(buff.name),
+                ...buff,                         
+                ...updatePayload,                
+              };
+            }
+          }
+          
+          return buff;
+        });
+
+        if (hasChangesInThisGroup) {
+          return { ...group, buffs: newBuffs };
+        }
+        
+        return group;
+      });
+
+      if (!hasAnyChanges) {
+        debugLog.verbose("No buff state changes detected that require an update.");
+        return {};
+      }
+
+      debugLog.success(`Syncing ${payloadMap.size} identified buffs to store.`);
+      
+      return { groups: newGroups };
     });
   },
 });

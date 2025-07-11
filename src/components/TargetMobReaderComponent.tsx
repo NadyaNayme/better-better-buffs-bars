@@ -160,13 +160,13 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
   // READING → start interval for reading debuffs
   useEffect(() => {
     if (status !== 'READING') return;
-    debugLog('[Target Mob Reader] Starting read interval...');
+    debugLog.info('[Target Mob Reader] Starting read interval...');
     const id = setInterval(readTarget, readInterval);
     intervalRef.current = id;
     return () => {
       clearInterval(id);
       intervalRef.current = 0;
-      debugLog('[Target Mob Reader] Clearing read interval.');
+      debugLog.info('[Target Mob Reader] Clearing read interval.');
     };
   }, [status, readTarget, readInterval]);
 
@@ -179,7 +179,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) {
       syncIdentifiedBuffs(cleared);
-      debugLog(`[Target Mob Reader] Force clearing enemy debuffs.`)
+      debugLog.info(`[Target Mob Reader] Force clearing enemy debuffs.`)
     }
   };
 

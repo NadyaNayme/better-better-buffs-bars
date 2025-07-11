@@ -5,8 +5,9 @@ import { createGroupsSlice, type GroupsSlice } from './groupsSlice';
 import { createProfilesSlice, type ProfilesSlice } from './profilesSlice';
 import { createSettingsSlice, type SettingsSlice } from './settingsSlice';
 import { createUISlice, type UISlice } from './uiSlice';
+import { createDebugSlice, type DebugSlice } from './debugSlice';
 
-type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice;
+type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice;
 
 const useStore = create<StoreState>()(
   persist(
@@ -16,6 +17,7 @@ const useStore = create<StoreState>()(
       ...createProfilesSlice(...state),
       ...createSettingsSlice(...state),
       ...createUISlice(...state),
+      ...createDebugSlice(...state),
     }),
     {
       name: 'buff-tracker-storage',

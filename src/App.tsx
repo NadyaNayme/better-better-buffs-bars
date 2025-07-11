@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStore from './store/index';
-import buffsData from './buffs.json';
 import a1lib from 'alt1';
 import { isAlt1Available } from "./lib/alt1Utils";
-import { BuffReaderComponent } from './components/BuffReaderComponent';
 import { CooldownTimer } from './components/CooldownTimer';
 import PopupModal from './components/PopupModal';
 import ProfileManager from './components/ProfileManager';
@@ -16,6 +14,10 @@ import { ActionBarReaderComponent } from './components/ActionBarReaderComponent'
 import { toast, Toaster } from 'sonner';
 import { TargetMobReaderComponent } from './components/TargetMobReaderComponent';
 import { useImageRescaler } from './hooks/useImageRescaler';
+import { GlobalBuffProcessor } from './components/GlobalBuffProcessor';
+import { DebugOverlay } from './components/DebugOverlay';
+import { debugLog } from './lib/debugLog';
+import type { Store } from './types/Store';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -23,19 +25,14 @@ function App() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContext, setModalContext] = useState<'group' | 'profile' | null>(null);
 
-  const groups: Group[] = useStore((state: any) => state.groups);
-  const createGroup = useStore((state: any) => state.createGroup);
-  const createProfile = useStore((state: any) => state.createProfile);
-  const setBuffsFromJsonIfNewer = useStore((state: any) => state.setBuffsFromJsonIfNewer);
-  const syncIdentifiedBuffs = useStore((state: any) => state.syncIdentifiedBuffs);
+  const groups: Group[] = useStore((state: Store) => state.groups);
+  const createGroup = useStore((state: Store) => state.createGroup);
+  const createProfile = useStore((state: Store) => state.createProfile);
+  const setBuffsFromJsonIfNewer = useStore((state: Store) => state.setBuffsFromJsonIfNewer);
   const rescaleAllGroups = useImageRescaler();
-  const inCombat = useStore((state: any) => state.inCombat);
-  const combatCheck = useStore((state: any) => state.combatCheck);
-  const debugMode = useStore((state: any) => state.debugMode);
-
-  const handleBuffsIdentified = useCallback((foundBuffsMap: Map<string, any>) => {
-    syncIdentifiedBuffs(foundBuffsMap);
-  }, [syncIdentifiedBuffs]);
+  const inCombat = useStore((state: Store) => state.inCombat);
+  const combatCheck = useStore((state: Store) => state.combatCheck);
+  const debugMode = useStore((state: Store) => state.debugMode);
 
   const openModalForGroup = () => {
     setModalContext('group');
@@ -63,11 +60,11 @@ function App() {
 
   useEffect(() => {
     if (isAlt1Available()) {
-      console.log("✅ Alt1 detected and overlay permissions granted.");
+      debugLog.success("Alt1 detected and overlay permissions granted.");
       setAlt1Detected(true);
       window.alt1?.identifyAppUrl("./appconfig.json");
     } else {
-      console.warn("⚠️ Alt1 not available or permissions missing.");
+      debugLog.warning("Alt1 not available or permissions missing.");
     }
     setBuffsFromJsonIfNewer();    
   }, []);
@@ -116,12 +113,15 @@ function App() {
         title={modalContext === 'group' ? 'Enter Group Name' : 'Enter Profile Name'}
         placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
       />
+      
       {(debugMode && 
         <>
+          <DebugOverlay />
           <Debug />
           <ThresholdEditor/>
         </>
       )}
+      <GlobalBuffProcessor/>
       <ActionBarReaderComponent 
             debugMode={debugMode}
             a1lib={a1lib}
@@ -130,15 +130,6 @@ function App() {
           readInterval={100}
           debugMode={debugMode}
           a1lib={a1lib}
-      />
-      <BuffReaderComponent 
-            onBuffsIdentified={handleBuffsIdentified}
-            debugMode={debugMode}
-          />
-      <BuffReaderComponent 
-        isDebuff={true} 
-        onBuffsIdentified={handleBuffsIdentified} 
-        debugMode={debugMode}
       />
     </div>
   );

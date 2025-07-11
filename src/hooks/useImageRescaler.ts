@@ -3,7 +3,6 @@ import useStore from '../store';
 import { resizeBuffImage } from '../lib/imageUtils';
 
 export function useImageRescaler() {
-  const getGroups = useStore.getState().groups;
   const setGroups = useStore((state) => state.updateGroups);
 
   const timeoutRef = useRef<number | null>(null); //

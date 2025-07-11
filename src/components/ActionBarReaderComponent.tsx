@@ -3,6 +3,7 @@ import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../hooks/useCombatMonitor';
 import { alertsMap } from '../lib/alerts';
 import useStore from '../store/index';
+import { debugLog } from '../lib/debugLog';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 
@@ -94,7 +95,7 @@ export function ActionBarReaderComponent({
     }
 
     else if (status === "FINDING ACTION BAR") {
-      console.log('Attempting to find Actionbar');
+      debugLog.info('[Actionbar Reader] Attempting to find Actionbar');
       try {
         const reader = new ActionbarReader(a1lib.captureHoldFullRs());
         const found = reader.find();
@@ -105,13 +106,13 @@ export function ActionBarReaderComponent({
             retryTimeoutRef.current = window.setTimeout(() => setStatus("FINDING ACTION BAR"), 3000);
         }
       } catch (e) {
-        console.error("Error finding action bar:", e);
+        debugLog.error("[Actionbar Reader] Error finding action bar:", e);
         setStatus("ERROR");
       }
     }
 
     else if (status === "READING" && intervalRef.current === null && readerRef.current) {
-        console.log('[Actionbar Reader] Starting read interval...');
+        debugLog.info('[Actionbar Reader] Starting read interval...');
         intervalRef.current = setInterval(() => {
             readAbilities();
         }, readInterval);

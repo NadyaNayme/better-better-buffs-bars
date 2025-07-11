@@ -1,4 +1,4 @@
-import React, { useState, type FormEventHandler } from 'react';
+import { useState } from 'react';
 import useStore from '../store/index';
 
 const ThresholdEditor = () => {

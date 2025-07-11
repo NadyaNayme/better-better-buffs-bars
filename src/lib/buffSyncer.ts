@@ -1,11 +1,14 @@
 import type { Buff } from "../types/Buff";
 import type { Group } from "../types/Group";
+import { debugLog } from "./debugLog";
 
-export interface IdentifiedBuff {
+export interface IdentifiedBuff extends Buff {
   name: string;
   time: number;
+  childName: string;
   foundChild?: {
     name: string;
+    time: number;
     imageData: string;
     scaledImageData: string;
     desaturatedImageData: string;
@@ -19,49 +22,29 @@ interface SyncResult {
 }
 
 function buffsDidChange(prev: Buff[], next: Buff[]): boolean {
-    if (prev.length !== next.length) { 
-        return true; 
-    }
-  
-    for (let i = 0; i < prev.length; i++) {
-      const a = prev[i];
-      const b = next[i];
-  
-      if (a.name !== b.name || a.isActive !== b.isActive) {
-        return true;
-      }
-  
-      if (a.buffType === "Meta") {
-        const metaChanged =
-        a.childName !== b.childName ||
-        a.timeRemaining !== b.timeRemaining ||
-        a.imageData !== b.imageData ||
-        a.scaledImageData !== b.scaledImageData ||
-        a.desaturatedImageData !== b.desaturatedImageData ||
-        a.scaledDesaturatedImageData !== b.scaledDesaturatedImageData ||
-        a.isActive !== b.isActive;
-    
-      if (metaChanged) {
-        console.log("Meta buff changed:", a.name, {
-          prev: a,
-          next: b,
-        });
-        return true;
-      }
-  
-        continue; 
-      }
-  
-      if (
-        a.timeRemaining !== b.timeRemaining ||
-        a.cooldownRemaining !== b.cooldownRemaining
-      ) {
-        return true;
-      }
-    }
-  
-    return false;
+  if (prev.length !== next.length) {
+    debugLog.verbose("Buff count changed");
+    return true;
   }
+
+  for (let i = 0; i < prev.length; i++) {
+    const a = prev[i];
+    const b = next[i];
+
+    if (
+      a.isActive !== b.isActive ||
+      a.timeRemaining !== b.timeRemaining ||
+      a.cooldownRemaining !== b.cooldownRemaining ||
+      (a.buffType === 'Meta' && a.childName !== b.childName)
+    ) {
+      if (a.isActive !== b.isActive) debugLog.verbose(`${a.name} isActive changed`);
+      if (a.timeRemaining !== b.timeRemaining) debugLog.verbose(`${a.name} timeRemaining changed`);
+      return true;
+    }
+  }
+
+  return false;
+}
 
 export function syncIdentifiedBuffsToGroups(
   groups: Group[],
@@ -133,72 +116,39 @@ export function syncIdentifiedBuffsToGroups(
     const metaBuffsUpdated = updatedBuffs.map((buff) => {
         if (buff.buffType !== "Meta") return buff;
   
-        const matchedChild = group.children.find((child) =>
-          identifiedActiveBuffs.has(child.name)
+        const activeInfo = identifiedActiveBuffs.get(buff.name);
+        const matchedChild = group.children.find(child =>
+          child.name === activeInfo?.foundChild?.name
         );
   
-        if (matchedChild) {
-          const childInfo = identifiedActiveBuffs.get(matchedChild.name)!;
-  
-          const isIdentical =
-            buff.isActive === true &&
-            buff.timeRemaining === childInfo.time &&
-            buff.imageData === matchedChild.imageData &&
-            buff.childName === matchedChild.name &&
-            buff.desaturatedImageData === matchedChild.desaturatedImageData &&
-            buff.scaledImageData === matchedChild.scaledImageData &&
-            buff.scaledDesaturatedImageData === matchedChild.scaledDesaturatedImageData;
-  
-          if (isIdentical) return buff;
-  
-          return {
-            ...buff,
-            isActive: true,
-            timeRemaining: childInfo.time,
-            childName: matchedChild.name,
-            imageData: matchedChild.imageData,
-            desaturatedImageData: matchedChild.desaturatedImageData,
-            scaledImageData: matchedChild.scaledImageData ?? "",
-            scaledDesaturatedImageData: matchedChild.scaledDesaturatedImageData ?? "",
-            inactiveCount: 0,
-            lastUpdated: now,
-          };
-        }
-  
-        // If still active but no child matched
-        if (buff.isActive) {
-          const timeSinceLastUpdate = now - (buff.lastUpdated ?? 0);
-          if (timeSinceLastUpdate > 1000) {
-            const newInactiveCount = (buff.inactiveCount ?? 0) + 1;
-  
-            if (newInactiveCount >= 2) {
-              return {
+        if (activeInfo || matchedChild) {
+            return {
                 ...buff,
-                isActive: false,
-                timeRemaining: 0,
+                isActive: true,
+                timeRemaining: matchedChild?.timeRemaining ?? 1,
+                childName: matchedChild?.name ?? activeInfo?.childName ?? 'NO CHILD MATCHED',
+                imageData: matchedChild?.imageData ?? '',
+                desaturatedImageData: buff.defaultImageData ?? '',
+                scaledImageData: matchedChild?.scaledImageData,
+                scaledDesaturatedImageData: buff.defaultImageData,
                 inactiveCount: 0,
-                imageData: buff.defaultImageData ?? "",
                 lastUpdated: now,
               };
-            }
-  
-            return {
-              ...buff,
-              inactiveCount: newInactiveCount,
-              lastUpdated: now,
-            };
-          }
         }
   
         return buff;
       });
 
-    const shouldUpdate = buffsDidChange(group.buffs, metaBuffsUpdated);
+      const shouldUpdate = buffsDidChange(group.buffs, updatedBuffs);
+      const finalBuffs = metaBuffsUpdated;
 
-    if (shouldUpdate) {
-      didChangeMap.set(group.id, true);
-      updatedGroups.set(group.id, { ...group, buffs: metaBuffsUpdated });
-    }
+      if (shouldUpdate) {
+        didChangeMap.set(group.id, true);
+        updatedGroups.set(group.id, {
+          ...group,
+          buffs: finalBuffs,
+        });
+      }
   }
 
   return {

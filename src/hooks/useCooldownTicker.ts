@@ -27,8 +27,6 @@ export function useCooldownTicker() {
       const updatedBuffs = group.buffs.map((buff) => {
         const key = `${group.id}-${buff.name}`;
         const lastTick = lastTickedMap.get(key) ?? 0;
-        const recentlyUpdated = now - (buff.lastUpdated ?? 0) < 500;
-        if (recentlyUpdated) return buff;
 
         const newTime = buff.timeRemaining;
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import useStore from "../store/index";
 import { formatTime } from "../lib/formatTime";
 import { type Group } from "../types/Group";
+import { debugLog } from "../lib/debugLog";
 
 interface UseAlt1OverlayRendererOptions {
     alt1Ready: boolean;
@@ -35,6 +35,12 @@ export function useAlt1OverlayRenderer(
 
         // --- Clear overlays if disabled or out of combat ---
         if (!group.enabled || (!inCombat && combatCheck)) {
+            if (!group.enabled) {
+                debugLog.verbose('Group is disabled - not rendering group overlay: ' + group.name);
+            }
+            if (!inCombat && combatCheck) {
+                debugLog.verbose(`User does not want overlays while not in combat - not rendering overlays.`);
+            }
             window.alt1.overLayClearGroup(`region${region}`);
             window.alt1.overLayRefreshGroup(`region${region}`);
             group.buffs.forEach((buff) => {
@@ -44,6 +50,21 @@ export function useAlt1OverlayRenderer(
             });
             return;
         }
+
+        // --- Clear any cooldown text that has hit 0 ---
+        const textToClear = group.buffs.filter((buff) => {
+            if (buff.noNumberDisplay) return true;
+            const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
+            return !buff.isActive && !isOnCooldown;
+        });
+
+        textToClear.forEach((buff) => {
+            const textId = `${region}-${buff.name}-text`;
+            window.alt1.overLaySetGroup(textId);
+            window.alt1.overLayFreezeGroup(textId);
+            window.alt1.overLayClearGroup(textId);
+            window.alt1.overLayRefreshGroup(textId);
+        });
 
         // --- Filter buffs to draw ---
         const textToDraw = group.buffs.filter((buff) => {
@@ -97,7 +118,10 @@ export function useAlt1OverlayRenderer(
         window.alt1.overLayClearGroup(`region${region}`);
 
         const buffsToDraw = group.buffs.filter((buff) => {
-            if (buff.noNumberDisplay || group.explicitInactive) return true;
+            if (group.explicitInactive) return true;
+            if (buff.name === "Blank") return true;
+            if (buff.buffType === "Meta") return true;
+            if (buff.isStack) return true;
             const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
             return buff.isActive || isOnCooldown;
         });
@@ -162,35 +186,6 @@ export function useAlt1OverlayRenderer(
 
             img.src = imgData;
         });
-
-        // --- Optional blank slot drawing ---
-        const globalBuffs = useStore.getState().buffs;
-        const blank = globalBuffs.find((b) => b.name === "Blank");
-        const blankImg = blank?.scaledImageData || blank?.imageData;
-
-        if (blankImg) {
-            const index = buffsToDraw.length;
-            const col = index % cols;
-            const row = Math.floor(index / cols);
-            const drawX = x + col * spacing;
-            const drawY = y + row * spacing;
-
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext("2d");
-                if (!ctx) return;
-                ctx.drawImage(img, 0, 0);
-                const imageData = ctx.getImageData(0, 0, img.width, img.height);
-                const encoded = a1lib.encodeImageString(imageData);
-
-                window.alt1.overLayImage(Math.floor(drawX), Math.floor(drawY), encoded, img.width, 1200);
-                window.alt1.overLayRefreshGroup(`region${region}`);
-            };
-            img.src = blankImg;
-        }
     }, [
         alt1Ready,
         a1lib,

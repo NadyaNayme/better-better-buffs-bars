@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '../store/index';
-import Buff from './Buff';
+import BuffComponent from './BuffComponent';
 import AddBuffModal from './AddBuffModal';
 import EditGroupModal from './EditGroupModal';
 import type { Group } from '../types/Group';
-import { useAlt1OverlayRenderer } from '../hooks/useAlt1OverlayRenderer';
+import { debugLog } from '../lib/debugLog';
+import { BuffRenderer } from './BuffRenderer';
 
 interface GroupComponentProps {
   group: Group;
@@ -17,15 +18,14 @@ interface GroupComponentProps {
 }
 
 const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck }) => {
-  const { cooldownColor, timeRemainingColor } = useStore();
-  const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup } = useStore();
+  const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup, cooldownColor,timeRemainingColor } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
 
   const updateOverlayPosition = async () => {
     if (!a1lib || !window.alt1) {
-      console.log('Alt1 library not detected.');
+      debugLog.error('Alt1 library not detected.');
       return;
     }
   
@@ -53,17 +53,17 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     const finalPos = a1lib.getMousePosition();
     updateGroup(group.id, { overlayPosition: { x: finalPos.x, y: finalPos.y } });
   
-    console.log(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
+    debugLog.info(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
   };
 
-  useAlt1OverlayRenderer(group, {
-    alt1Ready,
-    a1lib,
-    inCombat,
-    combatCheck,
-    cooldownColor,
-    timeRemainingColor,
-  });
+  // useAlt1OverlayRenderer(group, {
+  //   alt1Ready,
+  //   a1lib,
+  //   inCombat,
+  //   combatCheck,
+  //   cooldownColor,
+  //   timeRemainingColor,
+  // });
 
   const onDragEnd = (event: any) => {
     const { active, over } = event;
@@ -102,6 +102,22 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           </button>
         </div>
       </div>
+    <>
+      {group.buffs.map(buff => (
+        <BuffRenderer
+          key={buff.id}
+          buff={buff}
+          drawIndex={buff.index + 1}
+          group={group}
+          alt1Ready={alt1Ready}
+          a1lib={a1lib}
+          inCombat={inCombat}
+          combatCheck={combatCheck}
+          cooldownColor={cooldownColor}
+          timeRemainingColor={timeRemainingColor}
+        />
+      ))}
+    </>
 
       <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext items={group.buffs.map(b => b.id)} strategy={rectSortingStrategy}>
@@ -110,15 +126,12 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
             '--buff-rows': `${group.buffsPerRow}`
             } as React.CSSProperties}>
             {group.buffs
-              .map((buff, index, filteredBuffs) => {
-                const isInactive = !buff.isActive;
+              .map((buff) => {
                 if (buff.name === "Blank") return;
                 return (
-                  <Buff
+                  <BuffComponent
                     key={buff.id}
                     buff={buff}
-                    scale={group.scale}
-                    desaturated={group.explicitInactive && isInactive}
                     onRemove={() => handleRemoveBuff(buff.id)}
                   />
                 );

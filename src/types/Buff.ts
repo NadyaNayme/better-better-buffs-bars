@@ -1,6 +1,7 @@
 export interface Buff {
   id: string;
   name: string;
+  groupId: string;
   failThreshold?: number;
   passThreshold?: number;
   imageData: string;
@@ -27,4 +28,13 @@ export interface Buff {
   noNumberDisplay?: boolean;
   categories?: string[];
   childName?: string;
+  index: number;
+  foundChild?: {
+    name: string;
+    time: number;
+    imageData: string;
+    scaledImageData: string;
+    desaturatedImageData: string;
+    scaledDesaturatedImageData: string;
+  };
 }

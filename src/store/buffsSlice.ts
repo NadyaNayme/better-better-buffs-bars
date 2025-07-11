@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import buffsData from '../buffs.json';
 import { type Buff } from '../types/Buff';
 import { type Store } from '../types/Store';
+import { debugLog } from '../lib/debugLog';
 
 export interface BuffsSlice {
   buffs: Buff[];
@@ -39,7 +40,7 @@ export const createBuffsSlice: StateCreator<
         id: uuidv4(),
       }));
       set({ buffs: newBuffs, version: jsonVersion });
-      console.log(`Buffs updated to version ${jsonVersion}`);
+      debugLog.info(`Buffs updated to version ${jsonVersion}`);
     }
   },
 

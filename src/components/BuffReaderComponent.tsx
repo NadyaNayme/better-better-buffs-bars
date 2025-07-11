@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import useStore from '../store/index';
 import * as BuffReader from 'alt1/buffs';
 import { rawImageMap } from '../lib/imageData';
+import { debugLog } from '../lib/debugLog';
 
 interface BuffReaderProps {
   isDebuff?: boolean;
@@ -79,17 +80,18 @@ export function BuffReaderComponent({
             const match = detected.countMatch(img, false);
             if (enableDebug) {
               updateDebugData(trackedBuff.name, match.failed, match.passed);
-              console.log(trackedBuff.name, match.failed, match.passed);
+              debugLog.verbose(trackedBuff.name, match.failed, match.passed);
             }
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
-              const time = detected.readTime ? detected.readTime() : detected.time;
               const childData = allBuffs.find(b => b.name === childName);
               if (childData) {
                 finalPayloadMap.set(name, {
-                  name,
-                  time: time,
+                  name: trackedBuff.name,
+                  time: trackedBuff.timeRemaining,
+                  childName: childData.name ?? 'NO CHILD MATCHED',
                   foundChild: {
                     name: childData.name,
+                    time: childData.timeRemaining,
                     imageData: childData.scaledImageData ?? childData.imageData,
                     desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
                   }
@@ -154,10 +156,10 @@ export function BuffReaderComponent({
             resolvedMap.set(name, loadedModules[index]);
           });
           resolvedImagesRef.current = resolvedMap;
-          console.log("✅ Reference images loaded successfully.");
+          debugLog.success("Buff image references loaded successfully.");
           setStatus("FINDING_BAR");
         } catch (error) {
-          console.error("Failed to load reference images:", error);
+          debugLog.error("Failed to load buff image references: ", error);
           setStatus("ERROR");
         }
       };
@@ -182,7 +184,7 @@ export function BuffReaderComponent({
     }
     
     else if (status === "READING" && intervalRef.current === null) {
-      console.log(`[${isDebuff ? "Debuff" : "Buff"} Reader] Starting read interval...`);
+      debugLog.info(`[${isDebuff ? "Debuff" : "Buff"} Reader] Starting read interval...`);
       intervalRef.current = setInterval(() => {
         const data = readerRef.current?.read();
         if (data) {

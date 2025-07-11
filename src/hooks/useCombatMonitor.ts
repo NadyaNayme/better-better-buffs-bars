@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react";
 import useStore from "../store/index";
+import { debugLog } from "../lib/debugLog";
 
 let isMonitoring = false;
 let globalInterval: number | null = null;
@@ -8,7 +9,7 @@ let globalLastValues: { hp: number; dren: number; pray: number } | null = null;
 let globalLastCheck = 0;
 
 export function useCombatMonitor() {
-  const checkCombat = useCallback((data: any) => {
+  const checkCombat = useCallback((data: {hp: number, dren: number, pray: number}) => {
     const now = Date.now();
     const { hp, dren, pray } = data;
 
@@ -20,9 +21,14 @@ export function useCombatMonitor() {
       !previous || hp !== previous.hp || dren !== previous.dren || pray !== previous.pray;
 
     if (changed) {
-      useStore.getState().setInCombat(true);
       globalLastChange = now;
       globalLastValues = { hp, dren, pray };
+
+      const inCombat = useStore.getState().inCombat;
+      if (!inCombat) {
+        debugLog.info("User has entered combat.");
+        useStore.getState().setInCombat(true);
+      }
     }
   }, []);
 
@@ -30,8 +36,14 @@ export function useCombatMonitor() {
     if (isMonitoring) return;
 
     isMonitoring = true;
+
     globalInterval = window.setInterval(() => {
-      if (Date.now() - globalLastChange > 3500) {
+      const now = Date.now();
+      const inCombat = useStore.getState().inCombat;
+
+      // Leave combat if no change has happened for 5 seconds
+      if (inCombat && now - globalLastChange > 5000) {
+        debugLog.info("User has left combat.");
         useStore.getState().setInCombat(false);
       }
     }, 500);

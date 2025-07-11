@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { toast } from 'sonner';
 
 type PopupModalProps = {
   isOpen: boolean;
