@@ -60,7 +60,12 @@ const SettingsPanelComponent: React.FC = () => {
         }}
       >
         <h2>Settings</h2>
-        <h3>Version 0.3.3</h3>
+        <h3 className="text-zinc-400">
+          <button onClick={() => setShowPatchNotes(true)} className="underline hover:text-white">
+            Version 0.3.3
+          </button>
+        </h3>
+        {showPatchNotes && <PatchNotesComponent onClose={() => setShowPatchNotes(false)} />}
 
         <CheckboxSetting
           label="Hide overlays outside of combat"
