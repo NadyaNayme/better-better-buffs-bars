@@ -74,8 +74,12 @@ import Overloaded from '../assets/data/Overloaded.data.png';
 import PerfectEquilibrium from '../assets/data/Perfect_Equilibrium.data.png';
 import PerfectEquilibriumCapped from '../assets/data/perfect_equilibrium_capped.data.png';
 import Poisonous from '../assets/data/Poisonous-top.data.png';
+import PowderOfBurials from '../assets/data/powder_of_burials.data.png';
+import PowderOfDefence from '../assets/data/powder_of_defence.data.png';
+import PowderOfItemProtection from '../assets/data/powder_of_item_protection.data.png';
 import PowderOfPenance from '../assets/data/powder_of_penance.data.png';
 import PowderOfProtection from '../assets/data/powder_of_protection.data.png';
+import PowderOfPulverising from '../assets/data/powder_of_pulverising.data.png';
 import PowerburstPrevention from '../assets/data/Powerburst_prevention.data.png';
 import PrayerActive from '../assets/data/Prayer_active.data.png';
 import PrayerRenewal from '../assets/data/Prayer_Renew_Active.data.png';
@@ -185,8 +189,12 @@ const buffImagePromises = {
   'Overload': Overloaded,
   'Perfect Equilibrium': PerfectEquilibrium,
   'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
+  'Powder of Burials': PowderOfBurials,
+  'Powder of Defence': PowderOfDefence,
+  'Powder of Item Protection': PowderOfItemProtection,
   'Powder of Penance': PowderOfPenance,
   'Powder of Protection': PowderOfProtection,
+  'Powder of Pulverising': PowderOfPulverising,
   'Powerburst Prevention': PowerburstPrevention,
   'Prayer Active': PrayerActive,
   'Prayer Renewal': PrayerRenewal,
