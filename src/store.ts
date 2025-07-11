@@ -198,12 +198,19 @@ const useStore = create(
               if (buff.isActive) {
                 const elapsedMs = now - (buff.lastUpdated ?? now);
                 const elapsedSeconds = Math.floor(elapsedMs / 1000);
+
+                if (buff.timeRemaining === 0 && buff.isStack) {
+                  return {
+                    ...buff,
+                    isActive: false,
+                    lastUpdated: now
+                  }
+                }
       
                 if (elapsedSeconds > 0) {
                   const timeLeft = buff.timeRemaining ?? 0;
                   const newTime = Math.max(0, timeLeft - elapsedSeconds);
 
-                  if (buff.isStack) return buff;
       
                   if (newTime === 0) {
                     groupDidChange = true;
