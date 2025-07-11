@@ -95,7 +95,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         return true;
       }
       const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-      return buff.isActive || isOnCooldown;
+      return buff.isActive || isOnCooldown || buff.isStack;
     });
 
     window.alt1.overLaySetGroup(`region${region}`);
