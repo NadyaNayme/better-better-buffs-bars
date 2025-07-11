@@ -202,8 +202,8 @@ const useStore = create(
                 if (buff.isStack) {
                   return {
                     ...buff,
-                    timeRemaining: 0,
                     isActive: false,
+                    timeRemaining: 1,
                     lastUpdated: now
                   }
                 }
