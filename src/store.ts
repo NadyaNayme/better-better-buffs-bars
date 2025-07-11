@@ -199,14 +199,14 @@ const useStore = create(
                 const elapsedMs = now - (buff.lastUpdated ?? now);
                 const elapsedSeconds = Math.floor(elapsedMs / 1000);
 
-                if (buff.isStack) {
-                  return {
-                    ...buff,
-                    isActive: false,
-                    timeRemaining: 1,
-                    lastUpdated: now
-                  }
-                }
+                // if (buff.isStack) {
+                //   return {
+                //     ...buff,
+                //     isActive: false,
+                //     timeRemaining: 1,
+                //     lastUpdated: now
+                //   }
+                // }
       
                 if (elapsedSeconds > 0) {
                   const timeLeft = buff.timeRemaining ?? 0;
