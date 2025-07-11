@@ -23,6 +23,7 @@ import BlueVirus from '../assets/data/Blue_virus.data.png';
 import BonfireBoost from '../assets/data/Bonfire_Boost.data.png';
 import Cease from '../assets/data/Cease.data.png';
 import ChronicleAttraction from '../assets/data/Chronicle_Attraction.data.png';
+import CriticalStrikeAdrenaline from '../assets/data/Critical_Strike_Adrenaline.data.png';
 import CrystalMask from '../assets/data/Crystal_Mask.data.png';
 import CrystalRain from '../assets/data/Crystal_Rain-minimal.data.png';
 import Darkness from '../assets/data/Darkness.data.png';
@@ -134,6 +135,7 @@ const buffImagePromises = {
   'Bonfire Boost': BonfireBoost,
   'Cease': Cease,
   'Chronicle Attraction': ChronicleAttraction,
+  'Critical Strike Adrenaline': CriticalStrikeAdrenaline,
   'Crystal Mask': CrystalMask,
   'Crystal Rain': CrystalRain,
   'Darkness': Darkness,
