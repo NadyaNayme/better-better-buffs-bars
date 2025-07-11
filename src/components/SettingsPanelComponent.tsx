@@ -4,6 +4,7 @@ import CheckboxSetting from './CheckboxSetting';
 import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';
 import SocialButtons from './SocialButtons';
+import { PatchNotesComponent } from './PatchNotesComponent';
 
 const SettingsPanelComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
