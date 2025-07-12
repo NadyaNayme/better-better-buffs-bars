@@ -1,10 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import useStore from '../store';
 import { debugLog } from '../lib/debugLog';
 import type { Group } from '../types/Group';
 import { isRuntimeBuff } from '../types/Buff';
 
 export function useBuffProcessor() {
+  const lastChildMatchTimestamps = useRef(new Map<string, number>());
+  const lastMatchedChildName = useRef(new Map<string, string>());
+
   const calculateBuffUpdates = useCallback((
     detectedBuffs: any[],
     resolvedImages: Map<string, any>,
@@ -19,8 +22,8 @@ export function useBuffProcessor() {
       return finalPayloadMap;
     }
 
-    const foundBuffNames = new Set<string>();
     const foundBuffPayloads = new Map<string, any>();
+    const matchedChildren = new Map<string, string>(); // MetaBuff.name -> childName
 
     const buffGroupMap = new Map<string, Group>();
     for (const group of groups) {
@@ -30,12 +33,13 @@ export function useBuffProcessor() {
       }
     }
 
+    const now = Date.now();
+
     for (const detected of detectedBuffs) {
       for (const trackedBuff of buffs) {
         if (!isRuntimeBuff(trackedBuff)) continue;
         if (trackedBuff.name === 'Blank') continue;
 
-        // Type filtering
         if (isDebuff && (trackedBuff.type === "NormalBuff" || trackedBuff.type === "AbilityBuff" || trackedBuff.type === "StackBuff" || trackedBuff.type === "PermanentBuff")) continue;
         if (!isDebuff && (trackedBuff.type === "NormalDebuff" || trackedBuff.type === "WeaponSpecial")) continue;
 
@@ -51,133 +55,107 @@ export function useBuffProcessor() {
           const match = detected.countMatch(refImage, false);
 
           if (match.passed >= pass && match.failed <= fail) {
-            if (groups[0].name === "Debug") debugLog.verbose(`${trackedBuff.name} passed detection with ${match.passed} passed pixels and ${match.failed} failed pixels`);
-
             let payload;
-            if (trackedBuff.type === 'MetaBuff') {
-                const group = buffGroupMap.get(trackedBuff.name);
-                if (group) {
-                    const child = group.children.find(c => c.name === imageName);
-                    if (group.name === "Debug") debugLog.info(`${child?.name ?? 'NO CHILD'} is the buff that was matched for MetaBuff ${trackedBuff.name}`);
+            const group = buffGroupMap.get(trackedBuff.name);
+            const child = group?.children.find(c => c.name === imageName);
 
-                    // Create a payload for the MetaBuff REGARDLESS of whether a child is found.
-                    // This ensures we can later detect the state change to "inactive" if no child is matched.
-                    payload = {
-                        name: trackedBuff.name,
-                        type: trackedBuff.type,
-                        childName: child?.name ?? 'NO CHILD MATCHED',
-                        // Conditionally include full child data only if it exists
-                        foundChild: child && isRuntimeBuff(child) ? {
-                            ...child,
-                            name: child.name,
-                            timeRemaining: child.timeRemaining,
-                            imageData: child.imageData,
-                            scaledImageData: child.scaledImageData,
-                            desaturatedImageData: child.desaturatedImageData,
-                            scaledDesaturatedImageData: child.scaledDesaturatedImageData,
-                        } : null,
-                    };
-                }
-            } else {
-              const group = buffGroupMap.get(trackedBuff.name);
-              if (group) {
-                debugLog.verbose(`${trackedBuff.name} has found a matching buff in group "${group.name}".`);
+            if (trackedBuff.type === 'MetaBuff') {
+              if (child && isRuntimeBuff(child)) {
+                matchedChildren.set(trackedBuff.name, child.name);
+                lastChildMatchTimestamps.current.set(trackedBuff.name, now);
+                lastMatchedChildName.current.set(trackedBuff.name, child.name);
+
                 payload = {
                   name: trackedBuff.name,
                   type: trackedBuff.type,
-                  timeRemaining: detected.readTime ? detected.readTime() : detected.time,
-                  childName: 'NO CHILDREN',
+                  childName: child.name,
+                  foundChild: {
+                    ...child,
+                  },
                 };
               }
+            } else {
+              payload = {
+                name: trackedBuff.name,
+                type: trackedBuff.type,
+                timeRemaining: detected.readTime ? detected.readTime() : detected.time,
+                childName: child?.name ? child.name : null,
+              };
             }
 
             if (payload) {
-                foundBuffNames.add(trackedBuff.name);
-                foundBuffPayloads.set(trackedBuff.name, payload);
+              foundBuffPayloads.set(trackedBuff.name, payload);
             }
-            break; // matched an image; no need to keep trying others
+
+            break;
           }
         }
       }
     }
 
-    // STEP 2: Compare found buffs with the store's known isActive state
     const allStoreBuffs = groups.flatMap(group => [...group.buffs, ...group.children]);
 
     for (const storeBuff of allStoreBuffs) {
-      if (storeBuff.name === 'Blank' || !isRuntimeBuff(storeBuff)) continue;
+      if (!isRuntimeBuff(storeBuff) || storeBuff.name === 'Blank') continue;
 
       const name = storeBuff.name;
+      const isMeta = storeBuff.type === 'MetaBuff';
+      const wasPreviouslyActive = storeBuff.isActive ?? false;
       const foundPayload = foundBuffPayloads.get(name);
-      const isActiveInStore = storeBuff.isActive ?? false;
 
-      // Case 1: The buff was found on screen.
-      if (foundPayload) {
-        const isMetaBuff = foundPayload.type === 'MetaBuff';
-        let childDidChange = false;
-        let shouldBeActive = true;
+      let shouldBeActive = false;
+      let activeChildName: string | null = null;
 
-        if (isMetaBuff && foundPayload.childName === 'NO CHILD MATCHED') {
-          shouldBeActive = false;
+      if (isMeta) {
+        const lastMatchTime = lastChildMatchTimestamps.current.get(name) ?? 0;
+        const lastChild = lastMatchedChildName.current.get(name) ?? null;
+
+        if (now - lastMatchTime <= 3000 && lastChild) {
+          shouldBeActive = true;
+          activeChildName = lastChild;
         }
-
-        // Compare the correct properties: storeBuff.activeChild vs foundPayload.childName
-        if (storeBuff.activeChild !== foundPayload.childName) {
-          childDidChange = true;
-        }
-
-        if (shouldBeActive && !isActiveInStore) {
-          // State Change: Inactive -> Active
-          finalPayloadMap.set(name, {
-            ...foundPayload,
-            isActive: true,
-            cooldownStart: 0,
-            activeChild: foundPayload.childName, // Update the active child
-          });
-        } else if (!shouldBeActive && isActiveInStore) {
-          // State Change: Active -> Inactive (e.g., MetaBuff lost its child)
-          finalPayloadMap.set(name, {
-            name: name,
-            isActive: false,
-            timeRemaining: 0,
-            cooldownStart: Date.now(), // Start the cooldown
-            activeChild: null, // Clear the active child
-          });
-        } else {
-          // State Change: Active -> Active (but data changed)
-          finalPayloadMap.set(name, {
-            ...foundPayload,
-            isActive: true,
-            activeChild: foundPayload.childName,
-          });
-        }
+      } else if (foundPayload) {
+        shouldBeActive = true;
       }
-      // Case 2: The buff was NOT found on screen, but it was active in the store.
-      else if (isActiveInStore) {
-        // State Change: Active -> Inactive
-        const finalPayload: any = {
-            name: name,
-            isActive: false,
-            timeRemaining: 0,
+
+      if (shouldBeActive && !wasPreviouslyActive) {
+        finalPayloadMap.set(name, {
+          ...(foundPayload ?? { name }),
+          isActive: true,
+          cooldownStart: 0,
+          activeChild: activeChildName,
+        });
+      } else if (!shouldBeActive && wasPreviouslyActive) {
+        const payload: any = {
+          name,
+          isActive: false,
+          timeRemaining: 0,
         };
 
-        if (storeBuff.type !== 'MetaBuff') {
-          finalPayload.cooldown = storeBuff.cooldown;
-          finalPayload.cooldownStart = Date.now();
+        if (!isMeta) {
+          payload.cooldown = storeBuff.cooldown;
+          payload.cooldownStart = Date.now();
+        } else {
+          payload.activeChild = null;
+          lastChildMatchTimestamps.current.delete(name);
+          lastMatchedChildName.current.delete(name);
+          matchedChildren.delete(name);
         }
 
-        // If it was a MetaBuff, ensure its child state is cleared
-        if (storeBuff.type === 'MetaBuff') {
-            finalPayload.activeChild = null;
-        }
-        
-        finalPayloadMap.set(name, finalPayload);
+        finalPayloadMap.set(name, payload);
+      } else if (shouldBeActive && wasPreviouslyActive) {
+        finalPayloadMap.set(name, {
+          ...(foundPayload ?? { name }),
+          isActive: true,
+          activeChild: activeChildName,
+        });
       }
     }
 
     if (finalPayloadMap.keys.length > 0) {
       debugLog.info('Final Payloads to be sent:', finalPayloadMap);
     }
+
     return finalPayloadMap;
   }, []);
 

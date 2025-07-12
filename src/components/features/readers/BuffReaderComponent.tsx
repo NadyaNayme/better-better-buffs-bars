@@ -63,6 +63,7 @@ export function BuffReaderComponent({
     const trackedBuffMap = new Map<string,BuffInstance>(groups.flatMap((g: { buffs: BuffInstance[]; }) => g.buffs).map((b: { name: string; }) => [b.name, b]));
     const finalPayloadMap = new Map<string, any>();
   
+    const lastChildFoundTimeRef = useRef<Map<string, number>>(new Map());
     for (const detected of detectedBuffs) {
       for (const [name, trackedBuff] of trackedBuffMap.entries()) {
         if (isDebuff && (trackedBuff.type === "NormalBuff" || trackedBuff.type === "AbilityBuff" || trackedBuff.type === "StackBuff" || trackedBuff.type === "PermanentBuff")) continue;
@@ -73,31 +74,47 @@ export function BuffReaderComponent({
   
         // Meta buff logic
         if (trackedBuff.type === 'MetaBuff' && trackedBuff.children) {
+          let matchedChild: BuffInstance | null = null;
+        
           for (const childName of trackedBuff.children) {
             const img = resolvedImagesRef.current.get(childName);
             if (!img) continue;
-  
+        
             const match = detected.countMatch(img, false);
             if (enableDebug) {
               updateDebugData(trackedBuff.name, match.failed, match.passed);
               debugLog.verbose(trackedBuff.name, match.failed, match.passed);
             }
+        
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
-              const childData: BuffInstance = allBuffs.find((b: { name: string; }) => b.name === childName);
-              if (childData) {
-                finalPayloadMap.set(name, {
-                  name: trackedBuff.name,
-                  timeRemaining: trackedBuff.timeRemaining,
-                  childName: childData.name ?? 'NO CHILD MATCHED',
-                  foundChild: {
-                    name: childData.name,
-                    timeRemaining: childData.timeRemaining,
-                    imageData: childData.scaledImageData ?? childData.imageData,
-                    desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
-                  }
-                });
-              }
-              break; // stop after first match
+              matchedChild = allBuffs.find((b: { name: string }) => b.name === childName) ?? null;
+              break;
+            }
+          }
+
+          const now = Date.now();
+          if (matchedChild) {
+            lastChildFoundTimeRef.current.set(name, now);
+            finalPayloadMap.set(name, {
+              name: trackedBuff.name,
+              timeRemaining: trackedBuff.timeRemaining,
+              childName: matchedChild.name,
+              foundChild: {
+                name: matchedChild.name,
+                timeRemaining: matchedChild.timeRemaining,
+                imageData: matchedChild.scaledImageData ?? matchedChild.imageData,
+                desaturatedImageData: matchedChild.scaledDesaturatedImageData ?? matchedChild.desaturatedImageData,
+              },
+            });
+          } else {
+            const lastFound = lastChildFoundTimeRef.current.get(name) ?? 0;
+            if (now - lastFound >= 3000) {
+              finalPayloadMap.set(name, {
+                name: trackedBuff.name,
+                timeRemaining: trackedBuff.timeRemaining,
+                childName: 'NO CHILD MATCHED',
+                foundChild: null,
+              });
             }
           }
         }
