@@ -17,7 +17,7 @@ export const createBlankBuff = (length: number): BuffInstance => ({
     foundChild: null,
     alert: null,
     defaultImageData: null,
-    cooldownRemaining: null,
+    cooldownStart: null,
     scaledImageData: null,
     scaledDesaturatedImageData: null,
     hasText: false,

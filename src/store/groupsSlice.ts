@@ -31,7 +31,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       overlayPosition: { x: 0, y: 0 },
       buffsPerRow: 8,
       scale: 100,
-      explicitInactive: false,
+      explicitInactive: true,
       enabled: true,
       children: [],
     };

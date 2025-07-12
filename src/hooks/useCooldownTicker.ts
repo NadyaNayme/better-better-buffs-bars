@@ -50,21 +50,6 @@ export function useCooldownTicker() {
           return buff;
         }
 
-
-        const lastTick = lastTickedMap.get(key) ?? 0;
-        if (
-          buff.cooldownRemaining &&
-          buff.cooldownRemaining > 0 &&
-          now - lastTick >= 1000
-        ) {
-          didChange = true;
-          lastTickedMap.set(key, now);
-          return {
-            ...buff,
-            cooldownRemaining: Math.max(0, buff.cooldownRemaining - 1),
-          };
-        }
-
         return buff;
       });
 

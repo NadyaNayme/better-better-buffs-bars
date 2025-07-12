@@ -68,6 +68,7 @@ export function useBuffProcessor() {
                         childName: child?.name ?? 'NO CHILD MATCHED',
                         // Conditionally include full child data only if it exists
                         foundChild: child && isRuntimeBuff(child) ? {
+                            ...child,
                             name: child.name,
                             timeRemaining: child.timeRemaining,
                             imageData: child.imageData,
@@ -130,7 +131,7 @@ export function useBuffProcessor() {
           finalPayloadMap.set(name, {
             ...foundPayload,
             isActive: true,
-            cooldownRemaining: 0,
+            cooldownStart: 0,
             activeChild: foundPayload.childName, // Update the active child
           });
         } else if (!shouldBeActive && isActiveInStore) {
@@ -139,6 +140,7 @@ export function useBuffProcessor() {
             name: name,
             isActive: false,
             timeRemaining: 0,
+            cooldownStart: Date.now(), // Start the cooldown
             activeChild: null, // Clear the active child
           });
         } else {
@@ -160,7 +162,8 @@ export function useBuffProcessor() {
         };
 
         if (storeBuff.type !== 'MetaBuff') {
-            finalPayload.cooldownRemaining = storeBuff.cooldown;
+          finalPayload.cooldown = storeBuff.cooldown;
+          finalPayload.cooldownStart = Date.now();
         }
 
         // If it was a MetaBuff, ensure its child state is cleared

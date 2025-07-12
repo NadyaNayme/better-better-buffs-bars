@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { isRuntimeBuff, type Buff } from '../../../types/Buff';
+import { isRuntimeBuff, type Buff, type BuffInstance } from '../../../types/Buff';
 import type { Group } from '../../../types/Group';
 import type { Color } from '../../../types/Color';
 import { formatTime } from '../../../lib/formatTime';
 import { debugLog } from '../../../lib/debugLog';
+import { useGlobalClock } from '../../../hooks/useGlobalClock';
 
 interface BuffRendererProps {
-  buff: Buff;
+  buff: BuffInstance;
   group: Group;
   a1lib: any;
   alt1Ready: boolean;
@@ -30,6 +31,14 @@ export function BuffRenderer({
   timeRemainingColor,
   drawIndex
 }: BuffRendererProps) {
+
+    useGlobalClock();
+
+    const cooldownRemaining = (buff.cooldownStart && typeof buff.cooldown === 'number')
+    ? Math.max(0, buff.cooldown - Math.floor((Date.now() - buff.cooldownStart) / 1000))
+    : 0;
+    const isOnCooldown = cooldownRemaining > 0;
+    const useInactive = isOnCooldown || (group.explicitInactive && !buff.isActive);
   
     useEffect(() => {
         if (!alt1Ready || !window.alt1) {
@@ -40,10 +49,6 @@ export function BuffRenderer({
           debugLog.error(`Cannot draw buff - it is missing a drawIndex. ${group.name} -> ${buff.name}`)
           return
         };    
-        if (!isRuntimeBuff(buff)) {
-          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
-          return
-        };
 
         const imageGroupId = `region-${group.id}-${buff.id}`;
         const textGroupId = `${group.id}-${buff.id}-text`;
@@ -73,8 +78,6 @@ export function BuffRenderer({
         }
     
         // --- Draw Image ---
-        const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
-        const useInactive = isOnCooldown || (group.explicitInactive && !buff.isActive);
 
         // --- Clear overlay if not in combat or while changing the overlay position ---
         if (!inCombat && combatCheck) {
@@ -86,10 +89,21 @@ export function BuffRenderer({
         let imgData: string | null | undefined = useInactive
           ? buff.scaledDesaturatedImageData || buff.desaturatedImageData
           : buff.scaledImageData || buff.imageData;
+
+          if (buff.type === 'MetaBuff' && buff.foundChild) {
+            debugLog.verbose(`MetaBuff ${buff.name} foundChild: ${JSON.stringify(buff.foundChild)}`);
+          }
+
+          if (!imgData || typeof imgData !== 'string') {
+            debugLog.error(`Missing or invalid image data for buff: ${buff.name} (meta child: ${buff.foundChild?.name})`);
+            return;
+          }
           
         // Handle Meta buff image override
         if (buff.isActive && buff.type === 'MetaBuff' && buff.foundChild && isRuntimeBuff(buff.foundChild)) {
           imgData = buff.foundChild.scaledImageData ?? buff.foundChild.imageData;
+        } else if (buff.type === 'MetaBuff') {
+          imgData = buff.scaledImageData ?? buff.defaultImageData; // fallback
         }
     
         if (imgData) {
@@ -109,12 +123,15 @@ export function BuffRenderer({
             window.alt1.overLayImage(drawX, drawY, encoded, img.width, 30000);
             window.alt1.overLayRefreshGroup(imageGroupId);
           };
+          img.onerror = () => {
+            debugLog.error(`Failed to load image for buff: ${buff.name} | imgData: ${imgData?.slice(0, 30)}...`);
+          };
           img.src = imgData;
         }
         debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.isActive}}`)
         
         // --- Draw Text ---
-        const displayTime = isOnCooldown ? buff.cooldownRemaining : buff.timeRemaining;
+        const displayTime = isOnCooldown ? cooldownRemaining  : buff.timeRemaining;
         const shouldDrawText = buff.hasText && displayTime && displayTime > 0;
     
         if (shouldDrawText) {
@@ -136,7 +153,7 @@ export function BuffRenderer({
           );
           window.alt1.overLayRefreshGroup(textGroupId);
         } else {
-          debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownRemaining}`);
+          debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownStart}`);
           window.alt1.overLaySetGroup(textGroupId);
           window.alt1.overLayClearGroup(textGroupId);
           window.alt1.overLayRefreshGroup(textGroupId);

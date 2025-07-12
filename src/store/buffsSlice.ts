@@ -42,7 +42,7 @@ export const createBuffsSlice: StateCreator<
         groupId: '',
         isActive: false,
         timeRemaining: 0,
-        cooldownRemaining: 0,
+        cooldownStart: null,
         activeChild: null,
         foundChild: null,
         hasAlerted: false,

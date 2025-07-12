@@ -71,7 +71,7 @@ export interface AbilityBuff extends BaseBuff, Alertable {
   type: 'Ability Buff';
   timeRemaining: number;
   cooldown: number;
-  cooldownRemaining: number;
+  cooldownStart: number | null;
   hasText: true;
 }
 
@@ -153,7 +153,7 @@ export interface BuffInstance extends BaseBuff {
   hasAlerted: boolean;
   timeRemaining: number | null;
   cooldown: number | null;
-  cooldownRemaining: number | null;
+  cooldownStart: number | null;
   defaultImageData: string | null;
   isUtility: boolean;
   scaledImageData: string | null;
