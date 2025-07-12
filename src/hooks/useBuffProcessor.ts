@@ -15,6 +15,13 @@ export function useBuffProcessor() {
   ): Map<string, any> => {
     const finalPayloadMap = new Map<string, any>();
     const { groups, buffs, getBuffThresholds } = useStore.getState();
+    const allMetaChildren = new Set(
+      buffs.filter((b) => b.type === 'MetaBuff')
+           .flatMap((meta) => {
+            if (!isRuntimeBuff(meta)) return []
+            return meta.children ?? []
+      })
+    );
 
     if (!groups.length || !buffs.length) {
       if (!groups.length) debugLog.info('No groups exist so no buff comparisons can be made.');
@@ -40,6 +47,7 @@ export function useBuffProcessor() {
         if (!isRuntimeBuff(trackedBuff)) continue;
         if (trackedBuff.name === 'Blank') continue;
 
+        if (allMetaChildren.has(trackedBuff.name) && trackedBuff.type !== 'MetaBuff') continue;
         if (isDebuff && (trackedBuff.type === "NormalBuff" || trackedBuff.type === "AbilityBuff" || trackedBuff.type === "StackBuff" || trackedBuff.type === "PermanentBuff")) continue;
         if (!isDebuff && (trackedBuff.type === "NormalDebuff" || trackedBuff.type === "WeaponSpecial")) continue;
 
@@ -78,7 +86,7 @@ export function useBuffProcessor() {
               payload = {
                 name: trackedBuff.name,
                 type: trackedBuff.type,
-                timeRemaining: detected.readTime ? detected.readTime() : detected.time,
+                timeRemaining: detected.readTime() ? detected.readTime() : 0,
                 childName: child?.name ? child.name : null,
               };
             }
@@ -103,7 +111,8 @@ export function useBuffProcessor() {
       const wasPreviouslyActive = storeBuff.isActive ?? false;
       const foundPayload = foundBuffPayloads.get(name);
 
-      let shouldBeActive = false;
+      let remaining = storeBuff.timeRemaining;
+      let shouldBeActive = typeof remaining === 'number' ? remaining > 1 : false;
       let activeChildName: string | null = null;
 
       if (isMeta) {
@@ -133,8 +142,10 @@ export function useBuffProcessor() {
         };
 
         if (!isMeta) {
-          payload.cooldown = storeBuff.cooldown;
-          payload.cooldownStart = Date.now();
+          if (!storeBuff.cooldownStart) {
+            payload.cooldown = storeBuff.cooldown;
+            payload.cooldownStart = Date.now();
+          }
         } else {
           payload.activeChild = null;
           lastChildMatchTimestamps.current.delete(name);
