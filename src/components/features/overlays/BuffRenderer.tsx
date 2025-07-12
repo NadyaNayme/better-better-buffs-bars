@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { Buff } from '../../../types/Buff';
+import { isRuntimeBuff, type Buff } from '../../../types/Buff';
 import type { Group } from '../../../types/Group';
 import type { Color } from '../../../types/Color';
 import { formatTime } from '../../../lib/formatTime';
@@ -30,8 +30,18 @@ export function BuffRenderer({
 }: BuffRendererProps) {
   
     useEffect(() => {
-        if (!alt1Ready || !window.alt1) return;
-        if (!drawIndex) return;    
+        if (!alt1Ready || !window.alt1) {
+          debugLog.error(`Alt1 is not ready or does not exist.`)
+          return;
+        }
+        if (!drawIndex) {
+          debugLog.error(`Cannot draw buff - it is missing a drawIndex. ${group.name} -> ${buff.name}`)
+          return
+        };    
+        if (!isRuntimeBuff(buff)) {
+          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
+          return
+        };
 
         // --- Calculate Position ---
         const x = group.overlayPosition?.x ?? 15;
@@ -68,12 +78,14 @@ export function BuffRenderer({
           : buff.scaledImageData || buff.imageData;
           
         // Handle Meta buff image override
-        if (buff.isActive && buff.buffType === 'Meta' && buff.foundChild) {
+        if (buff.isActive && buff.type === 'MetaBuff' && buff.foundChild && isRuntimeBuff(buff.foundChild)) {
           imgData = buff.foundChild.scaledImageData ?? buff.foundChild.imageData;
         }
     
         if (imgData) {
           window.alt1.overLaySetGroup(imageGroupId);
+          window.alt1.overLayFreezeGroup(imageGroupId);
+          window.alt1.overLayClearGroup(imageGroupId);
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement("canvas");
@@ -84,16 +96,16 @@ export function BuffRenderer({
             ctx.drawImage(img, 0, 0);
             const imageData = ctx.getImageData(0, 0, img.width, img.height);
             const encoded = a1lib.encodeImageString(imageData);
-            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 3000);
+            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 5000);
             window.alt1.overLayRefreshGroup(imageGroupId);
           };
           img.src = imgData;
         }
-        debugLog.verbose(`Redrew ${buff.name}}`, buff)
+        debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.isActive}}`)
         
         // --- Draw Text ---
         const displayTime = isOnCooldown ? buff.cooldownRemaining : buff.timeRemaining;
-        const shouldDrawText = !buff.noNumberDisplay && displayTime && displayTime > 0;
+        const shouldDrawText = buff.hasText && displayTime && displayTime > 0;
     
         window.alt1.overLaySetGroup(textGroupId);
         window.alt1.overLayClearGroup(textGroupId);
@@ -110,8 +122,10 @@ export function BuffRenderer({
             text, textColor, Math.floor(10 * (group.scale / 100)),
             Math.floor(drawX + ((group.scale / 100) * (19 - text.length))),
             Math.floor(drawY + ((group.scale / 100) * 19)),
-            100, '', true, true
+            5000, '', true, true
           );
+        } else {
+          debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownRemaining}`);
         }
         window.alt1.overLayRefreshGroup(textGroupId);
     

@@ -1,14 +1,15 @@
 import { useCallback, useRef } from 'react';
 import useStore from '../store';
 import { alertsMap } from '../data/alerts';
+import { isRuntimeBuff } from '../types/Buff';
 
 const lastTickedMap = new Map<string, number>();
 
 export function useCooldownTicker() {
-  const groups = useStore((state) => state.groups);
-  const enableAlerts = useStore((state) => state.enableAlerts);
-  const alertVolume = useStore((state) => state.alertVolume);
-  const updateGroup = useStore((state) => state.updateGroup);
+  // const groups = useStore((state) => state.groups);
+  // const enableAlerts = useStore((state) => state.enableAlerts);
+  // const alertVolume = useStore((state) => state.alertVolume);
+  // const updateGroup = useStore((state) => state.updateGroup);
 
   const lastRunRef = useRef(0);
 
@@ -21,17 +22,19 @@ export function useCooldownTicker() {
 
     lastRunRef.current = now;
 
+    const { groups, enableAlerts, alertVolume, updateGroup } = useStore.getState();
+
     groups.forEach((group) => {
       let didChange = false;
 
       const updatedBuffs = group.buffs.map((buff) => {
+        if (!isRuntimeBuff(buff)) return buff;
         const key = `${group.id}-${buff.name}`;
-        const lastTick = lastTickedMap.get(key) ?? 0;
 
         const newTime = buff.timeRemaining;
 
         if (
-          newTime === buff.alertThreshold &&
+          newTime === buff.alert &&
           !buff.hasAlerted &&
           alertsMap[buff.name] &&
           enableAlerts
@@ -48,21 +51,22 @@ export function useCooldownTicker() {
           };
         }
 
-        if (buff.isStack || buff.buffType === 'Enemy Debuff') {
+        if (buff.type === 'StackBuff' || buff.type === 'TargetDebuff') {
           return buff;
         }
 
+
+        const lastTick = lastTickedMap.get(key) ?? 0;
         if (
           buff.cooldownRemaining &&
           buff.cooldownRemaining > 0 &&
-          buff.cooldownRemaining < 60 &&
           now - lastTick >= 1000
         ) {
           didChange = true;
           lastTickedMap.set(key, now);
           return {
             ...buff,
-            cooldownRemaining: buff.cooldownRemaining - 1,
+            cooldownRemaining: Math.max(0, buff.cooldownRemaining - 1),
           };
         }
 

@@ -23,7 +23,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
   groups: [],
 
   createGroup: (name) => {
-    const blankBuff = createBlankBuff();
+    const blankBuff = createBlankBuff(0);
     const newGroup: Group = {
       id: uuidv4(),
       name,
@@ -58,7 +58,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         if (group.id !== id) return group;
         const updatedGroup = { ...group, ...updates };
         const nonBlankBuffs = updatedGroup.buffs.filter((b) => b.name !== 'Blank');
-        updatedGroup.buffs = [...nonBlankBuffs, createBlankBuff()];
+        updatedGroup.buffs = [...nonBlankBuffs, createBlankBuff(group.buffs.length)];
         return updatedGroup;
       }),
     }));
@@ -82,11 +82,6 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       set((state) => ({
         groups: state.groups.map((g) => (g.id === id ? { ...g, buffs: resizedBuffs } : g)),
       }));
-    }
-    const saveProfile = get().saveProfile;
-    const activeProfile = get().activeProfile;
-    if (activeProfile) {
-        saveProfile(activeProfile);
     }
   },
 

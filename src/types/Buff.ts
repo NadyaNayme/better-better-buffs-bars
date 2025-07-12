@@ -142,7 +142,7 @@ export type BuffConfig = {
 };
 
 export interface BuffInstance extends BaseBuff {
-  data: BuffConfig;
+  data: BuffConfig | null;
   type: BuffType;
   id: string;
   isActive: boolean;
@@ -153,6 +153,7 @@ export interface BuffInstance extends BaseBuff {
   hasAlerted: boolean;
   timeRemaining: number | null;
   cooldown: number | null;
+  cooldownRemaining: number | null;
   defaultImageData: string | null;
   isUtility: boolean;
   scaledImageData: string | null;
@@ -172,7 +173,11 @@ export type Buff =
 
 
 /* Discriminate that the Buff has been modified by the runtime */
-export function isRuntimeBuff(buff: Buff): buff is BuffInstance {
-  console.error(`Type narrowing failed. Buff was not determined to be a runtime buff at runtime.`)
-  return 'id' in buff;
+export function isRuntimeBuff(buff: Buff | BuffInstance): buff is BuffInstance {
+  if ('id' in buff) { 
+    return true;
+  } else { 
+    console.error(`Type narrowing failed. Buff was not determined to be a runtime buff at runtime.`);
+    return false;
+  }
 }

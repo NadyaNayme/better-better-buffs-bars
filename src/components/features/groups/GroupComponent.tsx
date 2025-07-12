@@ -8,6 +8,7 @@ import EditGroupModal from './EditGroupModal';
 import type { Group } from '../../../types/Group';
 import { debugLog } from '../../../lib/debugLog';
 import { BuffRenderer } from '../overlays/BuffRenderer';
+import { isRuntimeBuff } from '../../../types/Buff';
 
 interface GroupComponentProps {
   group: Group;
@@ -68,8 +69,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   const onDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
-      const oldIndex = group.buffs.findIndex((b) => b.id === active.id);
-      const newIndex = group.buffs.findIndex((b) => b.id === over.id);
+      const oldIndex = group.buffs.findIndex((b) => { 
+        if (!isRuntimeBuff(b)) return false;
+        return b.id === active.id
+      });
+      const newIndex = group.buffs.findIndex((b) => { 
+        if (!isRuntimeBuff(b)) return false;
+        return b.id === over.id
+      });
       reorderBuffsInGroup(group.id, oldIndex, newIndex);
     }
   };
@@ -103,8 +110,13 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         </div>
       </div>
     <>
-      {group.buffs.map(buff => (
-        <BuffRenderer
+      {group.buffs.map(buff => {
+        if (!isRuntimeBuff(buff)) {
+          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
+          return null
+        };
+          
+        return (<BuffRenderer
           key={buff.id}
           buff={buff}
           drawIndex={buff.index + 1}
@@ -115,12 +127,16 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           combatCheck={combatCheck}
           cooldownColor={cooldownColor}
           timeRemainingColor={timeRemainingColor}
-        />
-      ))}
+        />)
+      })}
     </>
 
       <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-        <SortableContext items={group.buffs.map(b => b.id)} strategy={rectSortingStrategy}>
+        <SortableContext items={group.buffs.map(b => {
+            if (!isRuntimeBuff(b)) return '';
+            return b.id
+          })
+          } strategy={rectSortingStrategy}>
           <div className="grid grid-cols-12-dynamic gap-2" style={{ 
             '--buff-min-width': `${minWidth}px`,
             '--buff-rows': `${group.buffsPerRow}`
@@ -128,6 +144,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
             {group.buffs
               .map((buff) => {
                 if (buff.name === "Blank") return;
+                if (!isRuntimeBuff(buff)) return;
                 return (
                   <BuffComponent
                     key={buff.id}

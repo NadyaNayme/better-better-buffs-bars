@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import useStore from '../store/index';
 import * as BuffReader from 'alt1/buffs';
-import { rawImageMap } from '../data/imageData';
-import { debugLog } from '../lib/debugLog';
+import { isRuntimeBuff, type BuffInstance } from '../../../types/Buff';
+import useStore from '../../../store/store';
+import { debugLog } from '../../../lib/debugLog';
+import { rawImageMap } from '../../../data/imageData';
 
 interface BuffReaderProps {
   isDebuff?: boolean;
@@ -59,21 +60,20 @@ export function BuffReaderComponent({
     const groups = useStore.getState().groups;
     const allBuffs = useStore.getState().buffs;
   
-    const trackedBuffMap = new Map(groups.flatMap(g => g.buffs).map(b => [b.name, b]));
+    const trackedBuffMap = new Map<string,BuffInstance>(groups.flatMap((g: { buffs: BuffInstance[]; }) => g.buffs).map((b: { name: string; }) => [b.name, b]));
     const finalPayloadMap = new Map<string, any>();
   
     for (const detected of detectedBuffs) {
       for (const [name, trackedBuff] of trackedBuffMap.entries()) {
-        if (!trackedBuff) continue;
-        if (isDebuff && trackedBuff.buffType === "Buff") continue;
-        if (!isDebuff && trackedBuff.buffType === "Debuff") continue;
-        if (trackedBuff.buffType === "Enemy Debuff") continue;
+        if (isDebuff && (trackedBuff.type === "NormalBuff" || trackedBuff.type === "AbilityBuff" || trackedBuff.type === "StackBuff" || trackedBuff.type === "PermanentBuff")) continue;
+        if (!isDebuff && (trackedBuff.type === "NormalDebuff" || trackedBuff.type === "WeaponSpecial")) continue;
+        if (trackedBuff.type === "TargetDebuff") continue;
   
         const { passThreshold, failThreshold } = useStore.getState().getBuffThresholds(trackedBuff.name);
   
         // Meta buff logic
-        if (trackedBuff.buffType === 'Meta' && trackedBuff.childBuffNames) {
-          for (const childName of trackedBuff.childBuffNames) {
+        if (trackedBuff.type === 'MetaBuff' && trackedBuff.children) {
+          for (const childName of trackedBuff.children) {
             const img = resolvedImagesRef.current.get(childName);
             if (!img) continue;
   
@@ -83,15 +83,15 @@ export function BuffReaderComponent({
               debugLog.verbose(trackedBuff.name, match.failed, match.passed);
             }
             if (match.passed >= passThreshold && match.failed <= failThreshold) {
-              const childData = allBuffs.find(b => b.name === childName);
+              const childData: BuffInstance = allBuffs.find((b: { name: string; }) => b.name === childName);
               if (childData) {
                 finalPayloadMap.set(name, {
                   name: trackedBuff.name,
-                  time: trackedBuff.timeRemaining,
+                  timeRemaining: trackedBuff.timeRemaining,
                   childName: childData.name ?? 'NO CHILD MATCHED',
                   foundChild: {
                     name: childData.name,
-                    time: childData.timeRemaining,
+                    timeRemaining: childData.timeRemaining,
                     imageData: childData.scaledImageData ?? childData.imageData,
                     desaturatedImageData: childData.scaledDesaturatedImageData ?? childData.desaturatedImageData,
                   }
@@ -109,12 +109,14 @@ export function BuffReaderComponent({
   
           const match = detected.countMatch(refImg, false);
           if (enableDebug) {
+            debugLog.verbose(trackedBuff.name, match.failed, match.passed);
             updateDebugData(trackedBuff.name, match.failed, match.passed);
           }
           if (match.passed >= passThreshold && match.failed <= failThreshold) {
+            debugLog.verbose(`Above thresholds were able to find a match for: ${trackedBuff.name}`)
             finalPayloadMap.set(name, {
               name,
-              time: detected.readTime ? detected.readTime() : detected.time,
+              timeRemaining: detected.readTime ? detected.readTime() : detected.timeRemaining,
             });
           }
         }

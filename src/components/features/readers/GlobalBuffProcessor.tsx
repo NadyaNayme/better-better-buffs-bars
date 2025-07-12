@@ -4,6 +4,7 @@ import useStore from '../../../store';
 import * as BuffReader from 'alt1/buffs';
 import { rawImageMap } from '../../../data/imageData';
 import { debugLog } from '../../../lib/debugLog';
+import { isRuntimeBuff } from '../../../types/Buff';
 
 const READ_INTERVAL = 250;
 type ReaderStatus = 'IDLE' | 'FOUND' | 'FAILED';
@@ -27,9 +28,13 @@ export function GlobalBuffProcessor() {
     const names = new Set<string>();
     for (const group of groups) {
       for (const buff of group.buffs) {
+        if (!isRuntimeBuff(buff)) { 
+          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
+          continue 
+        };
         names.add(buff.name);
-        if (buff.childBuffNames) {
-          for (const child of buff.childBuffNames) {
+        if (buff.children) {
+          for (const child of buff.children) {
             names.add(child);
           }
         }

@@ -39,7 +39,13 @@ export const createBuffsSlice: StateCreator<
         ...buff,
         id: uuidv4(),
         index: -1,
-        groupId: ''
+        groupId: '',
+        isActive: false,
+        timeRemaining: 0,
+        cooldownRemaining: 0,
+        activeChild: null,
+        foundChild: null,
+        hasAlerted: false,
       }));
       set({ buffs: newBuffs, version: jsonVersion });
       debugLog.info(`Buffs updated to version ${jsonVersion}`);
