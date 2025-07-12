@@ -13,6 +13,7 @@ interface BuffRendererProps {
   inCombat: boolean;
   combatCheck: boolean;
   drawIndex: number;
+  isUpdatingPosition: boolean;
   cooldownColor: Color;
   timeRemainingColor: Color;
 }
@@ -24,6 +25,7 @@ export function BuffRenderer({
   alt1Ready,
   inCombat,
   combatCheck,
+  isUpdatingPosition,
   cooldownColor,
   timeRemainingColor,
   drawIndex
@@ -43,6 +45,18 @@ export function BuffRenderer({
           return
         };
 
+        const imageGroupId = `region-${group.id}-${buff.id}`;
+        const textGroupId = `${group.id}-${buff.id}-text`;
+
+        const cleanup = () => {
+          if (window.alt1) {
+            window.alt1.overLayClearGroup(imageGroupId);
+            window.alt1.overLayRefreshGroup(imageGroupId);
+            window.alt1.overLayClearGroup(textGroupId);
+            window.alt1.overLayRefreshGroup(textGroupId);
+          }
+        };
+
         // --- Calculate Position ---
         const x = group.overlayPosition?.x ?? 15;
         const y = group.overlayPosition?.y ?? 15;
@@ -59,17 +73,13 @@ export function BuffRenderer({
         }
     
         // --- Draw Image ---
-        const imageGroupId = `region-${group.id}-${buff.id}`;
-        const textGroupId = `${group.id}-${buff.id}-text`;
         const isOnCooldown = (buff.cooldownRemaining ?? 0) > 0;
         const useInactive = isOnCooldown || (group.explicitInactive && !buff.isActive);
 
-        // --- Clear overlay if not in combat ---
+        // --- Clear overlay if not in combat or while changing the overlay position ---
         if (!inCombat && combatCheck) {
-            window.alt1.overLayClearGroup(imageGroupId);
-            window.alt1.overLayRefreshGroup(imageGroupId);
-            window.alt1.overLayClearGroup(textGroupId);
-            window.alt1.overLayRefreshGroup(textGroupId);
+            cleanup();
+            return;
         }
         
         // Choose the correct image data
@@ -83,9 +93,6 @@ export function BuffRenderer({
         }
     
         if (imgData) {
-          window.alt1.overLaySetGroup(imageGroupId);
-          window.alt1.overLayFreezeGroup(imageGroupId);
-          window.alt1.overLayClearGroup(imageGroupId);
           const img = new Image();
           img.onload = () => {
             const canvas = document.createElement("canvas");
@@ -96,7 +103,10 @@ export function BuffRenderer({
             ctx.drawImage(img, 0, 0);
             const imageData = ctx.getImageData(0, 0, img.width, img.height);
             const encoded = a1lib.encodeImageString(imageData);
-            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 5000);
+            window.alt1.overLaySetGroup(imageGroupId);
+            window.alt1.overLayFreezeGroup(imageGroupId);
+            window.alt1.overLayClearGroup(imageGroupId);
+            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 30000);
             window.alt1.overLayRefreshGroup(imageGroupId);
           };
           img.src = imgData;
@@ -107,9 +117,6 @@ export function BuffRenderer({
         const displayTime = isOnCooldown ? buff.cooldownRemaining : buff.timeRemaining;
         const shouldDrawText = buff.hasText && displayTime && displayTime > 0;
     
-        window.alt1.overLaySetGroup(textGroupId);
-        window.alt1.overLayClearGroup(textGroupId);
-    
         if (shouldDrawText) {
           const textColor = a1lib.mixColor(
             isOnCooldown ? cooldownColor.r : timeRemainingColor.r,
@@ -117,6 +124,9 @@ export function BuffRenderer({
             isOnCooldown ? cooldownColor.b : timeRemainingColor.b
           );
           const text = formatTime(Number(displayTime));
+          window.alt1.overLaySetGroup(textGroupId);
+          window.alt1.overLayClearGroup(textGroupId);
+          window.alt1.overLayFreezeGroup(textGroupId);
           window.alt1.overLaySetGroupZIndex(textGroupId, 3);
           window.alt1.overLayTextEx(
             text, textColor, Math.floor(10 * (group.scale / 100)),
@@ -124,15 +134,17 @@ export function BuffRenderer({
             Math.floor(drawY + ((group.scale / 100) * 19)),
             5000, '', true, true
           );
+          window.alt1.overLayRefreshGroup(textGroupId);
         } else {
           debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownRemaining}`);
+          window.alt1.overLaySetGroup(textGroupId);
+          window.alt1.overLayClearGroup(textGroupId);
+          window.alt1.overLayRefreshGroup(textGroupId);
         }
-        window.alt1.overLayRefreshGroup(textGroupId);
     
-        return () => {
-        };
+        return () => {};
       }, [
-        alt1Ready, a1lib, buff, group, drawIndex, 
+        alt1Ready, a1lib, buff, group, drawIndex, inCombat, isUpdatingPosition,
         cooldownColor, timeRemainingColor
       ]);
     

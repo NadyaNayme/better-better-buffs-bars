@@ -57,15 +57,6 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     debugLog.info(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
   };
 
-  // useAlt1OverlayRenderer(group, {
-  //   alt1Ready,
-  //   a1lib,
-  //   inCombat,
-  //   combatCheck,
-  //   cooldownColor,
-  //   timeRemainingColor,
-  // });
-
   const onDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
@@ -126,6 +117,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           inCombat={inCombat}
           combatCheck={combatCheck}
           cooldownColor={cooldownColor}
+          isUpdatingPosition={isUpdatingPosition}
           timeRemainingColor={timeRemainingColor}
         />)
       })}

@@ -191,7 +191,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
           if (payloadMap.has(buff.name)) {
             const updatePayload = payloadMap.get(buff.name);
             if (!isRuntimeBuff(buff)) return
-            if (buff.isActive !== updatePayload.isActive) {
+            if (buff.isActive !== updatePayload.isActive || buff.timeRemaining !== updatePayload.timeRemaining || buff.activeChild !== updatePayload.activeChild) {
               hasChangesInThisGroup = true;
               hasAnyChanges = true;
 
@@ -218,7 +218,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         return {};
       }
 
-      debugLog.success(`Syncing ${payloadMap.size} identified buffs to store.`);
+      debugLog.verbose(`Syncing ${payloadMap.size} identified buffs to store.`);
       
       return { groups: newGroups };
     });
