@@ -7,6 +7,7 @@ import { isRuntimeBuff } from '../types/Buff';
 export function useBuffProcessor() {
   const lastChildMatchTimestamps = useRef(new Map<string, number>());
   const lastMatchedChildName = useRef(new Map<string, string>());
+  const cooldownTimers = useRef<Record<string, number>>({});
 
   const calculateBuffUpdates = useCallback((
     detectedBuffs: any[],
@@ -80,6 +81,7 @@ export function useBuffProcessor() {
                   foundChild: {
                     ...child,
                   },
+                  lastUpdated: Date.now()
                 };
               }
             } else {
@@ -88,6 +90,7 @@ export function useBuffProcessor() {
                 type: trackedBuff.type,
                 timeRemaining: detected.readTime() ? detected.readTime() : 0,
                 childName: child?.name ? child.name : null,
+                lastUpdated: Date.now()
               };
             }
 
@@ -112,7 +115,7 @@ export function useBuffProcessor() {
       const foundPayload = foundBuffPayloads.get(name);
 
       let remaining = storeBuff.timeRemaining;
-      let shouldBeActive = typeof remaining === 'number' ? remaining > 1 : false;
+      let shouldBeActive = typeof remaining === 'number' ? remaining >= 1 : false;
       let activeChildName: string | null = null;
 
       if (isMeta) {
@@ -123,8 +126,32 @@ export function useBuffProcessor() {
           shouldBeActive = true;
           activeChildName = lastChild;
         }
-      } else if (foundPayload) {
-        shouldBeActive = true;
+      }  else if (foundPayload) {
+        // Always take the fresh values
+        remaining = foundPayload.timeRemaining;
+        if (remaining === null) { remaining = 0 };
+        shouldBeActive = remaining > 1;
+    
+        // If we’re active again, cancel any pending cooldown
+        if (shouldBeActive) {
+          clearTimeout(cooldownTimers.current[name]);
+          delete cooldownTimers.current[name];
+        }
+      }
+    
+      /* ---------- Decide whether to start cooldown ---------- */
+      if (!shouldBeActive && wasPreviouslyActive && !cooldownTimers.current[name]) {
+        // Start a 2-second “grace” before we *actually* go on cooldown
+        cooldownTimers.current[name] = setTimeout(() => {
+          finalPayloadMap.set(name, {
+            name,
+            isActive: false,
+            timeRemaining: 0,
+            cooldown: storeBuff.cooldown,
+            cooldownStart: Date.now(),
+            lastUpdated: Date.now()
+          });
+        }, 2000);
       }
 
       if (shouldBeActive && !wasPreviouslyActive) {
@@ -133,18 +160,21 @@ export function useBuffProcessor() {
           isActive: true,
           cooldownStart: 0,
           activeChild: activeChildName,
+          lastUpdated: Date.now()
         });
       } else if (!shouldBeActive && wasPreviouslyActive) {
         const payload: any = {
           name,
           isActive: false,
           timeRemaining: 0,
+          lastUpdated: Date.now()
         };
 
         if (!isMeta) {
           if (!storeBuff.cooldownStart) {
             payload.cooldown = storeBuff.cooldown;
             payload.cooldownStart = Date.now();
+            payload.lastUpdated = Date.now();
           }
         } else {
           payload.activeChild = null;
@@ -159,6 +189,7 @@ export function useBuffProcessor() {
           ...(foundPayload ?? { name }),
           isActive: true,
           activeChild: activeChildName,
+          lastUpdated: Date.now()
         });
       }
     }

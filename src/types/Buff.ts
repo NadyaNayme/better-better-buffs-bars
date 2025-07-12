@@ -158,6 +158,7 @@ export interface BuffInstance extends BaseBuff {
   isUtility: boolean;
   scaledImageData: string | null;
   scaledDesaturatedImageData: string | null;
+  lastUpdated: number | null;
 }
 
 export type Buff = 
