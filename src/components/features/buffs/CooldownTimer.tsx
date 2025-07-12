@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useCooldownTicker } from '../hooks/useCooldownTicker';
+import { useCooldownTicker } from '../../../hooks/useCooldownTicker';
 
 export function CooldownTimer() {
   const tickCooldownTimers = useCooldownTicker();

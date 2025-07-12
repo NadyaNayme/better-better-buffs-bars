@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import type { Buff } from '../types/Buff';
-import type { Group } from '../types/Group';
-import type { Color } from '../types/Color';
-import { formatTime } from '../lib/formatTime';
-import { debugLog } from '../lib/debugLog';
+import type { Buff } from '../../../types/Buff';
+import type { Group } from '../../../types/Group';
+import type { Color } from '../../../types/Color';
+import { formatTime } from '../../../lib/formatTime';
+import { debugLog } from '../../../lib/debugLog';
 
 interface BuffRendererProps {
   buff: Buff;

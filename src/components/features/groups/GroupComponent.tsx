@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
-import useStore from '../store/index';
-import BuffComponent from './BuffComponent';
-import AddBuffModal from './AddBuffModal';
+import useStore from '../../../store/index';
+import BuffComponent from '../buffs/BuffComponent';
+import AddBuffModal from '../buffs/AddBuffModal';
 import EditGroupModal from './EditGroupModal';
-import type { Group } from '../types/Group';
-import { debugLog } from '../lib/debugLog';
-import { BuffRenderer } from './BuffRenderer';
+import type { Group } from '../../../types/Group';
+import { debugLog } from '../../../lib/debugLog';
+import { BuffRenderer } from '../overlays/BuffRenderer';
 
 interface GroupComponentProps {
   group: Group;

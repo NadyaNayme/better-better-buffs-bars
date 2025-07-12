@@ -18,7 +18,7 @@ export const createDebugSlice: StateCreator<
   DebugSlice
 > = (set, get) => ({
   debug: {
-    verboseEnabled: true,
+    verboseEnabled: false,
     debugLogs: [],
     addDebugLog: (entry) => {
       if (entry.type === 'verbose' && !get().debug.verboseEnabled) return;

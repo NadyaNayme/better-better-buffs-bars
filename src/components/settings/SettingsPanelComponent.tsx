@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import useStore from '../store/index';
+import useStore from '../../store/index';
 import CheckboxSetting from './CheckboxSetting';
 import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';
-import SocialButtons from './SocialButtons';
+import SocialButtons from '../common/SocialButtons';
 import { PatchNotesComponent } from './PatchNotesComponent';
 
 const SettingsPanelComponent: React.FC = () => {

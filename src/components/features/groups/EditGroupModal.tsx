@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import useStore from '../store/index';
-import ConfirmModal from './ConfirmModal';
-import type { Group } from '../types/Group';
+import useStore from '../../../store/index';
+import ConfirmModal from '../../common/modals/ConfirmModal';
+import type { Group } from '../../../types/Group';
 import { toast } from 'sonner';
 
 interface EditGroupModalComponentProps {

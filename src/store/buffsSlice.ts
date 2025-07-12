@@ -1,6 +1,6 @@
 import { type StateCreator } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import buffsData from '../buffs.json';
+import { BUFFS_VERSION, buffsData } from '../data/buffs';
 import { type Buff } from '../types/Buff';
 import { type Store } from '../types/Store';
 import { debugLog } from '../lib/debugLog';
@@ -10,7 +10,7 @@ export interface BuffsSlice {
   version: number;
   setVersion: (version: number) => void;
   setBuffsFromJsonIfNewer: () => void;
-  getBuffThresholds: (buffName: string) => { passThreshold: number; failThreshold: number };
+  getBuffThresholds: (buffName: string) => { pass: number; fail: number };
   customThresholds: Record<string, { passThreshold: number; failThreshold: number }>;
   setCustomThreshold: (
     buffName: string,
@@ -25,19 +25,21 @@ export const createBuffsSlice: StateCreator<
   [],
   BuffsSlice
 > = (set, get) => ({
-  buffs: buffsData.buffs.map((buff) => ({ ...buff, id: uuidv4() })),
+  buffs: buffsData.map((buff: Buff) => ({ ...buff, id: uuidv4(), index: -1, groupId: '' })),
   version: 1,
   setVersion: (version) => set({ version }),
   customThresholds: {},
 
   setBuffsFromJsonIfNewer: () => {
     const version = get().version;
-    const jsonVersion = buffsData.version;
+    const jsonVersion = BUFFS_VERSION;
 
     if (jsonVersion > version) {
-      const newBuffs = buffsData.buffs.map((buff) => ({
+      const newBuffs = buffsData.map((buff: Buff) => ({
         ...buff,
         id: uuidv4(),
+        index: -1,
+        groupId: ''
       }));
       set({ buffs: newBuffs, version: jsonVersion });
       debugLog.info(`Buffs updated to version ${jsonVersion}`);
@@ -63,9 +65,13 @@ export const createBuffsSlice: StateCreator<
   getBuffThresholds: (buffName) => {
     const custom = get().customThresholds?.[buffName];
     const baseBuff = get().buffs.find((b) => b.name === buffName);
+    if (!baseBuff || !baseBuff.thresholds) return {
+        pass: 300,
+        fail: 100
+    };
     return {
-      passThreshold: custom?.passThreshold ?? baseBuff?.passThreshold ?? 10,
-      failThreshold: custom?.failThreshold ?? baseBuff?.failThreshold ?? 50,
+        pass: custom?.passThreshold ?? baseBuff.thresholds.pass ?? 10,
+        fail: custom?.failThreshold ?? baseBuff.thresholds.fail ?? 50,
     };
   },
 });

@@ -1,5 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import useStore from '../store/index';
+import useStore from '../../../store/index';
+import { isRuntimeBuff } from '../../../types/Buff';
+import { debugLog } from '../../../lib/debugLog';
 
 interface AddBuffModalComponentProps {
   groupId: string;
@@ -16,13 +18,21 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
 
   if (!currentGroup) return null;
 
-  const isBuffInGroup = (buffId: string) =>
-    currentGroup.buffs.some(b => b.id === buffId);
+  const isBuffInGroup = (buffId: string) => 
+    currentGroup.buffs.some(b => {
+      if (!isRuntimeBuff(b)) {
+        debugLog.info(`Not a runtime buff:`, b);
+        return false;
+      } 
+      return b.id === buffId
+    });
 
   const handleToggleBuff = (buffId: string) => {
     if (isBuffInGroup(buffId)) {
+      debugLog.info(`Removing buff from group`, buffId);
       removeBuffFromGroup(groupId, buffId);
     } else {
+      debugLog.info(`Adding buff to group`, buffId);
       addBuffToGroup(groupId, buffId);
     }
   };
@@ -30,6 +40,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
   const allCategories = useMemo(() => {
     const catSet = new Set<string>();
     buffs.forEach(buff => {
+      if (!isRuntimeBuff(buff)) return
       if (buff.isUtility) return;
       buff.categories?.forEach(cat => catSet.add(cat));
     });
@@ -39,6 +50,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
   const categorizedBuffs = useMemo(() => {
     const map = new Map<string, typeof buffs>();
     buffs.forEach(buff => {
+      if (!isRuntimeBuff(buff)) return
       if (buff.isUtility || !buff.categories) return;
       for (const category of buff.categories) {
         if (categoryFilter !== 'All' && category !== categoryFilter) continue;
@@ -56,6 +68,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
     const list: { buff: typeof buffs[number]; category: string }[] = [];
   
     for (const buff of buffs) {
+      if (!isRuntimeBuff(buff)) return
       if (buff.isUtility || seen.has(buff.id)) continue;
       const firstCategory = buff.categories?.[0];
       if (!firstCategory) continue;
@@ -70,6 +83,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
       return a.buff.name.localeCompare(b.buff.name);
     });
   }, [buffs, categoryFilter]);
+  
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -95,7 +109,8 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
 
         {categoryFilter === 'All' ? (
           <div className="buff-grid grid gap-1">
-            {allSortedBuffs.map(({ buff }) => {
+            {allSortedBuffs?.map(({ buff }) => {
+              if (!isRuntimeBuff(buff)) return
               const inGroup = isBuffInGroup(buff.id);
               return (
                 <img
@@ -120,6 +135,7 @@ const AddBuffModal: React.FC<AddBuffModalComponentProps> = ({ groupId, onClose }
                 <h3 className="text-white text-md font-semibold mb-2">{category}</h3>
                 <div className="buff-grid grid gap-1">
                   {buffs.map(buff => {
+                    if (!isRuntimeBuff(buff)) return
                     const inGroup = isBuffInGroup(buff.id);
                     return (
                       <img

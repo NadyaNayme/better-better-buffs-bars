@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react';
 import useStore from './store/index';
 import a1lib from 'alt1';
 import { isAlt1Available } from "./lib/alt1Utils";
-import { CooldownTimer } from './components/CooldownTimer';
-import PopupModal from './components/PopupModal';
-import ProfileManager from './components/ProfileManager';
-import ThresholdEditor from './components/ThresholdEditor';
-import Debug from './components/Debug';
+import PopupModal from './components/common/modals/PopupModal';
+import ThresholdEditor from './components/debug/ThresholdEditor';
 import { type Group } from './types/Group';
-import GroupComponent from './components/GroupComponent';
-import SettingsPanelComponent from './components/SettingsPanelComponent';
-import { ActionBarReaderComponent } from './components/ActionBarReaderComponent';
+import GroupComponent from './components/features/groups/GroupComponent';
+import SettingsPanelComponent from './components/settings/SettingsPanelComponent';
 import { toast, Toaster } from 'sonner';
-import { TargetMobReaderComponent } from './components/TargetMobReaderComponent';
 import { useImageRescaler } from './hooks/useImageRescaler';
-import { GlobalBuffProcessor } from './components/GlobalBuffProcessor';
-import { DebugOverlay } from './components/DebugOverlay';
+import { GlobalBuffProcessor } from './components/features/readers/GlobalBuffProcessor';
 import { debugLog } from './lib/debugLog';
 import type { Store } from './types/Store';
+import ProfileManager from './components/features/profiles/ProfileManager';
+import { CooldownTimer } from './components/features/buffs/CooldownTimer';
+import { DebugOverlay } from './components/debug/DebugOverlay';
+import Debug from './components/debug/Debug';
+import { ActionBarReaderComponent } from './components/features/readers/ActionBarReaderComponent';
+import { TargetMobReaderComponent } from './components/features/readers/TargetMobReaderComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -85,6 +85,7 @@ function App() {
       {!alt1Detected && (
         <p className="text-red-500 text-center mt-8 mb-8 font-bold">Alt1 not detected. Please open this app inside Alt1.</p>
       )}
+      {/* Groups */}
       <div className="space-y-8 mb-8">
         {groups.map((group: any) => (
           <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} />
@@ -102,18 +103,13 @@ function App() {
         <p>Delete buffs from a group using <em>right click</em>.</p>
       </div>
 
+      {/* Profiles */}
       <ProfileManager openModalForProfile={openModalForProfile} />
-      <CooldownTimer/>
+
+      {/* Settings */}
       <SettingsPanelComponent />
-      <Toaster position="bottom-left" richColors />
-      <PopupModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSubmit={handleCreate}
-        title={modalContext === 'group' ? 'Enter Group Name' : 'Enter Profile Name'}
-        placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
-      />
       
+      {/* Debugging */}
       {(debugMode && 
         <>
           <DebugOverlay />
@@ -121,6 +117,9 @@ function App() {
           <ThresholdEditor/>
         </>
       )}
+      {/* Utility */}
+      <CooldownTimer/>
+      <Toaster position="bottom-left" richColors />
       <GlobalBuffProcessor/>
       <ActionBarReaderComponent 
             debugMode={debugMode}
@@ -130,6 +129,13 @@ function App() {
           readInterval={100}
           debugMode={debugMode}
           a1lib={a1lib}
+      />
+      <PopupModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleCreate}
+        title={modalContext === 'group' ? 'Enter Group Name' : 'Enter Profile Name'}
+        placeholder={modalContext === 'group' ? 'Group name...' : 'Profile name...'}
       />
     </div>
   );

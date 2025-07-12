@@ -1,4 +1,4 @@
-import useStore from '../store/index';
+import useStore from '../../store/index';
 
 const Debug = () => {
     const { profiles, groups, activeProfile } = useStore();

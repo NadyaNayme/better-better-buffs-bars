@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { rgbToHex } from "../lib/colorUtils";
-import type { Color } from "../types/Color";
+import { rgbToHex } from "../../lib/colorUtils";
+import type { Color } from "../../types/Color";
 
 interface ColorSettingProps {
   label: string;

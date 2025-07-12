@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useBuffProcessor } from '../hooks/useBuffProcessor';
-import useStore from '../store';
+import { useBuffProcessor } from '../../../hooks/useBuffProcessor';
+import useStore from '../../../store';
 import * as BuffReader from 'alt1/buffs';
-import { rawImageMap } from '../lib/imageData';
-import { debugLog } from '../lib/debugLog';
+import { rawImageMap } from '../../../data/imageData';
+import { debugLog } from '../../../lib/debugLog';
 
 const READ_INTERVAL = 250;
 type ReaderStatus = 'IDLE' | 'FOUND' | 'FAILED';

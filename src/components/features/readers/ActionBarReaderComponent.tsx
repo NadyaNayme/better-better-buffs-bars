@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ActionbarReader from 'alt1/ability';
-import { useCombatMonitor } from '../hooks/useCombatMonitor';
-import { alertsMap } from '../lib/alerts';
-import useStore from '../store/index';
-import { debugLog } from '../lib/debugLog';
+import { useCombatMonitor } from '../../../hooks/useCombatMonitor';
+import { alertsMap } from '../../../data/alerts';
+import useStore from '../../../store/index';
+import { debugLog } from '../../../lib/debugLog';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 

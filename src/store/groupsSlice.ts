@@ -4,7 +4,7 @@ import { type Store } from '../types/Store';
 import { type Group } from '../types/Group';
 import { createBlankBuff } from '../lib/createBlankBuff';
 import { resizedataURL } from '../lib/resizeDataURL';
-import type { Buff } from '../types/Buff';
+import { isRuntimeBuff, type Buff } from '../types/Buff';
 import { debugLog } from '../lib/debugLog';
 
 export interface GroupsSlice {
@@ -97,7 +97,10 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
   },
 
   addBuffToGroup: (groupId, buffId) => {
-    const buff = get().buffs.find((b) => b.id === buffId);
+    const buff = get().buffs.find((b) => { 
+      if (!isRuntimeBuff(b)) return false;
+      return b.id === buffId;
+    });
     if (!buff) return;
   
     set((state) => ({
@@ -105,16 +108,16 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         if (g.id !== groupId) return g;
         let newChildren = g.children ?? [];
   
-        if (buff.buffType === 'Meta' && buff.childBuffNames) {
-            const childBuffs = buff.childBuffNames
+        if (buff.type === 'MetaBuff' && buff.children) {
+            const childBuffs = buff.children
               .map(childName => {
-                const found = get().buffs.find(b => b.name === childName);
+                const found = get().buffs.find(b => isRuntimeBuff(b) && b.name === childName);
                 return found ? { ...found } : null;
               })
               .filter((b): b is Buff => b !== null);
           
           const mergedChildren = [...newChildren, ...childBuffs];
-          newChildren = Array.from(new Map(mergedChildren.map(b => [b.id, b])).values());
+          newChildren = Array.from(new Map(mergedChildren.map(b => [b.name, b])).values());
         }
   
         const nonBlankBuffs = g.buffs.filter((b) => b.name !== 'Blank');
@@ -145,7 +148,10 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         if (group.id !== groupId) return group;
         return {
           ...group,
-          buffs: group.buffs.filter((b) => b.id !== buffId),
+          buffs: group.buffs.filter((b) => {
+            if (!isRuntimeBuff(b)) return true;
+            return b.id !== buffId
+          }),
         };
       }),
     }));
@@ -189,7 +195,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         const newBuffs = group.buffs.map(buff => {
           if (payloadMap.has(buff.name)) {
             const updatePayload = payloadMap.get(buff.name);
-
+            if (!isRuntimeBuff(buff)) return
             if (buff.isActive !== updatePayload.isActive) {
               hasChangesInThisGroup = true;
               hasAnyChanges = true;

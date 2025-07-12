@@ -1,3 +1,4 @@
+import { emojiMap } from '../data/debugStrings';
 import useStore from '../store/index';
 
 type DebugLogType = 
@@ -7,15 +8,6 @@ type DebugLogType =
   | 'info'
   | 'warning'
   | 'verbose';
-
-export const emojiMap: Record<DebugLogType, string> = {
-  success:  '✅',
-  error:    '❌',
-  retrying: '🔁',
-  info:     'ℹ️',
-  warning:  '⚠️',
-  verbose:  '🔍',
-};
 
 function createLogger(type: DebugLogType) {
   return (...args: any[]) => {

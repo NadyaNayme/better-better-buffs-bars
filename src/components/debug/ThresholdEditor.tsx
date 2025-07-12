@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useStore from '../store/index';
+import useStore from '../../store/index';
 
 const ThresholdEditor = () => {
   const buffs = useStore(state => state.buffs);

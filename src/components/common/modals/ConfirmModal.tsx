@@ -33,7 +33,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
       onKeyDown={handleKeyDown}
-      tabIndex={-1} // make div focusable for keyboard events
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-modal-title"

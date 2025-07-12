@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import useStore from '../store/index';
-import type { Profile } from '../types/Profile';
+import useStore from '../../../store/index';
+import type { Profile } from '../../../types/Profile';
 import { toast } from 'sonner';
 
 type ProfileManagerProps = {

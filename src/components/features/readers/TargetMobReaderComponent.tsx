@@ -1,11 +1,11 @@
 import { useEffect, useRef, useCallback, useReducer, useState } from 'react';
 import TargetMobReader from 'alt1/targetmob';
-import useStore from '../store/index';
+import useStore from '../../../store/index';
 
-import Bloated from '../assets/data/bloated.data.png';
-import DeathMark from '../assets/data/Death_Mark.data.png';
-import Vulnerability from '../assets/data/Vulnerability_bordered.data.png';
-import { debugLog } from '../lib/debugLog';
+import Bloated from '../../../data/images/bloated.data.png';
+import DeathMark from '../../../data/images/Death_Mark.data.png';
+import Vulnerability from '../../../data/images/Vulnerability_bordered.data.png';
+import { debugLog } from '../../../lib/debugLog';
 
 const enemyDebuffImages = {
   'Bloat': Bloated,

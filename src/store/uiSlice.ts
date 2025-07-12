@@ -2,7 +2,7 @@ import { type StateCreator } from 'zustand';
 import a1lib from 'alt1';
 import { toast } from 'sonner';
 import type { Store } from '../types/Store';
-import { debugStrings } from '../lib/debugStrings';
+import { debugStrings } from '../data/debugStrings';
 
 export interface UISlice {
   debugMode: boolean;

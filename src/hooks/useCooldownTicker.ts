@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
 import useStore from '../store';
-import { alertsMap } from '../lib/alerts';
+import { alertsMap } from '../data/alerts';
 
 const lastTickedMap = new Map<string, number>();
 

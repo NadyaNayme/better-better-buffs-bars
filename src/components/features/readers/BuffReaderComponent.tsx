@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import useStore from '../store/index';
 import * as BuffReader from 'alt1/buffs';
-import { rawImageMap } from '../lib/imageData';
+import { rawImageMap } from '../data/imageData';
 import { debugLog } from '../lib/debugLog';
 
 interface BuffReaderProps {

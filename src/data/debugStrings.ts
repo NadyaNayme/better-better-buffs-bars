@@ -12,3 +12,12 @@ export const debugStrings = [
     "Congratulations! Your Debugging level is now 79! Or was it 97?",
     "Welcome to Debug Mode. Blame Nyu that you're here.",
   ]
+
+  export const emojiMap: Record<string, string> = {
+    success: '✅',
+    error: '❌',
+    retrying: '🔁',
+    info: 'ℹ️',
+    warning: '⚠️',
+    verbose: '🔍',
+  };

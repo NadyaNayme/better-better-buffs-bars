@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import useStore from '../store/index';
-import type { Buff } from '../types/Buff';
+import useStore from '../../../store/index';
+import { isRuntimeBuff, type Buff } from '../../../types/Buff';
 
 const formatTime = (seconds: number) => {
   if (seconds <= 0) return '0s';
@@ -17,6 +17,7 @@ interface BuffComponentProps {
 }
 
 const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
+  if (!isRuntimeBuff(buff)) return
   const {
     attributes,
     listeners,
@@ -44,8 +45,22 @@ const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
   const [highlighted, setHighlighted] = useState(false);
 
   const customThresholds = useStore((s) => s.customThresholds);
-  const effectivePass = customThresholds[buff.name]?.passThreshold ?? buff.passThreshold;
-  const effectiveFail = customThresholds[buff.name]?.failThreshold ?? buff.failThreshold;
+  const effectivePass = customThresholds[buff.name]?.passThreshold ?? buff.thresholds?.pass;
+  const effectiveFail = customThresholds[buff.name]?.failThreshold ?? buff.thresholds?.fail;
+
+  const getDisplayValue = (buff: Buff): string | null => {
+    if (!buff.hasText) return null;
+    if (
+      buff.type === "Normal Buff" ||
+      buff.type === "Ability Buff" ||
+      buff.type === "Normal Debuff" ||
+      buff.type === "Weapon Special"
+    ) return formatTime(buff.timeRemaining);
+    if (buff.type === "Stack Buff") return formatTime(buff.stacks);
+    return null;
+  };
+
+  const displayValue = getDisplayValue(buff);
 
   return (
     <div
@@ -61,9 +76,9 @@ const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
       }}
     >
       <img src={imageUrl} alt={buff.name} title={buff.name} data-pass={effectivePass} data-fail={effectiveFail} className={`w-full h-full object-cover ${highlighted ? 'opacity-40' : ''}`} />
-      {buff.timeRemaining != null && !(buff.name === "Overhead Prayers" || buff.name === "DPS Prayers" || buff.name === "Quiver" || buff.name === "Death Spark" || buff.buffType === "Enemy Debuff") && (
+      {displayValue && (
         <div className="absolute pointer-events-none bottom-0 right-0 text-white text-xs text-shadow-md text-shadow-black right-1">
-          {formatTime(buff.timeRemaining)}
+          {displayValue}
         </div>
       )}
     </div>
