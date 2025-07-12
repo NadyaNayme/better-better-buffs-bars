@@ -56,10 +56,30 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
     set((state) => ({
       groups: state.groups.map((group) => {
         if (group.id !== id) return group;
-        const updatedGroup = { ...group, ...updates };
-        const nonBlankBuffs = updatedGroup.buffs.filter((b) => b.name !== 'Blank');
-        updatedGroup.buffs = [...nonBlankBuffs, createBlankBuff(group.buffs.length)];
-        return updatedGroup;
+        let updatedBuffs = group.buffs;
+  
+        if (updates.buffs) {
+          const updateMap = new Map(
+            updates.buffs.map((b) => [b.name, b])
+          );
+  
+          updatedBuffs = group.buffs.map((oldBuff) => {
+            const newBuff = updateMap.get(oldBuff.name);
+            return newBuff
+              ? { ...oldBuff, ...newBuff }
+              : oldBuff;
+          });
+        }
+  
+        // Always keep a blank buff at the end
+        const nonBlankBuffs = updatedBuffs.filter((b) => b.name !== 'Blank');
+        const finalBuffs = [...nonBlankBuffs, createBlankBuff(group.buffs.length)];
+  
+        return {
+          ...group,
+          ...updates,
+          buffs: finalBuffs,
+        };
       }),
     }));
 
@@ -67,7 +87,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       const groupToProcess = get().groups.find((g) => g.id === id);
       if (!groupToProcess) return;
       const newScaleDecimal = updates.scale / 100.0;
-
+    
       const resizePromises = groupToProcess.buffs.map(async (buff) => {
         const scaled = buff.imageData ? await resizedataURL(buff.imageData, newScaleDecimal) : null;
         const desat = buff.desaturatedImageData ? await resizedataURL(buff.desaturatedImageData, newScaleDecimal) : null;
@@ -77,10 +97,22 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
           scaledDesaturatedImageData: desat?.scaledDataUrl ?? '',
         };
       });
-
+    
       const resizedBuffs = await Promise.all(resizePromises);
+    
       set((state) => ({
-        groups: state.groups.map((g) => (g.id === id ? { ...g, buffs: resizedBuffs } : g)),
+        groups: state.groups.map((g) => {
+          if (g.id !== id) return g;
+    
+          const resizedMap = new Map(resizedBuffs.map((b) => [b.name, b]));
+    
+          const mergedBuffs = g.buffs.map((buff) => {
+            const resized = resizedMap.get(buff.name);
+            return resized ? { ...buff, ...resized } : buff;
+          });
+    
+          return { ...g, buffs: mergedBuffs };
+        }),
       }));
     }
   },
