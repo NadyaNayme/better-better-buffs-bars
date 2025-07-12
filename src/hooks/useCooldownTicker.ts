@@ -6,11 +6,6 @@ import { isRuntimeBuff } from '../types/Buff';
 const lastTickedMap = new Map<string, number>();
 
 export function useCooldownTicker() {
-  // const groups = useStore((state) => state.groups);
-  // const enableAlerts = useStore((state) => state.enableAlerts);
-  // const alertVolume = useStore((state) => state.alertVolume);
-  // const updateGroup = useStore((state) => state.updateGroup);
-
   const lastRunRef = useRef(0);
 
   const tickCooldownTimers = useCallback(() => {
