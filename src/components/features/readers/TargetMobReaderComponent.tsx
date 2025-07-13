@@ -43,8 +43,8 @@ function getDebuffUpdates({
   imageMap: Map<string, any>;
   captureRegion: any;
   lastDetectedRef: React.RefObject<Record<string, boolean>>;
-}): Map<string, { name: string; isActive: boolean; time: number }> {
-  const updates = new Map<string, { name: string; isActive: boolean; time: number }>();
+}): Map<string, { name: string; status: string; time: number }> {
+  const updates = new Map<string, { name: string; status: string; time: number }>();
 
   for (const name of Object.keys(enemyDebuffImages)) {
     const image = imageMap.get(name);
@@ -58,7 +58,7 @@ function getDebuffUpdates({
     if (isDetected !== previouslyDetected) {
       updates.set(name, {
         name,
-        isActive: isDetected,
+        status: isDetected ? "Active" : "Inactive",
         time: isDetected ? 3000 : 0,
       });
     }
@@ -72,7 +72,7 @@ function clearAllDebuffs(lastDetectedRef: any) {
   for (const name of Object.keys(enemyDebuffImages)) {
     if (lastDetectedRef.current[name] !== false) {
       lastDetectedRef.current[name] = false;
-      cleared.set(name, { name, isActive: false, time: 0 });
+      cleared.set(name, { name, status: "Inactive", time: 0 });
     }
   }
   return cleared;

@@ -14,6 +14,8 @@ interface BaseBuff {
   categories: string[];
 }
 
+export type BuffStatus = 'Active' | 'OnCooldown' | 'Inactive';
+
 const buffTypes = {
   NormalBuff: "Normal Buff",
   AbilityBuff: "Ability Buff",
@@ -145,7 +147,8 @@ export interface BuffInstance extends BaseBuff {
   data: BuffConfig | null;
   type: BuffType;
   id: string;
-  isActive: boolean;
+  status: BuffStatus | null;
+  statusChangedAt: number | null;
   children: string[] | null;
   activeChild: string | null;
   foundChild: Buff | null;

@@ -5,6 +5,11 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
   const [selectedVersion, setSelectedVersion] = useState(patchNotes[0].version);
   const selectedNote = patchNotes.find(note => note.version === selectedVersion);
 
+  const handleClose = () => {
+    localStorage.setItem("lastViewedPatchNote", patchNotes[0].version);
+    onClose();
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -73,7 +78,7 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
         </div>
 
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute bottom-4 right-4 bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded"
         >
           Close

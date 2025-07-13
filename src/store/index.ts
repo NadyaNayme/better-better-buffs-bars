@@ -20,7 +20,7 @@ const useStore = create<StoreState>()(
       ...createDebugSlice(...state),
     }),
     {
-      name: 'buff-tracker-storage',
+      name: 'better-buffs-bars-storage',
       partialize: (state) => ({
         groups: state.groups,
         profiles: state.profiles,

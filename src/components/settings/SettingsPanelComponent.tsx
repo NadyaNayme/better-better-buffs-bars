@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useStore from '../../store/index';
 import CheckboxSetting from './CheckboxSetting';
 import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';
 import SocialButtons from '../common/SocialButtons';
+import { patchNotes } from "../../data/patchNotes";
 import { PatchNotesComponent } from './PatchNotesComponent';
 
 const SettingsPanelComponent: React.FC = () => {
@@ -30,6 +31,15 @@ const SettingsPanelComponent: React.FC = () => {
   const setTimeRemainingColor = useStore(s => s.setTimeRemainingColor);
 
   const togglePanel = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const lastViewed = localStorage.getItem("lastViewedPatchNote");
+    const latest = patchNotes[0].version;
+
+    if (lastViewed !== latest) {
+      setShowPatchNotes(true);
+    }
+  }, []);
 
   return (
     <>

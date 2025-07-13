@@ -40,7 +40,7 @@ const BuffComponent: React.FC<BuffComponentProps> = ({ buff, onRemove }) => {
     gridRow: 'span 1',
   };
 
-  const imageUrl = buff.isActive ? buff.imageData : buff.imageData;
+  const imageUrl = buff.status === "Active" ? buff.imageData : buff.imageData;
 
   const [highlighted, setHighlighted] = useState(false);
 

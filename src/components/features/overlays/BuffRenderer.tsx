@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { isRuntimeBuff, type Buff, type BuffInstance } from '../../../types/Buff';
+import { isRuntimeBuff, type BuffInstance } from '../../../types/Buff';
 import type { Group } from '../../../types/Group';
 import type { Color } from '../../../types/Color';
 import { formatTime } from '../../../lib/formatTime';
@@ -31,14 +31,13 @@ export function BuffRenderer({
   timeRemainingColor,
   drawIndex
 }: BuffRendererProps) {
-
     useGlobalClock();
 
     const cooldownRemaining = (buff.cooldownStart && typeof buff.cooldown === 'number')
     ? Math.max(0, buff.cooldown - Math.floor((Date.now() - buff.cooldownStart) / 1000))
     : 0;
-    const isOnCooldown = cooldownRemaining > 0;
-    const useInactive = isOnCooldown || (group.explicitInactive && !buff.isActive);
+    const isOnCooldown = buff.status === "OnCooldown";
+    const useInactive = isOnCooldown || (group.explicitInactive && buff.status !== "Active");
   
     useEffect(() => {
         if (!alt1Ready || !window.alt1) {
@@ -61,6 +60,11 @@ export function BuffRenderer({
             window.alt1.overLayRefreshGroup(textGroupId);
           }
         };
+
+        if (!group.explicitInactive && buff.status === "Inactive") {
+          cleanup();
+          return;
+        }
 
         // --- Calculate Position ---
         const x = group.overlayPosition?.x ?? 15;
@@ -100,7 +104,7 @@ export function BuffRenderer({
           }
           
         // Handle Meta buff image override
-        if (buff.isActive && buff.type === 'MetaBuff' && buff.foundChild && isRuntimeBuff(buff.foundChild)) {
+        if (buff.status === "Active" && buff.type === 'MetaBuff' && buff.foundChild && isRuntimeBuff(buff.foundChild)) {
           imgData = buff.foundChild.scaledImageData ?? buff.foundChild.imageData;
         } else if (buff.type === 'MetaBuff') {
           imgData = buff.scaledImageData ?? buff.defaultImageData; // fallback
@@ -120,7 +124,7 @@ export function BuffRenderer({
             window.alt1.overLaySetGroup(imageGroupId);
             window.alt1.overLayFreezeGroup(imageGroupId);
             window.alt1.overLayClearGroup(imageGroupId);
-            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 30000);
+            window.alt1.overLayImage(drawX, drawY, encoded, img.width, 5000);
             window.alt1.overLayRefreshGroup(imageGroupId);
           };
           img.onerror = () => {
@@ -128,10 +132,10 @@ export function BuffRenderer({
           };
           img.src = imgData;
         }
-        debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.isActive}}`)
+        debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.status}}`)
         
         // --- Draw Text ---
-        const displayTime = isOnCooldown ? cooldownRemaining  : buff.timeRemaining;
+        const displayTime = isOnCooldown ? cooldownRemaining : buff.timeRemaining;
         const shouldDrawText = buff.hasText && displayTime && displayTime > 0;
     
         if (shouldDrawText) {

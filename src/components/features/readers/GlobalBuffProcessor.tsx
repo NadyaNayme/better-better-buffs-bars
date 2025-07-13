@@ -5,8 +5,11 @@ import * as BuffReader from 'alt1/buffs';
 import { rawImageMap } from '../../../data/imageData';
 import { debugLog } from '../../../lib/debugLog';
 import { isRuntimeBuff } from '../../../types/Buff';
+import { throttle } from 'lodash-es';
 
-const READ_INTERVAL = 250;
+const READ_INTERVAL = 200; // How often to read & update our data from the buffs bars
+const THROTTLE_INTERVAL = 300; // How often to process the data
+const RETRY_INTERVAL = 5000; // How often to retry finding the buff & debuff bars
 type ReaderStatus = 'IDLE' | 'FOUND' | 'FAILED';
 
 export function GlobalBuffProcessor() {
@@ -21,6 +24,8 @@ export function GlobalBuffProcessor() {
   const [loadedImageSetId, setLoadedImageSetId] = useState<string | null>(null);
   const calculateBuffUpdatesRef = useRef(calculateBuffUpdates);
   const syncIdentifiedBuffsRef = useRef(syncIdentifiedBuffs);
+  
+      
 
   const groups = useStore(state => state.groups);
 
@@ -86,127 +91,87 @@ export function GlobalBuffProcessor() {
     }
   }, [buffsToLoadId, loadedImageSetId, buffsToLoadNames]);
 
-  useEffect(() => {
-    if (!loadedImageSetId) {
-      return;
-    }
-
-    let intervalId: number = 0;
-    let buffRetryIntervalId: number = 0;
-
-    const initializeAndStartBuffsReader = () => {
-      const tryFindReader = () => {
-        debugLog.retrying("Retrying Buffs bar detection...");
-        const found = buffReaderRef.current.find();
-        if (found) {
-          debugLog.success("Buffs bar found on retry!");
-          buffsReaderStatusRef.current = 'FOUND';
-          clearInterval(buffRetryIntervalId);
-          startBuffsProcessing();
-        }
-      };
-
-      const startBuffsProcessing = () => {
-        debugLog.verbose("Starting BUFFS processing loop...");
-        intervalId = window.setInterval(() => {
-          const detectedData = buffReaderRef.current.read();
-          if (!detectedData || detectedData.length === 0) return;
-          const payload = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current!, false);
-          if (payload.size > 0) {
-            syncIdentifiedBuffsRef.current(payload);
-          }
-        }, READ_INTERVAL);
-      };
-
-      if (buffsReaderStatusRef.current === 'IDLE') {
-        debugLog.info("Attempting to find Buffs bar...");
-        const found = buffReaderRef.current.find();
-        if (found) {
-          debugLog.success("Buffs bar found!");
-          buffsReaderStatusRef.current = 'FOUND';
-          startBuffsProcessing();
-        } else {
-          debugLog.error("Could not find Buffs bar. Will retry every 5s.");
-          buffsReaderStatusRef.current = 'FAILED';
-          buffRetryIntervalId = window.setInterval(tryFindReader, 5000);
-        }
+  // ✨ THROTTLING: Create the throttled processor
+  const throttledCalculateUpdates = useMemo(() => {
+    const execute = (detectedData: any[], isDebuff: boolean) => {
+      if (!resolvedImagesRef.current) return;
+      const updates = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current, isDebuff);
+      if (updates.size > 0) {
+        syncIdentifiedBuffsRef.current(updates);
       }
     };
+    return throttle(execute, THROTTLE_INTERVAL, { leading: true, trailing: false });
+  }, []);
 
-    initializeAndStartBuffsReader();
-
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        debugLog.error("Stopping BUFFS processing loop.");
-      }
-      if (buffRetryIntervalId) {
-        clearInterval(buffRetryIntervalId);
-        debugLog.error("Stopping BUFFS retry loop.");
-      }
-    };
-  }, [loadedImageSetId]);
 
   useEffect(() => {
-    if (!loadedImageSetId) {
-      return;
-    }
+    if (!loadedImageSetId) return;
 
-    let intervalId: number = 0;
-    let debuffRetryIntervalId: number = 0;
+    const setupReader = (
+      readerRef: React.MutableRefObject<any>,
+      statusRef: React.MutableRefObject<ReaderStatus>,
+      isDebuff: boolean
+    ) => {
+      let intervalId = 0;
+      let retryIntervalId = 0;
+      const readerName = isDebuff ? "Debuffs" : "Buffs";
 
-    const initializeAndStartDebuffsReader = () => {
+      const processData = () => {
+        const detectedData = readerRef.current.read();
+        if (detectedData?.length > 0) {
+          // ✨ THROTTLING: Call the throttled function instead of the raw one
+          throttledCalculateUpdates(detectedData, isDebuff);
+        }
+      };
+
+      const startProcessing = () => {
+        debugLog.verbose(`Starting ${readerName} processing loop...`);
+        intervalId = window.setInterval(processData, READ_INTERVAL);
+      };
+      
       const tryFindReader = () => {
-        debugLog.retrying("Retrying Debuffs bar detection...");
-        const found = debuffReaderRef.current.find();
-        if (found) {
-          debugLog.success("Debuffs bar found on retry!");
-          debuffsReaderStatusRef.current = 'FOUND';
-          clearInterval(debuffRetryIntervalId);
-          startDebuffsProcessing();
+        debugLog.retrying(`Retrying ${readerName} bar detection...`);
+        if (readerRef.current.find()) {
+          debugLog.success(`${readerName} bar found on retry!`);
+          statusRef.current = 'FOUND';
+          clearInterval(retryIntervalId);
+          startProcessing();
         }
       };
 
-      const startDebuffsProcessing = () => {
-        debugLog.verbose("Starting DEBUFFS processing loop...");
-        intervalId = window.setInterval(() => {
-          const detectedData = debuffReaderRef.current.read();
-          if (!detectedData || detectedData.length === 0) return;
-          const payload = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current!, true);
-          if (payload.size > 0) {
-            syncIdentifiedBuffsRef.current(payload);
-          }
-        }, READ_INTERVAL);
-      };
-
-      if (debuffsReaderStatusRef.current === 'IDLE') {
-        debugLog.info("Attempting to find Debuffs bar...");
-        const found = debuffReaderRef.current.find();
-        if (found) {
-          debugLog.success("Debuffs bar found!");
-          debuffsReaderStatusRef.current = 'FOUND';
-          startDebuffsProcessing();
+      if (statusRef.current === 'IDLE') {
+        debugLog.info(`Attempting to find ${readerName} bar...`);
+        if (readerRef.current.find()) {
+          debugLog.success(`${readerName} bar found!`);
+          statusRef.current = 'FOUND';
+          startProcessing();
         } else {
-          debugLog.error("Could not find Debuffs bar. Will retry every 5s.");
-          debuffsReaderStatusRef.current = 'FAILED';
-          debuffRetryIntervalId = window.setInterval(tryFindReader, 5000);
+          debugLog.error(`Could not find ${readerName} bar. Will retry every ${RETRY_INTERVAL / 1000}s.`);
+          statusRef.current = 'FAILED';
+          retryIntervalId = window.setInterval(tryFindReader, RETRY_INTERVAL);
         }
       }
+
+      // Return a cleanup function for this specific reader
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+        if (retryIntervalId) clearInterval(retryIntervalId);
+        // ✨ FIX: Reset status to ensure re-initialization on config change
+        statusRef.current = 'IDLE';
+        debugLog.info(`Stopped ${readerName} processing loop.`);
+      };
     };
 
-    initializeAndStartDebuffsReader();
+    // Setup both readers
+    const cleanupBuffs = setupReader(buffReaderRef, buffsReaderStatusRef, false);
+    const cleanupDebuffs = setupReader(debuffReaderRef, debuffsReaderStatusRef, true);
 
+    // Return a function that calls both cleanup functions
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        debugLog.error("Stopping DEBUFFS processing loop.");
-      }
-      if (debuffRetryIntervalId) {
-        clearInterval(debuffRetryIntervalId);
-        debugLog.error("Stopping DEBUFFS retry loop.");
-      }
+      cleanupBuffs();
+      cleanupDebuffs();
     };
-  }, [loadedImageSetId]);
+  }, [loadedImageSetId, throttledCalculateUpdates]);
 
   return null;
 }

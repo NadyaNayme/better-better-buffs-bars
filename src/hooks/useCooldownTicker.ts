@@ -49,9 +49,9 @@ export function useCooldownTicker() {
         const timeSinceUpdate = now - lastUpdate;
 
         if (
-          newBuff.isActive &&
+          newBuff.status !== "Active" &&
           typeof newBuff.timeRemaining === 'number' &&
-          newBuff.timeRemaining >= 1 &&
+          newBuff.timeRemaining >= 0 &&
           timeSinceUpdate > 1000
         ) {
           newBuff.timeRemaining = Math.max(0, newBuff.timeRemaining - 1);
