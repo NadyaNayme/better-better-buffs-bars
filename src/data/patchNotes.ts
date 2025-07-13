@@ -2,28 +2,33 @@ export interface PatchNote {
     version: string;
     date: string;
     title: string;
-    highlights?: string[];
-    fixes?: string[];
-    added?: string[];
+    errors: string[] | null;
+    highlights: string[] | null;
+    fixes: string[] | null;
+    added: string[] | null;
+    knownIssues: string[] | null;
   }
   
 export const patchNotes: PatchNote[] = [
   {
     version: "v1.0.0",
     date: "2025-07-13",
-    title: "Where did all my settings go?",
+    title: "Dude, where's my settings?",
     added: [
-      `Patch notes will now appear for updates. They can be viewed again at any time by clicking the Version Number in the Settings Panel.`
+      `Patch notes will now appear for updates. They can be viewed again at any time by clicking the Version Number in the Settings Panel. Totally not stolen from featfinder.net (legit website btw)`,
+      `A draggable Debug console will now appear when Debug Mode is enabled to make everyone's lives a little easier.`
     ],
     fixes: [
-      `Meta buffs have been re-enabled as they no longer cause flickering when multiple groups are in use.`,
-      `Cooldown tracking should be a little more graceful and flicker less (no more 19->18->19->17->18->17)`,
+      `Meta buffs have been re-enabled as they no longer cause rapid flickering when multiple groups are being used.`,
+      `Cooldown tracking should be a little more graceful and no longer flicker due to rapid state changes.`,
       `Hiding overlays while out of combat no longer results in constant flickering from "inCombat" being set repeatedly from true->true or false->false.`,
-      `Profiles now autosave with most changes to prevent accidentally forgetting to override. Until this is battle-tested the manual override button will continue to exist.`
+      `Profiles now autosave with any user changes. Until this is battle-tested the manual override button will continue to exist.`
     ],
-    highlights: [
-      `Due to a complete rewrite of how Profiles & Buffs work user settings have been lost.`
-    ]
+    errors: [
+      `Your settings have been lost.`
+    ],
+    knownIssues: null,
+    highlights: null,
   },
   {
     version: "v0.3.3",
@@ -35,7 +40,10 @@ export const patchNotes: PatchNote[] = [
     ],
     fixes: [
       `Buffs that are stacks (eg. Necrosis, Residual Souls) now properly go to 0 instead of freezing on the last known stack value.`
-    ]
+    ],
+    highlights: null,
+    knownIssues: null,
+    errors: null,
   },
   {
     version: "v0.3.2",
@@ -43,6 +51,10 @@ export const patchNotes: PatchNote[] = [
     title: "Better Buff Selection!",
     added: [
       `Instead of a clunky dropdown you can now simply click the buffs you would like to track. I should have thought of that to begin with.`
-    ]
+    ],
+    fixes: null,
+    highlights: null,
+    knownIssues: null,
+    errors: null,
   },    
 ];

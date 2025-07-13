@@ -47,9 +47,27 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
           <div className="text-sm text-zinc-400 mb-2">Released {selectedNote?.date}</div>
           <h3 className="text-xl font-semibold mb-4">📦 {selectedNote?.title}</h3>
 
+          {selectedNote && selectedNote.errors && selectedNote.errors.length && selectedNote.errors.length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-semibold text-red-300 mb-1">☠️ Errors</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                {selectedNote.errors.map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          )}    
+
+          {selectedNote && selectedNote.highlights && selectedNote.highlights.length && selectedNote.highlights.length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-semibold text-blue-300 mb-1">🌟 Highlights</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                {selectedNote.highlights.map((item, i) => <li key={i}>{item}</li>)}
+              </ul>
+            </div>
+          )}
+
           {selectedNote && selectedNote.added && selectedNote.added.length && selectedNote.added.length > 0 && (
             <div className="mb-4">
-              <h4 className="font-semibold text-amber-300 mb-1">✨ Added</h4>
+              <h4 className="font-semibold text-yellow-300 mb-1">✨ Added</h4>
               <ul className="list-disc pl-5 space-y-1">
                 {selectedNote.added.map((item, i) => (
                   <li key={i} dangerouslySetInnerHTML={{ __html: item }} />
@@ -67,14 +85,15 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
-          {selectedNote && selectedNote.highlights && selectedNote.highlights.length && selectedNote.highlights.length > 0 && (
+          {selectedNote && selectedNote.knownIssues && selectedNote.knownIssues.length && selectedNote.knownIssues.length > 0 && (
             <div className="mb-4">
-              <h4 className="font-semibold text-blue-300 mb-1">🌟 Highlights</h4>
+              <h4 className="font-semibold text-orange-300 mb-1">⚠️ Known Issues</h4>
               <ul className="list-disc pl-5 space-y-1">
-                {selectedNote.highlights.map((item, i) => <li key={i}>{item}</li>)}
+                {selectedNote.knownIssues.map((item, i) => <li key={i}>{item}</li>)}
               </ul>
             </div>
-          )}
+          )}      
+
         </div>
 
         <button

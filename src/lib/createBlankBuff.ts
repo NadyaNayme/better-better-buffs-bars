@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { Buff, BuffInstance } from '../types/Buff';
+import type { BuffInstance } from '../types/Buff';
 
 export const createBlankBuff = (length: number): BuffInstance => ({
     id: uuidv4(),
@@ -28,6 +28,6 @@ export const createBlankBuff = (length: number): BuffInstance => ({
     hasAlerted: false,
     activeChild: null,
     timeRemaining: 0,
-    index: length + 1,
+    index: length,
     data: null,
   });

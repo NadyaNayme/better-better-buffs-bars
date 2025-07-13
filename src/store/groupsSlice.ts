@@ -73,7 +73,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
   
         // Always keep a blank buff at the end
         const nonBlankBuffs = updatedBuffs.filter((b) => b.name !== 'Blank');
-        const finalBuffs = [...nonBlankBuffs, createBlankBuff(group.buffs.length)];
+        const finalBuffs = [...nonBlankBuffs, createBlankBuff(group.buffs.length - 1)];
   
         return {
           ...group,

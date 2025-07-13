@@ -44,7 +44,7 @@ export function BuffRenderer({
           debugLog.error(`Alt1 is not ready or does not exist.`)
           return;
         }
-        if (!drawIndex) {
+        if (drawIndex === null) {
           debugLog.error(`Cannot draw buff - it is missing a drawIndex. ${group.name} -> ${buff.name}`)
           return
         };    
@@ -61,7 +61,7 @@ export function BuffRenderer({
           }
         };
 
-        if (!group.explicitInactive && buff.status === "Inactive") {
+        if (!group.explicitInactive && buff.status === "Inactive" || !group.enabled) {
           cleanup();
           return;
         }

@@ -31,7 +31,6 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     }
   
     setIsUpdatingPosition(true);
-    window.alt1.setTooltip("Press Alt+1 (or Alt1's main hotkey if rebound) to save position");
   
     let alt1Pressed = false;
     const alt1Listener = () => {
@@ -47,8 +46,6 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
       }
       await new Promise(r => setTimeout(r, 20));
     }
-  
-    window.alt1.clearTooltip();
     setIsUpdatingPosition(false);
   
     const finalPos = a1lib.getMousePosition();
@@ -81,16 +78,18 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   return (
     <div className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold">{group.name} {group.enabled ? '' : ' - Disabled'}</h3>
+        <h3 className="text-xl font-bold">
+          {group.name} {group.enabled ? '' : ' - Disabled'}
+        </h3>
         <div className="flex gap-2">
           {alt1Ready && (
             <button
-            onClick={updateOverlayPosition}
-            disabled={isUpdatingPosition}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            {isUpdatingPosition ? 'Updating Position...' : 'Update Overlay Position'}
-          </button>
+              onClick={updateOverlayPosition}
+              disabled={isUpdatingPosition}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              {isUpdatingPosition ? 'Updating Position...' : 'Update Overlay Position'}
+            </button>
           )}
           <button onClick={() => setAddBuffModalOpen(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Add Buff
@@ -100,57 +99,74 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           </button>
         </div>
       </div>
-    <>
+  
+      {isUpdatingPosition && (
+        <p className="mb-4 text-sm text-white/80">
+          Press Alt+1 (or Alt1{"'"}s main hotkey if rebound) to save position
+        </p>
+      )}
+  
       {group.buffs.map(buff => {
         if (!isRuntimeBuff(buff)) {
-          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
-          return null
-        };
-          
-        return (<BuffRenderer
-          key={buff.id}
-          buff={buff}
-          drawIndex={buff.index + 1}
-          group={group}
-          alt1Ready={alt1Ready}
-          a1lib={a1lib}
-          inCombat={inCombat}
-          combatCheck={combatCheck}
-          cooldownColor={cooldownColor}
-          isUpdatingPosition={isUpdatingPosition}
-          timeRemainingColor={timeRemainingColor}
-        />)
+          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`);
+          return null;
+        }
+  
+        return (
+          <BuffRenderer
+            key={buff.id}
+            buff={buff}
+            drawIndex={buff.index}
+            group={group}
+            alt1Ready={alt1Ready}
+            a1lib={a1lib}
+            inCombat={inCombat}
+            combatCheck={combatCheck}
+            cooldownColor={cooldownColor}
+            isUpdatingPosition={isUpdatingPosition}
+            timeRemainingColor={timeRemainingColor}
+          />
+        );
       })}
-    </>
-
+  
       <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-        <SortableContext items={group.buffs.map(b => {
-            if (!isRuntimeBuff(b)) return '';
-            return b.id
-          })
-          } strategy={rectSortingStrategy}>
-          <div className="grid grid-cols-12-dynamic gap-2" style={{ 
-            '--buff-min-width': `${minWidth}px`,
-            '--buff-rows': `${group.buffsPerRow}`
-            } as React.CSSProperties}>
-            {group.buffs
-              .map((buff) => {
-                if (buff.name === "Blank") return;
-                if (!isRuntimeBuff(buff)) return;
-                return (
-                  <BuffComponent
-                    key={buff.id}
-                    buff={buff}
-                    onRemove={() => handleRemoveBuff(buff.id)}
-                  />
-                );
-              })}
+        <SortableContext
+          items={group.buffs
+            .filter(isRuntimeBuff)
+            .map(b => b.id)
+          }
+          strategy={rectSortingStrategy}
+        >
+          <div
+            className="grid grid-cols-12-dynamic gap-2"
+            style={
+              {
+                '--buff-min-width': `${minWidth}px`,
+                '--buff-rows': `${group.buffsPerRow}`,
+              } as React.CSSProperties
+            }
+          >
+            {group.buffs.map(buff => {
+              if (!isRuntimeBuff(buff) || buff.name === "Blank") return null;
+  
+              return (
+                <BuffComponent
+                  key={buff.id}
+                  buff={buff}
+                  onRemove={() => handleRemoveBuff(buff.id)}
+                />
+              );
+            })}
           </div>
         </SortableContext>
       </DndContext>
-
-      {isAddBuffModalOpen && <AddBuffModal groupId={group.id} onClose={() => setAddBuffModalOpen(false)} />}
-      {isEditGroupModalOpen && <EditGroupModal group={group} onClose={() => setEditGroupModalOpen(false)} />}
+  
+      {isAddBuffModalOpen && (
+        <AddBuffModal groupId={group.id} onClose={() => setAddBuffModalOpen(false)} />
+      )}
+      {isEditGroupModalOpen && (
+        <EditGroupModal group={group} onClose={() => setEditGroupModalOpen(false)} />
+      )}
     </div>
   );
 };
