@@ -16,6 +16,7 @@ export interface GroupsSlice {
   addBuffToGroup: (groupId: string, buffId: string) => void;
   removeBuffFromGroup: (groupId: string, buffId: string) => void;
   reorderBuffsInGroup: (groupId: string, oldIndex: number, newIndex: number) => void;
+  moveBuffBetweenGroups: (fromGroupId: string, toGroupId: string, buffId: string, insertAt: number) => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
 }
 
@@ -168,7 +169,59 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         saveProfile(activeProfile);
     }
   },
-
+  moveBuffBetweenGroups: (fromGroupId, toGroupId, buffId, insertAt) => {
+    set((state) => {
+      const fromGroup = state.groups.find(g => g.id === fromGroupId);
+      const toGroup = state.groups.find(g => g.id === toGroupId);
+      if (!fromGroup || !toGroup) return {};
+  
+      const buffIndex = fromGroup.buffs.findIndex(b => {
+        if (!isRuntimeBuff(b)) return false;
+        return b.id === buffId;
+      });
+      if (buffIndex === -1) return {};
+  
+      const [movedBuff] = fromGroup.buffs.splice(buffIndex, 1);
+  
+      // Temporarily remove "Blank" from destination
+      const nonBlankBuffs = toGroup.buffs.filter(b => b.name !== 'Blank');
+      const blankBuff = toGroup.buffs.find(b => b.name === 'Blank');
+  
+      // Clamp insertAt to nonBlankBuffs.length to prevent inserting before Blank
+      const clampedInsertAt = Math.min(insertAt, nonBlankBuffs.length);
+  
+      // Insert movedBuff
+      nonBlankBuffs.splice(clampedInsertAt, 0, movedBuff);
+  
+      // Rebuild buffs with blank last
+      const newBuffs = [...nonBlankBuffs, ...(blankBuff ? [blankBuff] : [])];
+  
+      const updatedGroups = state.groups.map(group => {
+        if (group.id === fromGroupId) {
+          return {
+            ...group,
+            buffs: group.buffs.map((b, i) => ({ ...b, index: i })),
+          };
+        }
+        if (group.id === toGroupId) {
+          return {
+            ...group,
+            buffs: newBuffs.map((b, i) => ({ ...b, index: i })),
+          };
+        }
+        return group;
+      });
+  
+      return { groups: updatedGroups };
+    });
+  
+    // Persist the profile if active
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+      saveProfile(activeProfile);
+    }
+  },
   removeBuffFromGroup: (groupId, buffId) => {
     set((state) => ({
       groups: state.groups.map((group) => {

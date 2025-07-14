@@ -16,7 +16,8 @@ export const patchNotes: PatchNote[] = [
     title: "Dude, where's my settings?",
     added: [
       `Patch notes will now appear for updates. They can be viewed again at any time by clicking the Version Number in the Settings Panel. Totally not stolen from featfinder.net (legit website btw)`,
-      `A draggable Debug console will now appear when Debug Mode is enabled to make everyone's lives a little easier.`
+      `A draggable Debug console will now appear when Debug Mode is enabled to make everyone's lives a little easier.`,
+      `You can now drag & drop buffs between groups.`
     ],
     fixes: [
       `Meta buffs have been re-enabled as they no longer cause rapid flickering when multiple groups are being used.`,
@@ -27,7 +28,10 @@ export const patchNotes: PatchNote[] = [
     errors: [
       `Your settings may have been reset. I'm terribly sorry. Data migration for Buffs was non-trivial - I tried to save what I could. You will need to toggle your Buffs off & on again for each group. Be sure "Hide overlays out of combat" is disabled if you are testing outside of combat.`
     ],
-    knownIssues: null,
+    knownIssues: [
+      `When dragging between groups a placeholder for where it will be dropped isn't visible.`,
+      `When dragging between groups and trying to drop at the end of another group it is placed second to last instead of last unless you drop it much further to the right.`
+    ],
     highlights: null,
   },
   {
