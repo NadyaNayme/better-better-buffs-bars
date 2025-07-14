@@ -7,7 +7,7 @@ import { isRuntimeBuff } from '../types/Buff';
 export function useBuffProcessor() {
     const lastChildMatchTimestamps = useRef(new Map<string, number>());
     const lastMatchedChildName = useRef(new Map<string, string>());
-    const META_BUFF_GRACE_PERIOD_MS = 3000;
+    const META_BUFF_GRACE_PERIOD_MS = 1500;
     const STATE_CHANGE_FLICKER_GUARD_MS = 1000;
     const STUCK_STATE_TIMEOUT_MS = 2000;
 
@@ -91,9 +91,18 @@ export function useBuffProcessor() {
                                         foundChild: {
                                             ...child,
                                         },
-                                        lastUpdated: Date.now(),
+                                        lastUpdated: now,
                                     };
                                 }
+                            } else if (trackedBuff.type === 'StackBuff') {
+                                payload = {
+                                    name: trackedBuff.name,
+                                    type: trackedBuff.type,
+                                    status: 'Active',
+                                    stacks: detected.readTime(),
+                                    lastUpdated: now,
+                                };
+                                debugLog.verbose(payload);
                             } else {
                                 payload = {
                                     name: trackedBuff.name,
@@ -101,7 +110,7 @@ export function useBuffProcessor() {
                                     status: 'Active',
                                     timeRemaining: detected.readTime() ? detected.readTime() : null,
                                     childName: child?.name ? child.name : null,
-                                    lastUpdated: Date.now(),
+                                    lastUpdated: now,
                                 };
                             }
 
@@ -122,6 +131,7 @@ export function useBuffProcessor() {
 
                 const name = storeBuff.name;
                 const isMeta = storeBuff.type === 'MetaBuff';
+                const isStacks = storeBuff.type === 'StackBuff';
                 const wasPreviouslyActive = storeBuff.status === 'Active';
                 const foundPayload = foundBuffPayloads.get(name);
                 const cooldownRemaining =
@@ -130,6 +140,7 @@ export function useBuffProcessor() {
                         : 0;
 
                 let remaining = storeBuff.timeRemaining;
+                const stacks = storeBuff.stacks ?? 0;
                 let shouldBeActive = typeof remaining === 'number' ? remaining >= 1 : false;
                 let activeChildName: string | null = null;
                 const statusAge = now - (storeBuff.statusChangedAt ?? 0);
@@ -143,6 +154,12 @@ export function useBuffProcessor() {
                         shouldBeActive = true;
                         activeChildName = lastChild;
                     }
+                } else if (isStacks && foundPayload) {
+                    remaining = foundPayload.stacks;
+                    if (remaining === null) {
+                        remaining = 0;
+                    }
+                    shouldBeActive = remaining > 0;
                 } else if (foundPayload) {
                     // Always take the fresh values
                     remaining = foundPayload.timeRemaining;
@@ -152,7 +169,7 @@ export function useBuffProcessor() {
                     shouldBeActive = remaining > 0;
                 }
 
-                if (shouldBeActive && !wasPreviouslyActive && cooldownRemaining <= 0) {
+                if (shouldBeActive && !wasPreviouslyActive && cooldownRemaining <= 0 && !isStacks) {
                     finalPayloadMap.set(name, {
                         ...(foundPayload ?? { name }),
                         status: 'Active',
@@ -161,7 +178,7 @@ export function useBuffProcessor() {
                         activeChild: activeChildName,
                         lastUpdated: now,
                     });
-                } else if (!shouldBeActive && wasPreviouslyActive && statusAge > STATE_CHANGE_FLICKER_GUARD_MS) {
+                } else if (!shouldBeActive && wasPreviouslyActive && statusAge > STATE_CHANGE_FLICKER_GUARD_MS && !isStacks) {
                     const payload: any = {
                         name,
                         status: 'Inactive',
@@ -170,7 +187,7 @@ export function useBuffProcessor() {
                         lastUpdated: now,
                     };
 
-                    if (!isMeta) {
+                    if (!isMeta && !isStacks) {
                         if (!storeBuff.cooldownStart && cooldownRemaining <= 0) {
                             payload.cooldown = storeBuff.cooldown;
                             payload.status = 'Active';
@@ -178,7 +195,7 @@ export function useBuffProcessor() {
                             payload.cooldownStart = 0;
                             payload.lastUpdated = now;
                         }
-                    } else {
+                    } else if (!isStacks) {
                         payload.activeChild = null;
                         payload.status = 'Inactive';
                         payload.statusChangedAt = now;
@@ -188,7 +205,7 @@ export function useBuffProcessor() {
                     }
 
                     finalPayloadMap.set(name, payload);
-                } else if (shouldBeActive && wasPreviouslyActive) {
+                } else if (shouldBeActive && wasPreviouslyActive && !isStacks) {
                     finalPayloadMap.set(name, {
                         ...(foundPayload ?? { name }),
                         status: 'Active',
@@ -197,7 +214,25 @@ export function useBuffProcessor() {
                     });
                 }
 
-                if (stuckAt1) {
+                if (isStacks) {
+                    const newStacks = foundPayload?.stacks ?? 0;
+                  
+                    if (
+                      newStacks !== storeBuff.stacks || 
+                      storeBuff.status !== (shouldBeActive ? 'Active' : 'Inactive')
+                    ) {
+                      finalPayloadMap.set(name, {
+                        name,
+                        type: storeBuff.type,
+                        status: shouldBeActive ? 'Active' : 'Inactive',
+                        statusChangedAt: now,
+                        stacks: newStacks,
+                        lastUpdated: now,
+                      });
+                    }
+                }
+
+                if (stuckAt1 && !isStacks) {
                     let nextStatus;
                     if (typeof storeBuff.cooldown === 'number') {
                         nextStatus = 'OnCooldown';

@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 import useStore from '../store';
 import { alertsMap } from '../data/alerts';
 import { isRuntimeBuff } from '../types/Buff';
+import { debugLog } from '../lib/debugLog';
 
 export function useCooldownTicker() {
   const lastRunRef = useRef(0);
@@ -49,9 +50,11 @@ export function useCooldownTicker() {
           typeof newBuff.timeRemaining === 'number' &&
           newBuff.timeRemaining >= 0 &&
           newBuff.timeRemaining <= 59 &&
-          !newBuff.cooldownStart &&
-          timeSinceUpdate > 950
+          newBuff.cooldownStart !== 0 &&
+          timeSinceUpdate > 1050 &&
+          newBuff.name !== "Blank"
         ) {
+          debugLog.info(`Force ticking down time remaining for ${newBuff.name}`);
           newBuff.timeRemaining = Math.max(0, newBuff.timeRemaining - 1);
           newBuff.lastUpdated = now;
           didChange = true;

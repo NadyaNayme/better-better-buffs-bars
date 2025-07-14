@@ -36,8 +36,10 @@ export function BuffRenderer({
     const cooldownRemaining = (buff.cooldownStart && typeof buff.cooldown === 'number')
     ? Math.max(0, buff.cooldown - Math.floor((Date.now() - buff.cooldownStart) / 1000))
     : 0;
+    const isStackBuff = buff.type === "StackBuff";
     const isOnCooldown = buff.status === "OnCooldown";
-    const useInactive = isOnCooldown || (group.explicitInactive && buff.status !== "Active");
+    let useInactive = isOnCooldown || (group.explicitInactive && buff.status !== "Active");
+    if (isStackBuff && buff.stacks) useInactive = buff.stacks === 0;
   
     useEffect(() => {
         if (!alt1Ready || !window.alt1) {
@@ -135,8 +137,16 @@ export function BuffRenderer({
         debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.status}}`)
         
         // --- Draw Text ---
-        const displayTime = isOnCooldown ? cooldownRemaining : buff.timeRemaining;
-        const shouldDrawText = buff.hasText && displayTime && displayTime > 0;
+        let displayTime = isOnCooldown ? cooldownRemaining : buff.timeRemaining;
+        if (isStackBuff && buff.stacks) {
+          displayTime = buff.stacks; 
+          console.log(`Display Time`, displayTime);
+        }
+        let shouldDrawText = buff.hasText && displayTime && displayTime > 0;
+        if (isStackBuff && buff.stacks) {
+          shouldDrawText = buff.stacks > 0;
+          console.log(`Should draw text: `, shouldDrawText);
+        }
     
         if (shouldDrawText) {
           const textColor = a1lib.mixColor(
