@@ -176,15 +176,26 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       if (!fromGroup || !toGroup) return {};
   
       const buffIndex = fromGroup.buffs.findIndex(b => {
-        if (!isRuntimeBuff(b)) return;
-        return b.id === buffId
+        if (!isRuntimeBuff(b)) return false;
+        return b.id === buffId;
       });
       if (buffIndex === -1) return {};
   
       const [movedBuff] = fromGroup.buffs.splice(buffIndex, 1);
-      toGroup.buffs.splice(insertAt, 0, movedBuff);
   
-      // Reindex both groups
+      // Temporarily remove "Blank" from destination
+      const nonBlankBuffs = toGroup.buffs.filter(b => b.name !== 'Blank');
+      const blankBuff = toGroup.buffs.find(b => b.name === 'Blank');
+  
+      // Clamp insertAt to nonBlankBuffs.length to prevent inserting before Blank
+      const clampedInsertAt = Math.min(insertAt, nonBlankBuffs.length);
+  
+      // Insert movedBuff
+      nonBlankBuffs.splice(clampedInsertAt, 0, movedBuff);
+  
+      // Rebuild buffs with blank last
+      const newBuffs = [...nonBlankBuffs, ...(blankBuff ? [blankBuff] : [])];
+  
       const updatedGroups = state.groups.map(group => {
         if (group.id === fromGroupId) {
           return {
@@ -195,7 +206,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         if (group.id === toGroupId) {
           return {
             ...group,
-            buffs: group.buffs.map((b, i) => ({ ...b, index: i })),
+            buffs: newBuffs.map((b, i) => ({ ...b, index: i })),
           };
         }
         return group;
@@ -203,6 +214,13 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
   
       return { groups: updatedGroups };
     });
+  
+    // Persist the profile if active
+    const saveProfile = get().saveProfile;
+    const activeProfile = get().activeProfile;
+    if (activeProfile) {
+      saveProfile(activeProfile);
+    }
   },
   removeBuffFromGroup: (groupId, buffId) => {
     set((state) => ({

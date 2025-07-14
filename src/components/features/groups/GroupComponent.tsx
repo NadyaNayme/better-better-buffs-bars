@@ -71,14 +71,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   ? visibleBuffs.map(buff => buff.id)
   : [placeholderId];
 
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef: setDroppableNodeRef } = useDroppable({
     id: placeholderId,
   });
 
   const isDragOver = dragOverGroupId === group.id;
 
   return (
-    <div className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
+    <div ref={setDroppableNodeRef} className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-xl font-bold">
           {group.name} {group.enabled ? '' : ' - Disabled'}

@@ -79,58 +79,59 @@ function App() {
   
     const allGroups = useStore.getState().groups;
   
-    const fromGroup = allGroups.find((group) =>
-      group.buffs.some((buff) => isRuntimeBuff(buff) && buff.id === active.id)
+    const fromGroup = allGroups.find(group =>
+      group.buffs.some(buff => isRuntimeBuff(buff) && buff.id === active.id)
     );
   
-    let toGroup = null;
+    let toGroup: Group | undefined;
     let toIndex = 0;
   
     if (over.id.startsWith("drop-placeholder-")) {
       const targetGroupId = over.id.replace("drop-placeholder-", "");
-      toGroup = allGroups.find((g) => g.id === targetGroupId);
+      toGroup = allGroups.find(g => g.id === targetGroupId);
       if (!fromGroup || !toGroup) return;
   
       toIndex = toGroup.buffs.length;
     } else {
-      toGroup = allGroups.find((group) =>
-        group.buffs.some((buff) => isRuntimeBuff(buff) && buff.id === over.id)
+      toGroup = allGroups.find(group =>
+        group.buffs.some(buff => isRuntimeBuff(buff) && buff.id === over.id)
       );
       if (!fromGroup || !toGroup) return;
   
-      const overIndex = toGroup.buffs.findIndex(
-        (b) => isRuntimeBuff(b) && b.id === over.id
-      );
-  
+      const overIndex = toGroup.buffs.findIndex(b => b.id === over.id);
       if (overIndex === -1) return;
   
-      // Use over.rect and pointerCoordinates to determine if pointer is above or below midpoint
       const overRect = over.rect;
       if (overRect && pointerCoordinates) {
         const midpoint = overRect.top + overRect.height / 2;
-        if (pointerCoordinates.y > midpoint) {
-          toIndex = overIndex + 1; // insert after
-        } else {
-          toIndex = overIndex; // insert before
-        }
+        toIndex = pointerCoordinates.y > midpoint ? overIndex + 1 : overIndex;
       } else {
-        toIndex = overIndex; // fallback if no rect/pointer info
+        toIndex = overIndex;
       }
+  
+      toIndex = Math.min(toIndex, toGroup.buffs.length);
     }
   
-    const fromIndex = fromGroup.buffs.findIndex(
-      (b) => isRuntimeBuff(b) && b.id === active.id
+    const fromIndex = fromGroup?.buffs.findIndex(
+      b => isRuntimeBuff(b) && b.id === active.id
     );
   
-    if (fromGroup.id === toGroup.id) {
-      useStore.getState().reorderBuffsInGroup(fromGroup.id, fromIndex, toIndex);
-    } else {
-      useStore.getState().moveBuffBetweenGroups(
-        fromGroup.id,
-        toGroup.id,
-        active.id,
-        toIndex
-      );
+    if (
+      fromGroup &&
+      toGroup &&
+      typeof fromIndex === "number" &&
+      fromIndex !== -1
+    ) {
+      if (fromGroup.id === toGroup.id) {
+        useStore.getState().reorderBuffsInGroup(fromGroup.id, fromIndex, toIndex);
+      } else {
+        useStore.getState().moveBuffBetweenGroups(
+          fromGroup.id,
+          toGroup.id,
+          active.id,
+          toIndex
+        );
+      }
     }
   
     setActiveBuff(null);
