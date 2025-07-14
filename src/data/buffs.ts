@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 113;
+export const BUFFS_VERSION = 114;
 
 export const buffsData: BuffConfig[] = [
   {
@@ -57,7 +57,7 @@ export const buffsData: BuffConfig[] = [
   },
   {
     name: "Ancient Elven Ritual Shard",
-    type: "WeaponSpecial",
+    type: "NormalDebuff",
     thresholds: {
       fail: 22,
       pass: 200
