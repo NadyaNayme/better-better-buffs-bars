@@ -1,4 +1,4 @@
-# Better Better Buffs Bar
+# Better Better Buffs Bars
 
 **This plugin is currently in Public Beta.** All known bugs have been fixed but there may still be unknown or unencountered bugs. Some buffs may need further threshold adjustments to avoid false positives / false negatives. Sometimes those thresholds aren't impossible to make 100% reliable (eg. Quiver) so are not considered bugged.
 
