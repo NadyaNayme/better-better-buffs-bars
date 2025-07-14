@@ -155,7 +155,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           ) : (            
             (visibleBuffs.length === 0 || isDragOver) && (
               <div
-                ref={setNodeRef}
+                ref={setDroppableNodeRef}
                 key={`drop-placeholder-${group.id}`}
                 id={`drop-placeholder-${group.id}`}
                 className={`col-span-full flex items-center justify-center min-h-[60px] border border-dashed border-white/30 rounded text-sm text-white/60 text-center px-4 py-2
