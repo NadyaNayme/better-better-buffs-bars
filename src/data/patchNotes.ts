@@ -11,7 +11,7 @@ export interface PatchNote {
   
 export const patchNotes: PatchNote[] = [
   {
-    version: "v1.0.0",
+    version: "v0.4.0",
     date: "2025-07-13",
     title: "Dude, where's my settings?",
     added: [
@@ -25,7 +25,7 @@ export const patchNotes: PatchNote[] = [
       `Profiles now autosave with any user changes. Until this is battle-tested the manual override button will continue to exist.`
     ],
     errors: [
-      `Your settings have been lost.`
+      `Your settings have been lost. I'm terribly sorry. The internal data structures shouldn't need to change again so this is a one-time reset.`
     ],
     knownIssues: null,
     highlights: null,

@@ -7,8 +7,8 @@ import { debugLog } from '../../../lib/debugLog';
 import { isRuntimeBuff } from '../../../types/Buff';
 import { throttle } from 'lodash-es';
 
-const READ_INTERVAL = 200; // How often to read & update our data from the buffs bars
-const THROTTLE_INTERVAL = 300; // How often to process the data
+const READ_INTERVAL = 300; // How often to read & update our data from the buffs bars
+const THROTTLE_INTERVAL = 400; // How often to process the data
 const RETRY_INTERVAL = 5000; // How often to retry finding the buff & debuff bars
 type ReaderStatus = 'IDLE' | 'FOUND' | 'FAILED';
 
@@ -108,8 +108,8 @@ export function GlobalBuffProcessor() {
     if (!loadedImageSetId) return;
 
     const setupReader = (
-      readerRef: React.MutableRefObject<any>,
-      statusRef: React.MutableRefObject<ReaderStatus>,
+      readerRef: React.RefObject<any>,
+      statusRef: React.RefObject<ReaderStatus>,
       isDebuff: boolean
     ) => {
       let intervalId = 0;
@@ -119,7 +119,6 @@ export function GlobalBuffProcessor() {
       const processData = () => {
         const detectedData = readerRef.current.read();
         if (detectedData?.length > 0) {
-          // ✨ THROTTLING: Call the throttled function instead of the raw one
           throttledCalculateUpdates(detectedData, isDebuff);
         }
       };
@@ -156,7 +155,6 @@ export function GlobalBuffProcessor() {
       return () => {
         if (intervalId) clearInterval(intervalId);
         if (retryIntervalId) clearInterval(retryIntervalId);
-        // ✨ FIX: Reset status to ensure re-initialization on config change
         statusRef.current = 'IDLE';
         debugLog.info(`Stopped ${readerName} processing loop.`);
       };

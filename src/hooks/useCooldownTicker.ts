@@ -1,16 +1,14 @@
 import { useCallback, useRef } from 'react';
 import useStore from '../store';
 import { alertsMap } from '../data/alerts';
-import { isRuntimeBuff, type BuffInstance } from '../types/Buff';
-import type { BuffInfo } from 'alt1/buffs';
-
-const lastTickedMap = new Map<string, number>();
+import { isRuntimeBuff } from '../types/Buff';
 
 export function useCooldownTicker() {
   const lastRunRef = useRef(0);
 
   const tickCooldownTimers = useCallback(() => {
     const now = Date.now();
+    // Throttle the entire process to run at most once per second
     if (now - lastRunRef.current < 1000) return;
     lastRunRef.current = now;
 
@@ -21,22 +19,20 @@ export function useCooldownTicker() {
 
       const updatedBuffs = group.buffs.map((buff) => {
         if (!isRuntimeBuff(buff)) return buff;
-        const key = `${group.id}-${buff.name}`;
         const newBuff = { ...buff };
 
         // Handle alert
-        if (
-          newBuff.timeRemaining === newBuff.alert &&
-          !newBuff.hasAlerted &&
+        if (newBuff.timeRemaining && newBuff.alert &&
+          newBuff.timeRemaining <= (newBuff.alert?.threshold ?? 0) &&
+          !newBuff.alert.hasAlerted &&
           alertsMap[newBuff.name] &&
           enableAlerts
         ) {
           const sound = new Audio(alertsMap[newBuff.name]);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
-          newBuff.hasAlerted = true;
+          newBuff.alert.hasAlerted = true;
           didChange = true;
-          return newBuff;
         }
 
         // Skip ticking for stack or target debuffs
@@ -49,10 +45,12 @@ export function useCooldownTicker() {
         const timeSinceUpdate = now - lastUpdate;
 
         if (
-          newBuff.status !== "Active" &&
+          newBuff.status === "Active" &&
           typeof newBuff.timeRemaining === 'number' &&
           newBuff.timeRemaining >= 0 &&
-          timeSinceUpdate > 1000
+          newBuff.timeRemaining <= 59 &&
+          !newBuff.cooldownStart &&
+          timeSinceUpdate > 950
         ) {
           newBuff.timeRemaining = Math.max(0, newBuff.timeRemaining - 1);
           newBuff.lastUpdated = now;
