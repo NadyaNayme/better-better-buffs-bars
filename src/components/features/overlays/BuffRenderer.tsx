@@ -68,14 +68,27 @@ export function BuffRenderer({
           return;
         }
 
+        const allBuffs = group.buffs; // or group.children, depending on which you're rendering
+
+        // Count how many lower-indexed buffs are Inactive and should be skipped from drawing
+        const skippedBefore = allBuffs.filter(
+          (b) =>
+            isRuntimeBuff(b) &&
+            b.index < buff.index &&
+            b.status === 'Inactive' &&
+            !group.explicitInactive // Only skipped if not explicitly showing them
+        ).length;
+        
+        const effectiveDrawIndex = drawIndex - skippedBefore;
+
         // --- Calculate Position ---
         const x = group.overlayPosition?.x ?? 15;
         const y = group.overlayPosition?.y ?? 15;
         const baseSize = 27 * (group.scale / 100);
         const spacing = baseSize + 1;
         const cols = group.buffsPerRow || 8;
-        const col = drawIndex % cols;
-        const row = Math.floor(drawIndex / cols);
+        const col = effectiveDrawIndex % cols;
+        const row = Math.floor(effectiveDrawIndex / cols);
         const drawX = Math.floor(x + col * spacing);
         const drawY = Math.floor(y + row * spacing);
 
@@ -85,7 +98,7 @@ export function BuffRenderer({
     
         // --- Draw Image ---
 
-        // --- Clear overlay if not in combat or while changing the overlay position ---
+        // --- Clear overlay if not in combat ---
         if (!inCombat && combatCheck) {
             cleanup();
             return;

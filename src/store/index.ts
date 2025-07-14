@@ -6,9 +6,11 @@ import { createProfilesSlice, type ProfilesSlice } from './profilesSlice';
 import { createSettingsSlice, type SettingsSlice } from './settingsSlice';
 import { createUISlice, type UISlice } from './uiSlice';
 import { createDebugSlice, type DebugSlice } from './debugSlice';
+import { migrateOldStorageIfNeeded } from '../lib/dataMigration';
 
 type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice;
 
+migrateOldStorageIfNeeded();
 const useStore = create<StoreState>()(
   persist(
     (...state) => ({

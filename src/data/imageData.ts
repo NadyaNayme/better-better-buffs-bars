@@ -19,6 +19,7 @@ import BlueVirus from './images/Blue_virus.data.png';
 import BonfireBoost from './images/Bonfire_Boost.data.png';
 import Cease from './images/Cease.data.png';
 import ChronicleAttraction from './images/Chronicle_Attraction.data.png';
+import CriticalStrikeAdrenaline from './images/Critical_Strike_Adrenaline.data.png';
 import CrystalMask from './images/Crystal_Mask.data.png';
 import CrystalRain from './images/Crystal_Rain-minimal.data.png';
 import Darkness from './images/Darkness.data.png';
@@ -69,6 +70,9 @@ import Overloaded from './images/Overloaded.data.png';
 import PerfectEquilibrium from './images/Perfect_Equilibrium.data.png';
 import PerfectEquilibriumCapped from './images/perfect_equilibrium_capped.data.png';
 import Poisonous from './images/Poisonous-top.data.png';
+import PowderOfBurials from './images/powder_of_burials.data.png';
+import PowderOfDefence from './images/powder_of_defence.data.png';
+import PowderOfItemProtection from './images/powder_of_item_protection.data.png';
 import PowderOfPenance from './images/powder_of_penance.data.png';
 import PowderOfProtection from './images/powder_of_protection.data.png';
 import PowerburstPrevention from './images/Powerburst_prevention.data.png';
@@ -128,6 +132,7 @@ export const rawImageMap: Record<string, string> = {
   'Bonfire Boost': BonfireBoost,
   'Cease': Cease,
   'Chronicle Attraction': ChronicleAttraction,
+  'Critical Strike Adrenaline': CriticalStrikeAdrenaline,
   'Crystal Mask': CrystalMask,
   'Crystal Rain': CrystalRain,
   'Darkness': Darkness,
@@ -177,6 +182,9 @@ export const rawImageMap: Record<string, string> = {
   'Overload': Overloaded,
   'Perfect Equilibrium': PerfectEquilibrium,
   'Perfect Equilibrium (capped)': PerfectEquilibriumCapped,
+  'Powder of Burials': PowderOfBurials,
+  'Powder of Defence': PowderOfDefence,
+  'Powder of Item Protection': PowderOfItemProtection,
   'Powder of Penance': PowderOfPenance,
   'Powder of Protection': PowderOfProtection,
   'Powerburst Prevention': PowerburstPrevention,

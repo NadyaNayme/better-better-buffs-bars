@@ -12,7 +12,7 @@ export interface PatchNote {
 export const patchNotes: PatchNote[] = [
   {
     version: "v0.4.0",
-    date: "2025-07-13",
+    date: "2025-07-14",
     title: "Dude, where's my settings?",
     added: [
       `Patch notes will now appear for updates. They can be viewed again at any time by clicking the Version Number in the Settings Panel. Totally not stolen from featfinder.net (legit website btw)`,
@@ -25,7 +25,7 @@ export const patchNotes: PatchNote[] = [
       `Profiles now autosave with any user changes. Until this is battle-tested the manual override button will continue to exist.`
     ],
     errors: [
-      `Your settings have been lost. I'm terribly sorry. The internal data structures shouldn't need to change again so this is a one-time reset.`
+      `Your settings may have been reset. I'm terribly sorry. Data migration for Buffs was non-trivial - I tried to save what I could. You will need to add & remove a buff to each group in order for it to repair itself and begin rendering. Be sure "Hide overlays out of combat" is disabled if you are testing outside of combat.`
     ],
     knownIssues: null,
     highlights: null,

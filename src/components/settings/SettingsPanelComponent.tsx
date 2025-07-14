@@ -74,8 +74,8 @@ const SettingsPanelComponent: React.FC = () => {
       >
         <h2>Settings</h2>
         <h3 className="text-zinc-400">
-          <button onClick={() => setShowPatchNotes(true)} className="underline hover:text-white">
-            Version 0.3.3
+          <button onClick={() => setShowPatchNotes(true)} className="underline hover:text-white" style={{padding: 0}} title={"Read patch notes"}>
+            {patchNotes[0].version}
           </button>
         </h3>
         {showPatchNotes && <PatchNotesComponent onClose={() => setShowPatchNotes(false)} />}
