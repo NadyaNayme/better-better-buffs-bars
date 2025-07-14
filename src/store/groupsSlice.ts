@@ -16,6 +16,7 @@ export interface GroupsSlice {
   addBuffToGroup: (groupId: string, buffId: string) => void;
   removeBuffFromGroup: (groupId: string, buffId: string) => void;
   reorderBuffsInGroup: (groupId: string, oldIndex: number, newIndex: number) => void;
+  moveBuffBetweenGroups: (fromGroupId: string, toGroupId: string, buffId: string, insertAt: number) => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
 }
 
@@ -168,7 +169,41 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         saveProfile(activeProfile);
     }
   },
-
+  moveBuffBetweenGroups: (fromGroupId, toGroupId, buffId, insertAt) => {
+    set((state) => {
+      const fromGroup = state.groups.find(g => g.id === fromGroupId);
+      const toGroup = state.groups.find(g => g.id === toGroupId);
+      if (!fromGroup || !toGroup) return {};
+  
+      const buffIndex = fromGroup.buffs.findIndex(b => {
+        if (!isRuntimeBuff(b)) return;
+        return b.id === buffId
+      });
+      if (buffIndex === -1) return {};
+  
+      const [movedBuff] = fromGroup.buffs.splice(buffIndex, 1);
+      toGroup.buffs.splice(insertAt, 0, movedBuff);
+  
+      // Reindex both groups
+      const updatedGroups = state.groups.map(group => {
+        if (group.id === fromGroupId) {
+          return {
+            ...group,
+            buffs: group.buffs.map((b, i) => ({ ...b, index: i })),
+          };
+        }
+        if (group.id === toGroupId) {
+          return {
+            ...group,
+            buffs: group.buffs.map((b, i) => ({ ...b, index: i })),
+          };
+        }
+        return group;
+      });
+  
+      return { groups: updatedGroups };
+    });
+  },
   removeBuffFromGroup: (groupId, buffId) => {
     set((state) => ({
       groups: state.groups.map((group) => {

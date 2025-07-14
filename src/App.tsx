@@ -18,12 +18,17 @@ import { DebugOverlay } from './components/debug/DebugOverlay';
 import Debug from './components/debug/Debug';
 import { ActionBarReaderComponent } from './components/features/readers/ActionBarReaderComponent';
 import { TargetMobReaderComponent } from './components/features/readers/TargetMobReaderComponent';
+import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragOverEvent } from '@dnd-kit/core';
+import { isRuntimeBuff } from './types/Buff';
+import BuffComponent from './components/features/buffs/BuffComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
   const [alt1Detected, setAlt1Detected] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContext, setModalContext] = useState<'group' | 'profile' | null>(null);
+  const [activeBuff, setActiveBuff] = useState<any | null>(null);
+  const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
 
   const groups: Group[] = useStore((state: Store) => state.groups);
   const createGroup = useStore((state: Store) => state.createGroup);
@@ -33,6 +38,104 @@ function App() {
   const inCombat = useStore((state: Store) => state.inCombat);
   const combatCheck = useStore((state: Store) => state.combatCheck);
   const debugMode = useStore((state: Store) => state.debugMode);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    const allGroups = useStore.getState().groups;
+  
+    for (const group of allGroups) {
+      const match = group.buffs.find((buff) => isRuntimeBuff(buff) && buff.id === active.id);
+      if (match && isRuntimeBuff(match)) {
+        setActiveBuff(match);
+        return;
+      }
+    }
+  
+    setActiveBuff(null); // fallback
+  };
+
+  const handleDragOver = (event: any) => {
+    console.log('Dragging over:', event.over?.id);
+    const { over } = event;
+    if (!over) {
+      setDragOverGroupId(null);
+      return;
+    }
+    
+    // Extract group id from over.id, which can be either a buff id or a drop placeholder id
+    if (over.id.startsWith("drop-placeholder-")) {
+      setDragOverGroupId(over.id.replace("drop-placeholder-", ""));
+    } else {
+      // Find which group the buff being dragged over belongs to
+      const allGroups = useStore.getState().groups;
+      const group = allGroups.find(g => g.buffs.some(b => b.id === over.id));
+      setDragOverGroupId(group ? group.id : null);
+    }
+  };
+
+  const handleDragEnd = (event: any) => {
+    const { active, over, pointerCoordinates } = event;
+    if (!over || active.id === over.id) return;
+  
+    const allGroups = useStore.getState().groups;
+  
+    const fromGroup = allGroups.find((group) =>
+      group.buffs.some((buff) => isRuntimeBuff(buff) && buff.id === active.id)
+    );
+  
+    let toGroup = null;
+    let toIndex = 0;
+  
+    if (over.id.startsWith("drop-placeholder-")) {
+      const targetGroupId = over.id.replace("drop-placeholder-", "");
+      toGroup = allGroups.find((g) => g.id === targetGroupId);
+      if (!fromGroup || !toGroup) return;
+  
+      toIndex = toGroup.buffs.length;
+    } else {
+      toGroup = allGroups.find((group) =>
+        group.buffs.some((buff) => isRuntimeBuff(buff) && buff.id === over.id)
+      );
+      if (!fromGroup || !toGroup) return;
+  
+      const overIndex = toGroup.buffs.findIndex(
+        (b) => isRuntimeBuff(b) && b.id === over.id
+      );
+  
+      if (overIndex === -1) return;
+  
+      // Use over.rect and pointerCoordinates to determine if pointer is above or below midpoint
+      const overRect = over.rect;
+      if (overRect && pointerCoordinates) {
+        const midpoint = overRect.top + overRect.height / 2;
+        if (pointerCoordinates.y > midpoint) {
+          toIndex = overIndex + 1; // insert after
+        } else {
+          toIndex = overIndex; // insert before
+        }
+      } else {
+        toIndex = overIndex; // fallback if no rect/pointer info
+      }
+    }
+  
+    const fromIndex = fromGroup.buffs.findIndex(
+      (b) => isRuntimeBuff(b) && b.id === active.id
+    );
+  
+    if (fromGroup.id === toGroup.id) {
+      useStore.getState().reorderBuffsInGroup(fromGroup.id, fromIndex, toIndex);
+    } else {
+      useStore.getState().moveBuffBetweenGroups(
+        fromGroup.id,
+        toGroup.id,
+        active.id,
+        toIndex
+      );
+    }
+  
+    setActiveBuff(null);
+  };
+
 
   const openModalForGroup = () => {
     setModalContext('group');
@@ -86,11 +189,27 @@ function App() {
         <p className="text-red-500 text-center mt-8 mb-8 font-bold">Alt1 not detected. Please open this app inside Alt1.</p>
       )}
       {/* Groups */}
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
+        onDragCancel={() => setActiveBuff(null)}
+      >
       <div className="space-y-8 mb-8">
         {groups.map((group: any) => (
-          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} />
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} activeBuff={activeBuff} dragOverGroupId={dragOverGroupId} />
         ))}
       </div>
+      <DragOverlay>
+        {activeBuff ? (
+          <BuffComponent
+            buff={activeBuff}
+            onRemove={() => {}} // no-op during drag
+          />
+        ) : null}
+      </DragOverlay>
+      </DndContext>
 
       <div className="mb-8">
         <button onClick={openModalForGroup} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DndContext, closestCenter } from '@dnd-kit/core';
+import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '../../../store/index';
 import BuffComponent from '../buffs/BuffComponent';
@@ -16,10 +16,12 @@ interface GroupComponentProps {
   alt1Ready: any;
   inCombat: boolean;
   combatCheck: boolean;
+  activeBuff: any;
+  dragOverGroupId: string | null;
 }
 
-const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck }) => {
-  const { reorderBuffsInGroup, removeBuffFromGroup, updateGroup, cooldownColor,timeRemainingColor } = useStore();
+const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck, activeBuff, dragOverGroupId }) => {
+  const { removeBuffFromGroup, updateGroup, cooldownColor,timeRemainingColor } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
   const [isUpdatingPosition, setIsUpdatingPosition] = useState(false);
@@ -54,26 +56,26 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     debugLog.info(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
   };
 
-  const onDragEnd = (event: any) => {
-    const { active, over } = event;
-    if (active.id !== over.id) {
-      const oldIndex = group.buffs.findIndex((b) => { 
-        if (!isRuntimeBuff(b)) return false;
-        return b.id === active.id
-      });
-      const newIndex = group.buffs.findIndex((b) => { 
-        if (!isRuntimeBuff(b)) return false;
-        return b.id === over.id
-      });
-      reorderBuffsInGroup(group.id, oldIndex, newIndex);
-    }
-  };
-
   const handleRemoveBuff = (buffId: string) => {
     removeBuffFromGroup(group.id, buffId);
   };
 
   const minWidth = 27;
+
+  const visibleBuffs = group.buffs.filter(
+    (b) => isRuntimeBuff(b) && b.name !== "Blank"
+  );
+  
+  const placeholderId = `drop-placeholder-${group.id}`;
+  const sortableItems = visibleBuffs.length > 0
+  ? visibleBuffs.map(buff => buff.id)
+  : [placeholderId];
+
+  const { setNodeRef } = useDroppable({
+    id: placeholderId,
+  });
+
+  const isDragOver = dragOverGroupId === group.id;
 
   return (
     <div className={`border-2 border-gray-600 rounded-lg p-4 ${!group.enabled && !isEditGroupModalOpen ? 'opacity-70' : ''}`}>
@@ -129,12 +131,8 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
         );
       })}
   
-      <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
         <SortableContext
-          items={group.buffs
-            .filter(isRuntimeBuff)
-            .map(b => b.id)
-          }
+          items={sortableItems}
           strategy={rectSortingStrategy}
         >
           <div
@@ -146,20 +144,31 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
               } as React.CSSProperties
             }
           >
-            {group.buffs.map(buff => {
-              if (!isRuntimeBuff(buff) || buff.name === "Blank") return null;
-  
-              return (
-                <BuffComponent
-                  key={buff.id}
-                  buff={buff}
-                  onRemove={() => handleRemoveBuff(buff.id)}
-                />
-              );
-            })}
+          {visibleBuffs.length > 0 ? (
+            visibleBuffs.map(buff => (
+              <BuffComponent
+                key={buff.id}
+                buff={buff}
+                onRemove={() => handleRemoveBuff(buff.id)}
+              />
+            ))
+          ) : (            
+            (visibleBuffs.length === 0 || isDragOver) && (
+              <div
+                ref={setNodeRef}
+                key={`drop-placeholder-${group.id}`}
+                id={`drop-placeholder-${group.id}`}
+                className={`col-span-full flex items-center justify-center min-h-[60px] border border-dashed border-white/30 rounded text-sm text-white/60 text-center px-4 py-2
+                  ${isDragOver ? "bg-white/20" : ""}
+                `}
+                style={{ gridColumn: '1 / -1' }}
+              >
+                {isDragOver ? "Drop buff here" : "Add a buff or drag from another group"}
+              </div>
+            )
+          )}
           </div>
         </SortableContext>
-      </DndContext>
   
       {isAddBuffModalOpen && (
         <AddBuffModal groupId={group.id} onClose={() => setAddBuffModalOpen(false)} />
