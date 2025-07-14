@@ -1,0 +1,84 @@
+import { type StateCreator } from 'zustand';
+import { v4 as uuidv4 } from 'uuid';
+import { BUFFS_VERSION, buffsData } from '../data/buffs';
+import { type Buff } from '../types/Buff';
+import { type Store } from '../types/Store';
+import { debugLog } from '../lib/debugLog';
+
+export interface BuffsSlice {
+  buffs: Buff[];
+  version: number;
+  setVersion: (version: number) => void;
+  setBuffsFromJsonIfNewer: () => void;
+  getBuffThresholds: (buffName: string) => { pass: number; fail: number };
+  customThresholds: Record<string, { passThreshold: number; failThreshold: number }>;
+  setCustomThreshold: (
+    buffName: string,
+    thresholds: { passThreshold: number; failThreshold: number }
+  ) => void;
+  removeCustomThreshold: (buffName: string) => void;
+}
+
+export const createBuffsSlice: StateCreator<
+  Store,
+  [],
+  [],
+  BuffsSlice
+> = (set, get) => ({
+  buffs: buffsData.map((buff: Buff) => ({ ...buff, id: uuidv4(), index: -1, groupId: '' })),
+  version: 1,
+  setVersion: (version) => set({ version }),
+  customThresholds: {},
+
+  setBuffsFromJsonIfNewer: () => {
+    const version = get().version;
+    const jsonVersion = BUFFS_VERSION;
+
+    if (jsonVersion > version) {
+      const newBuffs = buffsData.map((buff: Buff) => ({
+        ...buff,
+        id: uuidv4(),
+        index: -1,
+        groupId: '',
+        status: "Inactive",
+        statusChangedAt: null,
+        timeRemaining: 0,
+        cooldownStart: null,
+        activeChild: null,
+        foundChild: null,
+        hasAlerted: false,
+      }));
+      set({ buffs: newBuffs, version: jsonVersion });
+      debugLog.info(`Buffs updated to version ${jsonVersion}`);
+    }
+  },
+
+  setCustomThreshold: (buffName, thresholds) =>
+    set((state) => ({
+      customThresholds: {
+        ...state.customThresholds,
+        [buffName]: thresholds,
+      },
+    })),
+
+  removeCustomThreshold: (buffName) => {
+    set((state) => {
+      const updated = { ...state.customThresholds };
+      delete updated[buffName];
+      return { customThresholds: updated };
+    });
+  },
+
+  getBuffThresholds: (buffName) => {
+    const custom = get().customThresholds?.[buffName];
+    const baseBuff = get().buffs.find((b) => b.name === buffName);
+    if (!baseBuff || !baseBuff.thresholds) return {
+        pass: 300,
+        fail: 100
+    };
+    return {
+        pass: custom?.passThreshold ?? baseBuff.thresholds.pass ?? 10,
+        fail: custom?.failThreshold ?? baseBuff.thresholds.fail ?? 50,
+    };
+  },
+});

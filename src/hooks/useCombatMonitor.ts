@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import useStore from "../store";
+import useStore from "../store/index";
 import { debugLog } from "../lib/debugLog";
 
 let isMonitoring = false;
@@ -26,7 +26,7 @@ export function useCombatMonitor() {
 
       const inCombat = useStore.getState().inCombat;
       if (!inCombat) {
-        debugLog("User has entered combat.");
+        debugLog.info("User has entered combat.");
         useStore.getState().setInCombat(true);
       }
     }
@@ -43,7 +43,7 @@ export function useCombatMonitor() {
 
       // Leave combat if no change has happened for 5 seconds
       if (inCombat && now - globalLastChange > 5000) {
-        debugLog("User has left combat.");
+        debugLog.info("User has left combat.");
         useStore.getState().setInCombat(false);
       }
     }, 500);

@@ -1,4 +1,4 @@
-import useStore from '../store';
+import useStore from '../store/index';
 
 export const useProfiles = () => {
   const profiles = useStore(state => state.groups);

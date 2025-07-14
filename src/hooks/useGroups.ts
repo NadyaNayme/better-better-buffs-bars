@@ -1,4 +1,4 @@
-import useStore from '../store';
+import useStore from '../store/index';
 
 export const useGroups = () => {
   const groups = useStore(state => state.groups);
