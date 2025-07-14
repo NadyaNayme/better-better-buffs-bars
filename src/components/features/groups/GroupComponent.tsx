@@ -90,14 +90,14 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
               disabled={isUpdatingPosition}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              {isUpdatingPosition ? 'Updating Position...' : 'Update Overlay Position'}
+              {isUpdatingPosition ? 'Repositioning...' : 'Reposition Overlay'}
             </button>
           )}
           <button onClick={() => setAddBuffModalOpen(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Add Buff
           </button>
           <button onClick={() => setEditGroupModalOpen(true)} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-            Settings
+            ⚙ Settings
           </button>
         </div>
       </div>
@@ -158,10 +158,11 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
                 ref={setDroppableNodeRef}
                 key={`drop-placeholder-${group.id}`}
                 id={`drop-placeholder-${group.id}`}
-                className={`col-span-full flex items-center justify-center min-h-[60px] border border-dashed border-white/30 rounded text-sm text-white/60 text-center px-4 py-2
+                className={`col-span-full flex items-center justify-center min-h-[60px] border border-dashed border-white/30 hover:cursor-pointer hover:bg-white/50 hover:text-black rounded text-sm text-white/60 text-center px-4 py-2
                   ${isDragOver ? "bg-white/20" : ""}
                 `}
                 style={{ gridColumn: '1 / -1' }}
+                onClick={() => setAddBuffModalOpen(true)}
               >
                 {isDragOver ? "Drop buff here" : "Add a buff or drag from another group"}
               </div>
