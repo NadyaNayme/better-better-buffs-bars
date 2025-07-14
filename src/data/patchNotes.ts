@@ -25,7 +25,7 @@ export const patchNotes: PatchNote[] = [
       `Profiles now autosave with any user changes. Until this is battle-tested the manual override button will continue to exist.`
     ],
     errors: [
-      `Your settings may have been reset. I'm terribly sorry. Data migration for Buffs was non-trivial - I tried to save what I could. You will need to add & remove a buff to each group in order for it to repair itself and begin rendering. Be sure "Hide overlays out of combat" is disabled if you are testing outside of combat.`
+      `Your settings may have been reset. I'm terribly sorry. Data migration for Buffs was non-trivial - I tried to save what I could. You will need to toggle your Buffs off & on again for each group. Be sure "Hide overlays out of combat" is disabled if you are testing outside of combat.`
     ],
     knownIssues: null,
     highlights: null,

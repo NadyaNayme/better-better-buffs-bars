@@ -140,7 +140,6 @@ export function useBuffProcessor() {
                         : 0;
 
                 let remaining = storeBuff.timeRemaining;
-                const stacks = storeBuff.stacks ?? 0;
                 let shouldBeActive = typeof remaining === 'number' ? remaining >= 1 : false;
                 let activeChildName: string | null = null;
                 const statusAge = now - (storeBuff.statusChangedAt ?? 0);
