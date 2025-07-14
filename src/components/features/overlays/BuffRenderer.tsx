@@ -147,7 +147,7 @@ export function BuffRenderer({
           };
           img.src = imgData;
         }
-        debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.status}}`)
+        if (buff.name !== "Blank") debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.status}`)
         
         // --- Draw Text ---
         let displayTime = isOnCooldown ? cooldownRemaining : buff.timeRemaining;
@@ -180,7 +180,7 @@ export function BuffRenderer({
           );
           window.alt1.overLayRefreshGroup(textGroupId);
         } else {
-          debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownStart}`);
+          if (buff.name !== "Blank") debugLog.verbose(`Not drawing text for ${buff.name}. Time Remaining: ${buff.timeRemaining} / Cooldown: ${buff.cooldownStart}`);
           window.alt1.overLaySetGroup(textGroupId);
           window.alt1.overLayClearGroup(textGroupId);
           window.alt1.overLayRefreshGroup(textGroupId);

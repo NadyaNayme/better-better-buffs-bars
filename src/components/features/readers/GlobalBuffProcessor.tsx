@@ -107,69 +107,121 @@ export function GlobalBuffProcessor() {
   useEffect(() => {
     if (!loadedImageSetId) return;
 
-    const setupReader = (
-      readerRef: React.RefObject<any>,
-      statusRef: React.RefObject<ReaderStatus>,
-      isDebuff: boolean
-    ) => {
-      let intervalId = 0;
-      let retryIntervalId = 0;
-      const readerName = isDebuff ? "Debuffs" : "Buffs";
+    // The setupReader function is now self-contained for buffs
+    const setupBuffReader = () => {
+        let intervalId = 0;
+        let retryIntervalId = 0;
 
-      const processData = () => {
-        const detectedData = readerRef.current.read();
-        if (detectedData?.length > 0) {
-          throttledCalculateUpdates(detectedData, isDebuff);
+        const processData = () => {
+            const detectedData = buffReaderRef.current.read();
+            if (detectedData?.length > 0) {
+                throttledCalculateUpdates(detectedData, false);
+            }
+        };
+
+        const startProcessing = () => {
+            debugLog.verbose("Starting Buffs processing loop...");
+            intervalId = window.setInterval(processData, READ_INTERVAL);
+        };
+        
+        const tryFindReader = () => {
+            debugLog.retrying("Retrying Buffs bar detection...");
+            if (buffReaderRef.current.find()) {
+                debugLog.success("Buffs bar found on retry!");
+                buffsReaderStatusRef.current = 'FOUND';
+                clearInterval(retryIntervalId);
+                startProcessing();
+            }
+        };
+
+        if (buffsReaderStatusRef.current === 'IDLE') {
+            debugLog.info("Attempting to find Buffs bar...");
+            if (buffReaderRef.current.find()) {
+                debugLog.success("Buffs bar found!");
+                debugLog.info(buffReaderRef.current.pos)
+                buffsReaderStatusRef.current = 'FOUND';
+                startProcessing();
+            } else {
+                debugLog.error("Could not find Buffs bar. Will retry.");
+                buffsReaderStatusRef.current = 'FAILED';
+                retryIntervalId = window.setInterval(tryFindReader, RETRY_INTERVAL);
+            }
         }
-      };
 
-      const startProcessing = () => {
-        debugLog.verbose(`Starting ${readerName} processing loop...`);
-        intervalId = window.setInterval(processData, READ_INTERVAL);
-      };
-      
-      const tryFindReader = () => {
-        debugLog.retrying(`Retrying ${readerName} bar detection...`);
-        if (readerRef.current.find()) {
-          debugLog.success(`${readerName} bar found on retry!`);
-          statusRef.current = 'FOUND';
-          clearInterval(retryIntervalId);
-          startProcessing();
-        }
-      };
-
-      if (statusRef.current === 'IDLE') {
-        debugLog.info(`Attempting to find ${readerName} bar...`);
-        if (readerRef.current.find()) {
-          debugLog.success(`${readerName} bar found!`);
-          statusRef.current = 'FOUND';
-          startProcessing();
-        } else {
-          debugLog.error(`Could not find ${readerName} bar. Will retry every ${RETRY_INTERVAL / 1000}s.`);
-          statusRef.current = 'FAILED';
-          retryIntervalId = window.setInterval(tryFindReader, RETRY_INTERVAL);
-        }
-      }
-
-      // Return a cleanup function for this specific reader
-      return () => {
-        if (intervalId) clearInterval(intervalId);
-        if (retryIntervalId) clearInterval(retryIntervalId);
-        statusRef.current = 'IDLE';
-        debugLog.info(`Stopped ${readerName} processing loop.`);
-      };
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+            if (retryIntervalId) clearInterval(retryIntervalId);
+            buffsReaderStatusRef.current = 'IDLE';
+            debugLog.info("Stopped Buffs processing loop.");
+        };
     };
 
-    // Setup both readers
-    const cleanupBuffs = setupReader(buffReaderRef, buffsReaderStatusRef, false);
-    const cleanupDebuffs = setupReader(debuffReaderRef, debuffsReaderStatusRef, true);
+    const cleanup = setupBuffReader();
+    return () => cleanup();
 
-    // Return a function that calls both cleanup functions
-    return () => {
-      cleanupBuffs();
-      cleanupDebuffs();
+}, [loadedImageSetId, throttledCalculateUpdates]);
+
+
+// useEffect for the DEBUFFS reader
+useEffect(() => {
+    if (!loadedImageSetId) return;
+
+    // A separate, identical setup function for debuffs
+    const setupDebuffReader = () => {
+        let intervalId = 0;
+        let retryIntervalId = 0;
+        
+        // This is the only line that needs the `debuffs` property set to true
+        debuffReaderRef.current.debuffs = true; 
+
+        const processData = () => {
+            const detectedData = debuffReaderRef.current.read();
+            if (detectedData?.length > 0) {
+                throttledCalculateUpdates(detectedData, true);
+            }
+        };
+
+        const startProcessing = () => {
+            debugLog.verbose("Starting Debuffs processing loop...");
+            intervalId = window.setInterval(processData, READ_INTERVAL);
+        };
+        
+        const tryFindReader = () => {
+            debugLog.retrying("Retrying Debuffs bar detection...");
+            if (debuffReaderRef.current.find()) {
+                debugLog.success("Debuffs bar found on retry!");
+                debuffsReaderStatusRef.current = 'FOUND';
+                clearInterval(retryIntervalId);
+                startProcessing();
+            }
+        };
+
+        if (debuffsReaderStatusRef.current === 'IDLE') {
+            debugLog.info("Attempting to find Debuffs bar...");
+            if (debuffReaderRef.current.find()) {
+                debugLog.success("Debuffs bar found!");
+                debugLog.info(debuffReaderRef.current.pos)
+                debuffsReaderStatusRef.current = 'FOUND';
+                startProcessing();
+            } else {
+                debugLog.error("Could not find Debuffs bar. Will retry.");
+                debuffsReaderStatusRef.current = 'FAILED';
+                retryIntervalId = window.setInterval(tryFindReader, RETRY_INTERVAL);
+            }
+        }
+
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+            if (retryIntervalId) clearInterval(retryIntervalId);
+            debuffsReaderStatusRef.current = 'IDLE';
+            debugLog.info("Stopped Debuffs processing loop.");
+        };
     };
-  }, [loadedImageSetId, throttledCalculateUpdates]);
+
+    const cleanup = setupDebuffReader();
+    return () => cleanup();
+
+}, [loadedImageSetId, throttledCalculateUpdates]);
 
   return null;
 }
