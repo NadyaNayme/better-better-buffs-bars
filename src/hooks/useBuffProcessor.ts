@@ -7,7 +7,7 @@ import { isRuntimeBuff, type BuffInstance, type BuffStatus } from '../types/Buff
 export function useBuffProcessor() {
     const lastChildMatchTimestamps = useRef(new Map<string, number>());
     const lastMatchedChildName = useRef(new Map<string, string>());
-    const STACK_STATE_CHANGE_FLICKER_GUARD_MS = 200; 
+    const STACK_STATE_CHANGE_FLICKER_GUARD_MS = 500; 
     const STATE_CHANGE_FLICKER_GUARD_MS = 1000; 
     const matchedChildren = new Map<string, string>();
     const lastMetaUpdateTimestamps = useRef(new Map<string, number>());
