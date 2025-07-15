@@ -16,9 +16,6 @@ export function GlobalBuffProcessor() {
   const { calculateBuffUpdates } = useBuffProcessor();
   const { syncIdentifiedBuffs } = useStore();
   const resolvedImagesRef = useRef<Map<string, any> | null>(null);
-  const buffReaderRef = useRef<any>(new BuffReader.default());
-  const debuffReaderRef = useRef<any>(new BuffReader.default());
-  debuffReaderRef.current.debuffs = true;
   const buffsReaderStatusRef = useRef<ReaderStatus>('IDLE');
   const debuffsReaderStatusRef = useRef<ReaderStatus>('IDLE');
   const [loadedImageSetId, setLoadedImageSetId] = useState<string | null>(null);
@@ -91,8 +88,19 @@ export function GlobalBuffProcessor() {
     }
   }, [buffsToLoadId, loadedImageSetId, buffsToLoadNames]);
 
-  // ✨ THROTTLING: Create the throttled processor
-  const throttledCalculateUpdates = useMemo(() => {
+  
+  const throttledBuffCalculateUpdates = useMemo(() => {
+    const execute = (detectedData: any[], isDebuff: boolean) => {
+      if (!resolvedImagesRef.current) return;
+      const updates = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current, isDebuff);
+      if (updates.size > 0) {
+        syncIdentifiedBuffsRef.current(updates);
+      }
+    };
+    return throttle(execute, THROTTLE_INTERVAL, { leading: true, trailing: false });
+  }, []);
+
+  const throttledDebuffCalculateUpdates = useMemo(() => {
     const execute = (detectedData: any[], isDebuff: boolean) => {
       if (!resolvedImagesRef.current) return;
       const updates = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current, isDebuff);
@@ -112,10 +120,12 @@ export function GlobalBuffProcessor() {
         let intervalId = 0;
         let retryIntervalId = 0;
 
+        const reader = new BuffReader.default();
+
         const processData = () => {
-            const detectedData = buffReaderRef.current.read();
-            if (detectedData?.length > 0) {
-                throttledCalculateUpdates(detectedData, false);
+            const detectedData = reader.read();
+            if (detectedData && detectedData?.length > 0) {
+              throttledBuffCalculateUpdates(detectedData, false);
             }
         };
 
@@ -126,7 +136,7 @@ export function GlobalBuffProcessor() {
         
         const tryFindReader = () => {
             debugLog.retrying("Retrying Buffs bar detection...");
-            if (buffReaderRef.current.find()) {
+            if (reader.find()) {
                 debugLog.success("Buffs bar found on retry!");
                 buffsReaderStatusRef.current = 'FOUND';
                 clearInterval(retryIntervalId);
@@ -136,9 +146,9 @@ export function GlobalBuffProcessor() {
 
         if (buffsReaderStatusRef.current === 'IDLE') {
             debugLog.info("Attempting to find Buffs bar...");
-            if (buffReaderRef.current.find()) {
+            if (reader.find()) {
                 debugLog.success("Buffs bar found!");
-                debugLog.info(buffReaderRef.current.pos)
+                debugLog.info(`Buff bar position: `, reader.pos)
                 buffsReaderStatusRef.current = 'FOUND';
                 startProcessing();
             } else {
@@ -159,7 +169,7 @@ export function GlobalBuffProcessor() {
     const cleanup = setupBuffReader();
     return () => cleanup();
 
-}, [loadedImageSetId, throttledCalculateUpdates]);
+}, [loadedImageSetId, throttledBuffCalculateUpdates]);
 
 
 // useEffect for the DEBUFFS reader
@@ -171,13 +181,13 @@ useEffect(() => {
         let intervalId = 0;
         let retryIntervalId = 0;
         
-        // This is the only line that needs the `debuffs` property set to true
-        debuffReaderRef.current.debuffs = true; 
+        const reader = new BuffReader.default();
+        reader.debuffs = true; 
 
         const processData = () => {
-            const detectedData = debuffReaderRef.current.read();
-            if (detectedData?.length > 0) {
-                throttledCalculateUpdates(detectedData, true);
+            const detectedData = reader.read();
+            if (detectedData && detectedData?.length > 0) {
+                throttledDebuffCalculateUpdates(detectedData, true);
             }
         };
 
@@ -188,7 +198,7 @@ useEffect(() => {
         
         const tryFindReader = () => {
             debugLog.retrying("Retrying Debuffs bar detection...");
-            if (debuffReaderRef.current.find()) {
+            if (reader.find()) {
                 debugLog.success("Debuffs bar found on retry!");
                 debuffsReaderStatusRef.current = 'FOUND';
                 clearInterval(retryIntervalId);
@@ -198,9 +208,9 @@ useEffect(() => {
 
         if (debuffsReaderStatusRef.current === 'IDLE') {
             debugLog.info("Attempting to find Debuffs bar...");
-            if (debuffReaderRef.current.find()) {
+            if (reader.find()) {
                 debugLog.success("Debuffs bar found!");
-                debugLog.info(debuffReaderRef.current.pos)
+                debugLog.info(`Debuff bar position: `, reader.pos)
                 debuffsReaderStatusRef.current = 'FOUND';
                 startProcessing();
             } else {
@@ -221,7 +231,7 @@ useEffect(() => {
     const cleanup = setupDebuffReader();
     return () => cleanup();
 
-}, [loadedImageSetId, throttledCalculateUpdates]);
+}, [loadedImageSetId, throttledDebuffCalculateUpdates]);
 
   return null;
 }

@@ -276,7 +276,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
           if (payloadMap.has(buff.name)) {
             const updatePayload = payloadMap.get(buff.name);
             if (!isRuntimeBuff(buff)) return
-            if (buff.status !== updatePayload.status || buff.timeRemaining !== updatePayload.timeRemaining || buff.activeChild !== updatePayload.activeChild) {
+            if (buff.status !== updatePayload.status || buff.timeRemaining !== updatePayload.timeRemaining || buff.stacks !== updatePayload.stacks || buff.activeChild !== updatePayload.activeChild || buff.cooldownStart !== updatePayload.cooldownStart || buff.guaranteedActiveUntil !== updatePayload.guaranteedActiveUntil) {
               hasChangesInThisGroup = true;
               hasAnyChanges = true;
 

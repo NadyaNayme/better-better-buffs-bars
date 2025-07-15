@@ -11,10 +11,10 @@ export interface BuffsSlice {
   setVersion: (version: number) => void;
   setBuffsFromJsonIfNewer: () => void;
   getBuffThresholds: (buffName: string) => { pass: number; fail: number };
-  customThresholds: Record<string, { passThreshold: number; failThreshold: number }>;
+  customThresholds: Record<string, { pass: number; fail: number }>;
   setCustomThreshold: (
     buffName: string,
-    thresholds: { passThreshold: number; failThreshold: number }
+    thresholds: { pass: number; fail: number }
   ) => void;
   removeCustomThreshold: (buffName: string) => void;
 }
@@ -77,8 +77,8 @@ export const createBuffsSlice: StateCreator<
         fail: 100
     };
     return {
-        pass: custom?.passThreshold ?? baseBuff.thresholds.pass ?? 10,
-        fail: custom?.failThreshold ?? baseBuff.thresholds.fail ?? 50,
+        pass: custom?.pass ?? baseBuff.thresholds.pass ?? 10,
+        fail: custom?.fail ?? baseBuff.thresholds.fail ?? 50,
     };
   },
 });

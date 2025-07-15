@@ -31,7 +31,7 @@ export function BuffRenderer({
   timeRemainingColor,
   drawIndex
 }: BuffRendererProps) {
-    useGlobalClock();
+  const globalTick = useGlobalClock();
 
     const cooldownRemaining = (buff.cooldownStart && typeof buff.cooldown === 'number')
     ? Math.max(0, buff.cooldown - Math.floor((Date.now() - buff.cooldownStart) / 1000))
@@ -39,7 +39,7 @@ export function BuffRenderer({
     const isStackBuff = buff.type === "StackBuff";
     const isOnCooldown = buff.status === "OnCooldown";
     let useInactive = isOnCooldown || (group.explicitInactive && buff.status !== "Active");
-    if (isStackBuff && buff.stacks) useInactive = buff.stacks === 0;
+    if (isStackBuff && typeof buff.stacks === 'number' && buff.stacks) useInactive = buff.stacks === 0;
   
     useEffect(() => {
         if (!alt1Ready || !window.alt1) {
@@ -119,10 +119,14 @@ export function BuffRenderer({
           }
           
         // Handle Meta buff image override
-        if (buff.status === "Active" && buff.type === 'MetaBuff' && buff.foundChild && isRuntimeBuff(buff.foundChild)) {
-          imgData = buff.foundChild.scaledImageData ?? buff.foundChild.imageData;
-        } else if (buff.type === 'MetaBuff') {
-          imgData = buff.scaledImageData ?? buff.defaultImageData; // fallback
+        if (buff.status === "Active" && buff.type === 'MetaBuff' && buff.foundChild) {
+          const newImgData = buff.foundChild.imageData;
+          if (imgData !== newImgData) {
+            debugLog.verbose(`Image changed for ${buff.name}.`);
+            imgData = newImgData;
+          }
+        }else if (buff.type === 'MetaBuff' && buff.status === "Inactive") {
+          imgData = buff.scaledImageData ?? buff.defaultImageData;
         }
     
         if (imgData) {
@@ -147,7 +151,7 @@ export function BuffRenderer({
           };
           img.src = imgData;
         }
-        if (buff.name !== "Blank") debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining} | ${buff.status}`)
+        if (buff.name !== "Blank") debugLog.verbose(`Redrew ${buff.name} | ${buff.timeRemaining ? buff.timeRemaining : buff.stacks} | ${buff.status}`)
         
         // --- Draw Text ---
         let displayTime = isOnCooldown ? cooldownRemaining : buff.timeRemaining;
@@ -188,8 +192,8 @@ export function BuffRenderer({
     
         return () => {};
       }, [
-        alt1Ready, a1lib, buff, group, drawIndex, inCombat, isUpdatingPosition,
-        cooldownColor, timeRemainingColor
+        alt1Ready, a1lib, buff.name, buff.status, buff.timeRemaining, buff.stacks,
+  buff.activeChild, group.id, drawIndex, inCombat, cooldownColor, timeRemainingColor, isUpdatingPosition, cooldownRemaining, globalTick 
       ]);
     
       return null;

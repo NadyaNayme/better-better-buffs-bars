@@ -45,7 +45,7 @@ type AlertCondition =
  * Example: Overloads, Antifire potions.
  */
 export interface NormalBuff extends BaseBuff {
-  type: 'Normal Buff';
+  type: 'NormalBuff';
   timeRemaining: number;
   alert: { condition: 'timeRemaining'; threshold: number; hasAlerted?: boolean };
   hasText: true;
@@ -56,7 +56,7 @@ export interface NormalBuff extends BaseBuff {
  * Example: Necrosis stacks, Perfect Equilibrium stacks
  */
 export interface StackBuff extends BaseBuff {
-  type: 'Stack Buff';
+  type: 'StackBuff';
   stacks: number;
   alert: { condition: 'stacks'; threshold: number; hasAlerted?: boolean };
   hasText: true;
@@ -67,7 +67,7 @@ export interface StackBuff extends BaseBuff {
  * Example: Anticipation, Freedom.
  */
 export interface AbilityBuff extends BaseBuff {
-  type: 'Ability Buff';
+  type: 'AbilityBuff';
   timeRemaining: number;
   cooldown: number;
   cooldownStart: number | null;
@@ -79,7 +79,7 @@ export interface AbilityBuff extends BaseBuff {
  * Example: Stunned.
  */
 export interface NormalDebuff extends BaseBuff {
-  type: 'Normal Debuff';
+  type: 'NormalDebuff';
   timeRemaining: number;
   alert: { condition: 'onActive'; hasAlerted?: boolean };
   hasText: true;
@@ -90,7 +90,7 @@ export interface NormalDebuff extends BaseBuff {
  * Example: Crystal Rain, Instability
  */
 export interface WeaponSpecialDebuff extends BaseBuff {
-  type: 'Weapon Special';
+  type: 'WeaponSpecial';
   timeRemaining: number;
   alert: { condition: 'onInactive'; hasAlerted?: boolean };
   hasText: true;
@@ -101,7 +101,7 @@ export interface WeaponSpecialDebuff extends BaseBuff {
  * Example: Prayers, Life Points Boosted, Procs that go away when used (eg. Death Mark)
  */
 export interface PermanentBuff extends BaseBuff {
-  type: 'Permanent Buff';
+  type: 'PermanentBuff';
   hasText: false;
 }
 
@@ -110,7 +110,7 @@ export interface PermanentBuff extends BaseBuff {
  * Example: Death Mark, Bloat, Vulnerability
  */
 export interface TargetDebuff extends BaseBuff {
-  type: 'Target Debuff';
+  type: 'TargetDebuff';
   hasText: false;
 }
 
@@ -119,7 +119,7 @@ export interface TargetDebuff extends BaseBuff {
  * It doesn't have its own duration but reflects the state of its children.
  */
 export interface MetaBuff extends BaseBuff {
-  type: 'Meta Buff';
+  type: 'MetaBuff';
   children: string[];
   activeChild: string | null;
   foundChild: Buff | null;
@@ -151,6 +151,7 @@ export interface BuffInstance extends BaseBuff {
   activeChild: string | null;
   foundChild: Buff | null;
   timeRemaining: number | null;
+  guaranteedActiveUntil: number | null;
   stacks: number | null;
   cooldown: number | null;
   cooldownStart: number | null;

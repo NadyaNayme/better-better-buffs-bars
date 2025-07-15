@@ -7,22 +7,27 @@ const ThresholdEditor = () => {
   const setCustomThreshold = useStore(state => state.setCustomThreshold);
   const removeCustomThreshold = useStore(state => state.removeCustomThreshold);
 
-  const [selectedBuff, setSelectedBuff] = useState('');
+  const [selectedBuffId, setSelectedBuffId] = useState('');
   const [pass, setPass] = useState('');
   const [fail, setFail] = useState('');
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedBuff || isNaN(+pass) || isNaN(+fail)) return;
+    const passNum = parseInt(pass, 10);
+    const failNum = parseInt(fail, 10);
 
-    setCustomThreshold(selectedBuff, {
-      passThreshold: parseInt(pass, 10),
-      failThreshold: parseInt(fail, 10),
-    });
+    if (!selectedBuffId || isNaN(passNum) || isNaN(failNum)) return;
 
-    setSelectedBuff('');
+    setCustomThreshold(selectedBuffId, { pass: passNum, fail: failNum });
+
+    setSelectedBuffId('');
     setPass('');
     setFail('');
+  };
+
+  const getBuffName = (id: string) => {
+    const buff = buffs.find(b => b.id === id);
+    return buff?.name || id;
   };
 
   return (
@@ -31,13 +36,13 @@ const ThresholdEditor = () => {
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-2">
         <select
-          value={selectedBuff}
-          onChange={(e) => setSelectedBuff(e.target.value)}
+          value={selectedBuffId}
+          onChange={(e) => setSelectedBuffId(e.target.value)}
           className="p-1 border"
         >
           <option value="">Select a buff</option>
           {buffs.map((buff) => (
-            <option key={buff.name} value={buff.name}>
+            <option key={buff.id} value={buff.id}>
               {buff.name}
             </option>
           ))}
@@ -72,16 +77,16 @@ const ThresholdEditor = () => {
         <div className="mt-4">
           <h4 className="font-semibold mb-1">Current Overrides</h4>
           <ul className="space-y-1">
-            {Object.entries(customThresholds).map(([name, thresholds]) => (
+            {Object.entries(customThresholds).map(([id, thresholds]) => (
               <li
-                key={name}
+                key={id}
                 className="flex justify-between items-center bg-slate-700 border p-2 rounded"
               >
                 <span className="text-sm">
-                  <strong>{name}</strong>: Pass {thresholds.passThreshold}, Fail {thresholds.failThreshold}
+                  <strong>{getBuffName(id)}</strong>: Pass {thresholds.pass}, Fail {thresholds.fail}
                 </span>
                 <button
-                  onClick={() => removeCustomThreshold(name)}
+                  onClick={() => removeCustomThreshold(id)}
                   className="text-red-600 hover:text-red-800 font-bold text-lg"
                   title="Remove override"
                 >

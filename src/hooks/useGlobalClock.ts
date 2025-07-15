@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
 export function useGlobalClock() {
-  const [, forceUpdate] = useState(0);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      forceUpdate((n) => n + 1);
-    }, 1000);
-
+      setTick((n) => n + 1);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  return tick;
 }

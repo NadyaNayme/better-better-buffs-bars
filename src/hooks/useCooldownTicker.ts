@@ -32,7 +32,7 @@ export function useCooldownTicker() {
           const sound = new Audio(alertsMap[newBuff.name]);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
-          newBuff.alert.hasAlerted = true;
+          newBuff.alert = { ...newBuff.alert, hasAlerted: true };
           didChange = true;
         }
 
@@ -48,10 +48,10 @@ export function useCooldownTicker() {
         if (
           newBuff.status === "Active" &&
           typeof newBuff.timeRemaining === 'number' &&
-          newBuff.timeRemaining >= 0 &&
+          newBuff.timeRemaining > 0 &&
           newBuff.timeRemaining <= 59 &&
-          newBuff.cooldownStart !== 0 &&
           timeSinceUpdate > 1050 &&
+          (newBuff.cooldownStart === 0 || !newBuff.cooldownStart) &&
           newBuff.name !== "Blank"
         ) {
           debugLog.info(`Force ticking down time remaining for ${newBuff.name}`);
