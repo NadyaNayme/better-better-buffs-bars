@@ -149,7 +149,7 @@ export interface BuffInstance extends BaseBuff {
   statusChangedAt: number | null;
   children: string[] | null;
   activeChild: string | null;
-  foundChild: Buff | null;
+  foundChild: Buff | BuffInstance | Partial<BuffInstance> | null;
   timeRemaining: number | null;
   guaranteedActiveUntil: number | null;
   stacks: number | null;
@@ -175,7 +175,7 @@ export type Buff =
 
 
 /* Discriminate that the Buff has been modified by the runtime */
-export function isRuntimeBuff(buff: Buff | BuffInstance): buff is BuffInstance {
+export function isRuntimeBuff(buff: Buff | BuffInstance | Partial<BuffInstance>): buff is BuffInstance {
   if ('id' in buff) { 
     return true;
   } else { 

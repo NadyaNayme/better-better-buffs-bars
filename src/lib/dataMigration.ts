@@ -1,5 +1,8 @@
 import { buffsData } from '../data/buffs';
 import { v4 as uuidv4 } from 'uuid';
+import type { Group } from '../types/Group';
+import type { BuffInstance } from '../types/Buff';
+import type { Profile } from '../types/Profile';
 
 export function migrateOldStorageIfNeeded() {
   const NEW_KEY = "better-buffs-bars-storage";
@@ -19,8 +22,8 @@ export function migrateOldStorageIfNeeded() {
 
     const freshBuffMap = new Map(buffsData.map((buff) => [buff.name, buff]));
 
-    const migratedBuffs = oldData.state.buffs.map((oldBuff: any, index: number) => {
-      const fresh = freshBuffMap.get(oldBuff.name);
+    const migratedBuffs = oldData.state.buffs.map((oldBuff: Partial<BuffInstance>, index: number) => {
+      const fresh = freshBuffMap.get(oldBuff.name ?? '');
       if (!fresh) {
         console.warn(`⚠️ No matching fresh buff for "${oldBuff.name}", carrying over old data.`);
         return {
@@ -37,12 +40,12 @@ export function migrateOldStorageIfNeeded() {
       };
     });
 
-    const profileList: any[] = [];
+    const profileList: Profile[] = [];
     const oldProfiles = oldData.state.profiles ?? [];
     const seenGroupIds = new Set<string>();
 
     for (const oldProfile of oldProfiles) {
-      const migratedGroups = (oldProfile.groups ?? []).map((group: any) => {
+      const migratedGroups = (oldProfile.groups ?? []).map((group: Group) => {
         const groupId = group.id ?? uuidv4();
         seenGroupIds.add(groupId);
 
@@ -71,8 +74,8 @@ export function migrateOldStorageIfNeeded() {
     const existing = profileList.find(p => p.name === activeProfileName);
 
     const migratedLegacyGroups = legacyGroups
-      .filter((group: any) => !seenGroupIds.has(group.id)) // dedup
-      .map((group: any) => {
+      .filter((group: Group) => !seenGroupIds.has(group.id)) // dedup
+      .map((group: Group) => {
         const groupId = group.id ?? uuidv4();
         seenGroupIds.add(groupId);
         return {

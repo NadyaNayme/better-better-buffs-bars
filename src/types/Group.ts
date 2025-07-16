@@ -1,14 +1,14 @@
-import type { Buff } from './Buff';
+import type { Buff, BuffInstance } from './Buff';
 import type { Coordinates } from './Coordinates';
 
 export interface Group {
     id: string;
     name: string;
-    buffs: Buff[];
+    buffs: Buff[] | BuffInstance[] | undefined;
     buffsPerRow: number;
     enabled: boolean;
     explicitInactive: boolean;
     overlayPosition: Coordinates;
     scale: number;
-    children: Buff[];
+    children: Buff[] | BuffInstance[] | undefined;
 }

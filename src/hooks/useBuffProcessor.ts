@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import useStore from '../store';
 import { debugLog } from '../lib/debugLog';
-import type { Group } from '../types/Group';
-import { isRuntimeBuff, type BuffInstance, type BuffStatus } from '../types/Buff';
+import { isRuntimeBuff, type Buff, type BuffInstance, type BuffStatus } from '../types/Buff';
+import type { Buff as Alt1Buff } from 'alt1/buffs';
 
 export function useBuffProcessor() {
     const lastChildMatchTimestamps = useRef(new Map<string, number>());
@@ -15,12 +15,12 @@ export function useBuffProcessor() {
 
     function processMetaBuff(
         storeBuff: BuffInstance,
-        foundPayload: BuffInstance | undefined,
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number,
-        finalPayloadMap: Map<string, any>,
+        finalPayloadMap: Map<string, Partial<BuffInstance>>,
         lastChildMatchTimestamps: React.RefObject<Map<string, number>>,
         lastMatchedChildName: React.RefObject<Map<string, string>>,
-        buffMapByName: Map<string, any>,
+        buffMapByName: Map<string, Buff>,
         lastMetaUpdateTimestamps: React.RefObject<Map<string, number>>,
     ) {
         const META_BUFF_GRACE_PERIOD_MS = 1500;
@@ -67,7 +67,7 @@ export function useBuffProcessor() {
             lastChildMatchTimestamps.current.set(name, now);
             lastMatchedChildName.current.set(name, matchedChild);
     
-            payloadFoundChild = foundPayload?.foundChild as BuffInstance;
+            payloadFoundChild = foundPayload?.foundChild;
         }
         // --- Case B: No child match this tick, but last one was recent (within grace) ---
         else if (currentStatus === 'Active' && timeSinceLastMatch <= META_BUFF_GRACE_PERIOD_MS) {
@@ -79,10 +79,10 @@ export function useBuffProcessor() {
                 if (childData?.imageData) {
                     nextImageData = childData.imageData;
                 }
-                payloadFoundChild = childData ?? null;  // <--- critical fix here
+                payloadFoundChild = childData ?? null;
             }
             nextStatus = 'Active';
-            shouldUpdate = false;  // prevent flicker
+            shouldUpdate = false;
         }
         // --- Case C: No match for a while, deactivate ---
         else if (currentStatus === 'Active' && timeSinceLastMatch > META_BUFF_GRACE_PERIOD_MS && timeSinceLastChange >= META_BUFF_MIN_UPDATE_MS) {
@@ -118,9 +118,9 @@ export function useBuffProcessor() {
 
     function processAbilityBuff(
         storeBuff: BuffInstance,
-        foundPayload: BuffInstance | undefined,
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number,
-        finalPayloadMap: Map<string, any>
+        finalPayloadMap: Map<string, Partial<BuffInstance>>
     ) {
         const {
             name,
@@ -218,9 +218,9 @@ export function useBuffProcessor() {
     
     function processStackBuff(
         storeBuff: BuffInstance,
-        foundPayload: BuffInstance | undefined,
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number,
-        finalPayloadMap: Map<string, any>,
+        finalPayloadMap: Map<string, Partial<BuffInstance>>,
         lastStackUpdateTimestamps: React.RefObject<Map<string, number>>
       ) {
         const { name, stacks: currentStacks = 0, status: currentStatus } = storeBuff;
@@ -254,11 +254,11 @@ export function useBuffProcessor() {
         }
       }
     
-      function processNormalBuff(
+    function processNormalBuff(
         storeBuff: BuffInstance, 
-        foundPayload: BuffInstance | undefined, 
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number, 
-        finalPayloadMap: Map<string, any>
+        finalPayloadMap: Map<string, Partial<BuffInstance>>
     ) {
         const { 
             name, 
@@ -309,7 +309,7 @@ export function useBuffProcessor() {
         }
     
         // Prepare final payload
-        const finalPayload: any = {
+        const finalPayload: Partial<BuffInstance> = {
             name,
             status: nextStatus,
             timeRemaining: nextStatus === 'Active' ? nextTimeRemaining : 0,
@@ -324,7 +324,7 @@ export function useBuffProcessor() {
         finalPayloadMap.set(name, finalPayload);
     }
 
-    function processPermanentBuff(storeBuff: BuffInstance, foundPayload: BuffInstance, now: number, finalPayloadMap: Map<string, any>) {
+    function processPermanentBuff(storeBuff: BuffInstance, foundPayload: Partial<BuffInstance> | undefined, now: number, finalPayloadMap: Map<string, Partial<BuffInstance>>) {
         const { name, status: currentStatus, statusChangedAt } = storeBuff;
 
         const wasPreviouslyActive = currentStatus === 'Active';
@@ -363,9 +363,9 @@ export function useBuffProcessor() {
 
     function processNormalDebuff(
         storeBuff: BuffInstance, 
-        foundPayload: BuffInstance | undefined, 
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number, 
-        finalPayloadMap: Map<string, any>
+        finalPayloadMap: Map<string, Partial<BuffInstance>>
     ) {
         const { 
             name, 
@@ -416,7 +416,7 @@ export function useBuffProcessor() {
         }
     
         // Prepare final payload
-        const finalPayload: any = {
+        const finalPayload: Partial<BuffInstance> = {
             name,
             status: nextStatus,
             timeRemaining: nextStatus === 'Active' ? nextTimeRemaining : 0,
@@ -433,9 +433,9 @@ export function useBuffProcessor() {
 
     function processWeaponSpecialDebuff(
         storeBuff: BuffInstance, 
-        foundPayload: BuffInstance | undefined, 
+        foundPayload: Partial<BuffInstance> | undefined,
         now: number, 
-        finalPayloadMap: Map<string, any>
+        finalPayloadMap: Map<string, Partial<BuffInstance>>
     ) {
         const { 
             name, 
@@ -486,7 +486,7 @@ export function useBuffProcessor() {
         }
     
         // Prepare final payload
-        const finalPayload: any = {
+        const finalPayload: Partial<BuffInstance> = {
             name,
             status: nextStatus,
             timeRemaining: nextStatus === 'Active' ? nextTimeRemaining : 0,
@@ -502,8 +502,8 @@ export function useBuffProcessor() {
     }
 
     const calculateBuffUpdates = 
-        (detectedBuffs: any[], resolvedImages: Map<string, any>, isDebuff: boolean): Map<string, any> => {
-            const finalPayloadMap = new Map<string, any>();
+        (detectedBuffs: Alt1Buff[], resolvedImages: Map<string, ImageData>, isDebuff: boolean): Map<string, Partial<BuffInstance>> => {
+            const finalPayloadMap = new Map<string, Partial<BuffInstance>>();
             const { groups, buffs, getBuffThresholds } = useStore.getState();
 
             if (!groups.length || !buffs.length) {
@@ -512,14 +512,15 @@ export function useBuffProcessor() {
                 return finalPayloadMap;
             }
 
-            const foundBuffPayloads = new Map<string, any>();
+            const foundBuffPayloads = new Map<string, Partial<BuffInstance>>();
 
-            const buffGroupMap = new Map<string, Group>();
+            const buffGroupMap = new Map<string, BuffInstance>();
             for (const group of groups) {
                 for (const buff of [...group.buffs, ...group.children]) {
                     if (buff.name === 'Blank') continue;
-                    buffGroupMap.set(buff.name, group);
-                }
+                    if (!isRuntimeBuff(buff)) continue;
+                    buffGroupMap.set(buff.name, buff);
+                  }
             }
 
             const now = Date.now();
@@ -551,10 +552,9 @@ export function useBuffProcessor() {
                         const { pass, fail } = getBuffThresholds(trackedBuff.name);
                         const match = detected.countMatch(refImage, false);
 
-                        let payload;
+                        let payload: Partial<BuffInstance>;
                         if (match.passed >= pass && match.failed <= fail) {
-                            const group = buffGroupMap.get(trackedBuff.name);
-                            const child = group?.children.find((c) => c.name === imageName);
+                            const child = buffGroupMap.get(trackedBuff.name);
 
                             switch (trackedBuff.type) {
                                 case 'MetaBuff':
@@ -567,16 +567,18 @@ export function useBuffProcessor() {
                                             name: trackedBuff.name,
                                             type: trackedBuff.type,
                                             status: 'Active',
-                                            childName: child.name,
+                                            activeChild: child.name,
                                             imageData: child.scaledImageData ?? child.imageData,
                                             desaturatedImageData: child.scaledDesaturatedImageData ?? child.desaturatedImageData,
                                             foundChild: {
+                                                ...child,
                                                 name: child.name,
                                                 imageData: child.scaledImageData ?? child.imageData,
                                                 desaturatedImageData: child.scaledDesaturatedImageData ?? child.desaturatedImageData,
                                             },
                                             lastUpdated: now,
                                         };
+                                        foundBuffPayloads.set(trackedBuff.name, payload);
                                     }
                                     break;
                                 case 'StackBuff':
@@ -587,6 +589,7 @@ export function useBuffProcessor() {
                                         stacks: detected.readTime() ? detected.readTime() : null,
                                         lastUpdated: now,
                                     };
+                                    foundBuffPayloads.set(trackedBuff.name, payload);
                                     break;
                                 case 'AbilityBuff':
                                 case 'NormalBuff':
@@ -599,6 +602,7 @@ export function useBuffProcessor() {
                                         timeRemaining: detected.readTime() ? detected.readTime() : null,
                                         lastUpdated: now,
                                     };
+                                    foundBuffPayloads.set(trackedBuff.name, payload);
                                     break;
                                 case 'PermanentBuff':
                                     payload = {
@@ -607,13 +611,9 @@ export function useBuffProcessor() {
                                         status: 'Active',
                                         lastUpdated: now,
                                     };
+                                    foundBuffPayloads.set(trackedBuff.name, payload);                                  
                                     break;
                             }
-
-                            if (payload) {
-                                foundBuffPayloads.set(trackedBuff.name, payload);
-                            }
-
                             break;
                         }
                     }
