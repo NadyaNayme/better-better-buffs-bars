@@ -31,7 +31,7 @@ export async function resizeBuffImage(imageData: string | undefined, scale: numb
   /**
    * Returns a Promise resolving to the encoded 8-bit string suitable for alt1.overLayImage.
    */
-  export function getEncodedImageForBuff(buffName: string, a1lib: any): Promise<string> {
+  export function getEncodedImageForBuff(buffName: string, a1lib: A1Lib): Promise<string> {
     if (encodedImageCache.has(buffName)) {
       return encodedImageCache.get(buffName)!;
     }

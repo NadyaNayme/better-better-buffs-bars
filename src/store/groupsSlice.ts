@@ -4,7 +4,7 @@ import { type Store } from '../types/Store';
 import { type Group } from '../types/Group';
 import { createBlankBuff } from '../lib/createBlankBuff';
 import { resizedataURL } from '../lib/resizeDataURL';
-import { isRuntimeBuff, type Buff } from '../types/Buff';
+import { isRuntimeBuff, type Buff, type BuffInstance } from '../types/Buff';
 import { debugLog } from '../lib/debugLog';
 
 export interface GroupsSlice {
@@ -263,7 +263,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         saveProfile(activeProfile);
     }
   },
-  syncIdentifiedBuffs: (payloadMap: Map<string, any>) => {
+  syncIdentifiedBuffs: (payloadMap: Map<string, BuffInstance>) => {
     set((state) => {
       const masterBuffsMap = new Map(state.buffs.map(b => [b.name, b]));
 
@@ -275,7 +275,8 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
         const newBuffs = group.buffs.map(buff => {
           if (payloadMap.has(buff.name)) {
             const updatePayload = payloadMap.get(buff.name);
-            if (!isRuntimeBuff(buff)) return
+            if (!isRuntimeBuff(buff)) return;
+            if (!updatePayload) return;
             if (buff.status !== updatePayload.status || buff.timeRemaining !== updatePayload.timeRemaining || buff.stacks !== updatePayload.stacks || buff.activeChild !== updatePayload.activeChild || buff.cooldownStart !== updatePayload.cooldownStart || buff.guaranteedActiveUntil !== updatePayload.guaranteedActiveUntil) {
               hasChangesInThisGroup = true;
               hasAnyChanges = true;

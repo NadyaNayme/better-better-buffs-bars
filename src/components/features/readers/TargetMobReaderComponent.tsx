@@ -6,6 +6,27 @@ import Bloated from '../../../data/images/bloated.data.png';
 import DeathMark from '../../../data/images/Death_Mark.data.png';
 import Vulnerability from '../../../data/images/Vulnerability_bordered.data.png';
 import { debugLog } from '../../../lib/debugLog';
+import type { ImgRef } from 'alt1';
+
+
+type ReaderStatus = 
+  | 'START'
+  | 'LOADING_IMAGES'
+  | 'FINDING_NAMEPLATE'
+  | 'READING'
+  | 'ERROR';
+
+interface ReaderState {
+  status: ReaderStatus;
+  error: string | null;
+}
+
+type ReaderAction =
+  | { type: 'START' }
+  | { type: 'LOADED_IMAGES' }
+  | { type: 'NAMEPLATE_FOUND' }
+  | { type: 'ERROR'; error: string }
+  | { type: 'RESET' };
 
 const enemyDebuffImages = {
   'Bloat': Bloated,
@@ -14,11 +35,11 @@ const enemyDebuffImages = {
 };
 
 const initialState = {
-  status: 'START',
+  status: 'START' as ReaderStatus,
   error: null,
 };
 
-function reducer(state: any, action: {status?: any, error?: any, type: any}) {
+function reducer(state: ReaderState, action: ReaderAction): ReaderState {
   switch (action.type) {
     case 'START':
       return { status: 'LOADING_IMAGES', error: null };
@@ -41,7 +62,7 @@ function getDebuffUpdates({
   lastDetectedRef,
 }: {
   imageMap: Map<string, any>;
-  captureRegion: any;
+  captureRegion: ImgRef;
   lastDetectedRef: React.RefObject<Record<string, boolean>>;
 }): Map<string, { name: string; status: string; time: number }> {
   const updates = new Map<string, { name: string; status: string; time: number }>();
@@ -67,7 +88,7 @@ function getDebuffUpdates({
   return updates;
 }
 
-function clearAllDebuffs(lastDetectedRef: any) {
+function clearAllDebuffs(lastDetectedRef: React.RefObject<Record<string, boolean>>) {
   const cleared = new Map();
   for (const name of Object.keys(enemyDebuffImages)) {
     if (lastDetectedRef.current[name] !== false) {
@@ -78,7 +99,7 @@ function clearAllDebuffs(lastDetectedRef: any) {
   return cleared;
 }
 
-export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib }: {readInterval: number, debugMode: boolean, a1lib: any}) => {
+export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib }: {readInterval: number, debugMode: boolean, a1lib: A1Lib}) => {
   const [{ status, error }, dispatch] = useReducer(reducer, initialState);
   const {
     lastMobNameplatePos,
@@ -89,7 +110,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
   const [targetData, setTargetData] = useState({ hp: 0, name: 'Not Found' });
   const readerRef = useRef(new TargetMobReader());
   const intervalRef = useRef(0);
-  const resolvedImagesRef = useRef(new Map<string, any>);
+  const resolvedImagesRef = useRef(new Map<string, ImgRef>);
   const lastDetectedRef = useRef({ Bloat: false, 'Death Mark': false, Vulnerability: false });
 
   const loadImages = useCallback(async () => {

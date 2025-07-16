@@ -12,15 +12,14 @@ import { isRuntimeBuff } from '../../../types/Buff';
 
 interface GroupComponentProps {
   group: Group;
-  a1lib: any;
-  alt1Ready: any;
+  a1lib: A1Lib;
+  alt1Ready: boolean;
   inCombat: boolean;
   combatCheck: boolean;
-  activeBuff: any;
   dragOverGroupId: string | null;
 }
 
-const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck, activeBuff, dragOverGroupId }) => {
+const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready, inCombat, combatCheck, dragOverGroupId }) => {
   const { removeBuffFromGroup, updateGroup, cooldownColor,timeRemainingColor } = useStore();
   const [isAddBuffModalOpen, setAddBuffModalOpen] = useState(false);
   const [isEditGroupModalOpen, setEditGroupModalOpen] = useState(false);
@@ -51,9 +50,10 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
     setIsUpdatingPosition(false);
   
     const finalPos = a1lib.getMousePosition();
-    updateGroup(group.id, { overlayPosition: { x: finalPos.x, y: finalPos.y } });
-  
-    debugLog.info(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
+    if (finalPos){
+      updateGroup(group.id, { overlayPosition: { x: finalPos.x, y: finalPos.y } });
+      debugLog.info(`Overlay position set to x: ${finalPos.x}, y: ${finalPos.y}`);
+    }
   };
 
   const handleRemoveBuff = (buffId: string) => {
@@ -68,7 +68,10 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
   
   const placeholderId = `drop-placeholder-${group.id}`;
   const sortableItems = visibleBuffs.length > 0
-  ? visibleBuffs.map(buff => buff.id)
+  ? visibleBuffs.map(buff => {
+    if (!isRuntimeBuff(buff)) return '';
+    return buff.id
+  })
   : [placeholderId];
 
   const { setNodeRef: setDroppableNodeRef } = useDroppable({
@@ -146,12 +149,13 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           >
           {visibleBuffs.length > 0 ? (
             visibleBuffs.map(buff => (
-              <BuffComponent
+              isRuntimeBuff(buff) ? (
+            <BuffComponent
                 key={buff.id}
                 buff={buff}
                 onRemove={() => handleRemoveBuff(buff.id)}
               />
-            ))
+            ): <></>))
           ) : (            
             (visibleBuffs.length === 0 || isDragOver) && (
               <div

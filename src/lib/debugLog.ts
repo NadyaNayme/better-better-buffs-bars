@@ -10,7 +10,7 @@ type DebugLogType =
   | 'verbose';
 
 function createLogger(type: DebugLogType) {
-  return (...args: any[]) => {
+  return (...args: unknown[]) => {
     const state = useStore.getState();
     const { debug } = state;
     const prefix = emojiMap[type];

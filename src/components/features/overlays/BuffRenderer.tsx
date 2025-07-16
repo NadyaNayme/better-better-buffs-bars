@@ -9,7 +9,7 @@ import { useGlobalClock } from '../../../hooks/useGlobalClock';
 interface BuffRendererProps {
   buff: BuffInstance;
   group: Group;
-  a1lib: any;
+  a1lib: A1Lib;
   alt1Ready: boolean;
   inCombat: boolean;
   combatCheck: boolean;

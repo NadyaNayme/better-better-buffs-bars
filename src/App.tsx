@@ -18,8 +18,8 @@ import { DebugOverlay } from './components/debug/DebugOverlay';
 import Debug from './components/debug/Debug';
 import { ActionBarReaderComponent } from './components/features/readers/ActionBarReaderComponent';
 import { TargetMobReaderComponent } from './components/features/readers/TargetMobReaderComponent';
-import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragOverEvent } from '@dnd-kit/core';
-import { isRuntimeBuff } from './types/Buff';
+import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragOverEvent, type DragEndEvent } from '@dnd-kit/core';
+import { isRuntimeBuff, type BuffInstance } from './types/Buff';
 import BuffComponent from './components/features/buffs/BuffComponent';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
   const [alt1Detected, setAlt1Detected] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContext, setModalContext] = useState<'group' | 'profile' | null>(null);
-  const [activeBuff, setActiveBuff] = useState<any | null>(null);
+  const [activeBuff, setActiveBuff] = useState<BuffInstance | null>(null);
   const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
 
   const groups: Group[] = useStore((state: Store) => state.groups);
@@ -54,7 +54,7 @@ function App() {
     setActiveBuff(null); // fallback
   };
 
-  const handleDragOver = (event: any) => {
+  const handleDragOver = (event: DragOverEvent) => {
     console.log('Dragging over:', event.over?.id);
     const { over } = event;
     if (!over) {
@@ -63,18 +63,21 @@ function App() {
     }
     
     // Extract group id from over.id, which can be either a buff id or a drop placeholder id
-    if (over.id.startsWith("drop-placeholder-")) {
-      setDragOverGroupId(over.id.replace("drop-placeholder-", ""));
+    if (over.id.toString().startsWith("drop-placeholder-")) {
+      setDragOverGroupId(over.id.toString().replace("drop-placeholder-", ""));
     } else {
       // Find which group the buff being dragged over belongs to
       const allGroups = useStore.getState().groups;
-      const group = allGroups.find(g => g.buffs.some(b => b.id === over.id));
+      const group = allGroups.find(g => g.buffs.some(b =>{
+        if (!isRuntimeBuff(b)) return;
+        return b.id === over.id
+      }));
       setDragOverGroupId(group ? group.id : null);
     }
   };
 
-  const handleDragEnd = (event: any) => {
-    const { active, over, pointerCoordinates } = event;
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
     if (!over || active.id === over.id) return;
   
     const allGroups = useStore.getState().groups;
@@ -86,8 +89,8 @@ function App() {
     let toGroup: Group | undefined;
     let toIndex = 0;
   
-    if (over.id.startsWith("drop-placeholder-")) {
-      const targetGroupId = over.id.replace("drop-placeholder-", "");
+    if (over.id.toString().startsWith("drop-placeholder-")) {
+      const targetGroupId = over.id.toString().replace("drop-placeholder-", "");
       toGroup = allGroups.find(g => g.id === targetGroupId);
       if (!fromGroup || !toGroup) return;
   
@@ -98,15 +101,15 @@ function App() {
       );
       if (!fromGroup || !toGroup) return;
   
-      const overIndex = toGroup.buffs.findIndex(b => b.id === over.id);
+      const overIndex = toGroup.buffs.findIndex(b => { 
+        if (!isRuntimeBuff(b)) return;
+        return b.id === over.id
+      });
       if (overIndex === -1) return;
   
       const overRect = over.rect;
-      if (overRect && pointerCoordinates) {
-        const midpoint = overRect.top + overRect.height / 2;
-        toIndex = pointerCoordinates.y > midpoint ? overIndex + 1 : overIndex;
-      } else {
-        toIndex = overIndex;
+      if (overRect) {
+        toIndex = overIndex
       }
   
       toIndex = Math.min(toIndex, toGroup.buffs.length);
@@ -128,7 +131,7 @@ function App() {
         useStore.getState().moveBuffBetweenGroups(
           fromGroup.id,
           toGroup.id,
-          active.id,
+          active.id.toString(),
           toIndex
         );
       }
@@ -198,8 +201,8 @@ function App() {
         onDragCancel={() => setActiveBuff(null)}
       >
       <div className="space-y-8 mb-8">
-        {groups.map((group: any) => (
-          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} activeBuff={activeBuff} dragOverGroupId={dragOverGroupId} />
+        {groups.map((group: Group) => (
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} dragOverGroupId={dragOverGroupId} />
         ))}
       </div>
       <DragOverlay>

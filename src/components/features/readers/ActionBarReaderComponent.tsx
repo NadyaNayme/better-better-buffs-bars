@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../../../hooks/useCombatMonitor';
-import { alertsMap } from '../../../data/alerts';
-import useStore from '../../../store/index';
 import { debugLog } from '../../../lib/debugLog';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
@@ -10,7 +8,7 @@ type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
 interface ActionBarReaderProps {
   debugMode?: boolean;
   readInterval?: number;
-  a1lib: any;
+  a1lib: A1Lib;
 }
 
 export function ActionBarReaderComponent({

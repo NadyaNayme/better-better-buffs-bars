@@ -6,6 +6,7 @@ import { rawImageMap } from '../../../data/imageData';
 import { debugLog } from '../../../lib/debugLog';
 import { isRuntimeBuff } from '../../../types/Buff';
 import { throttle } from 'lodash-es';
+import type { Buff } from 'alt1/buffs';
 
 const READ_INTERVAL = 300; // How often to read & update our data from the buffs bars
 const THROTTLE_INTERVAL = 400; // How often to process the data
@@ -90,7 +91,7 @@ export function GlobalBuffProcessor() {
 
   
   const throttledBuffCalculateUpdates = useMemo(() => {
-    const execute = (detectedData: any[], isDebuff: boolean) => {
+    const execute = (detectedData: Buff[], isDebuff: boolean) => {
       if (!resolvedImagesRef.current) return;
       const updates = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current, isDebuff);
       if (updates.size > 0) {
@@ -101,7 +102,7 @@ export function GlobalBuffProcessor() {
   }, []);
 
   const throttledDebuffCalculateUpdates = useMemo(() => {
-    const execute = (detectedData: any[], isDebuff: boolean) => {
+    const execute = (detectedData: Buff[], isDebuff: boolean) => {
       if (!resolvedImagesRef.current) return;
       const updates = calculateBuffUpdatesRef.current(detectedData, resolvedImagesRef.current, isDebuff);
       if (updates.size > 0) {
