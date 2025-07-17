@@ -4,6 +4,8 @@ import useStore from '../../../store/index';
 
 import Bloated from '../../../data/images/bloated.data.png';
 import DeathMark from '../../../data/images/Death_Mark.data.png';
+import Haunted from '../../../data/images/Haunted.data.png';
+import Obliterate from '../../../data/images/Obliterate.data.png'
 import SmokeCloud from '../../../data/images/smoke_cloud.data.png';
 import Vulnerability from '../../../data/images/Vulnerability_bordered.data.png';
 import { debugLog } from '../../../lib/debugLog';
@@ -11,6 +13,8 @@ import { debugLog } from '../../../lib/debugLog';
 const enemyDebuffImages = {
   'Bloat': Bloated,
   'Death Mark': DeathMark,
+  'Haunted': Haunted,
+  'Obliterate': Obliterate,
   'Vulnerability': Vulnerability,
   'Smoke Cloud': SmokeCloud,
 };
