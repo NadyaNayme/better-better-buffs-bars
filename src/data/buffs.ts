@@ -1362,6 +1362,23 @@ export const buffsData: BuffConfig[] = [
     categories: ["Necromancy", "Ability"]
   },
   {
+    name: "Smoke Cloud",
+    type: "TargetDebuff",
+    thresholds: {
+      fail: 30,
+      pass: 80
+    },
+    imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAEVklEQVR4nL2WW2xTdRzHP+fW9XJ6oWvZKqzjMkwMDBCGRhjG6IvBxAejBlReTIwIPvCqCPjmkyY86JMREyMkgEZC5DbGNmA3LtMRYFu3sa1ssrABa7e16+0cc/6dSmQbDJRv8297TvP/fX7X/6n0zjchkyck1Xrbv23wfwdt+roYmSco+d83dN39SIZ8hYWsffkVNry5ceY03qtly5fz+a6dHD5yhOqqU3R2RjDN+8uqKAqhkjDla9bwwosv4Q/OJZkY5+C336GqKtls9sGwpsYGfr98hc8+/YSdO3bQ39/Pr0ePcuzYcaLRPvxFxSxdtZqKdZU4HHYkWUECTNOguaaWsXgMTbM9HAzT5Pu9eykvL2fVs8spLQ2z9aMtvLv5PY7WN5NMZ7BpKqqmIkkWBkxMBnp6aG9tFdeazUYymbjP9JQN0t52lRNVVXR2XReGLNe9us7aFcvQNBVT4p/UmgbpVIqzJ6swDMMio2raVGan78afDx4g0tXDzcFbecMShIuLWFm2yLJPLmeIZQF+q2/g7vBwfqMENs02pc370zip/htRGhvq0XUXTocDr9cNksTSxQsZGRuje2AQUzGJDw/T2nR+sgKmSO2sI7N06MB+4Xmk6zrJ5ISopyRLPL/sGQJeN5lMmrpjx8nlsvnf8kS0R4FZXlqdaOWmq7tXdJhl0KZqrF9ZTn97hKHBQRHRvUtVbbOHOXU3kUgH1TWnBXhgYBDDyNcvHhsnVBTi1ddeZ8XqCgoDQSRZxsCKbJY1s+RyuYWnNTWnKQ2XsH5dJbHYKHZ7AedbWtEUlZLwfBYuWoBUWUk8Pkpfby/Rvl6R4s6Oq7OJzCU+rbr9uG8/w8NDYoZ+2HeI9rYOEaGqKCiyIqIJBAqpeK6CN95+iw+2bCP01PyHh9kdrr/nKZVK8tWePVy8dJkTx6s5V3eGnw4cpK62jmj0Rr6esiw6VpZlgsFCtny8HbfH++A0WhFYmwxrqMQpAbeGhti1ezcOu84cf0CkeWw0TV3NGTBzzCuZR9mSJYRLwyLVCxeE+XDrdvZ8+cXMMKdLxzRymNapIPpRIps2mBhPMJFIcPfOkGgaXfcQmhfG6/WLETjf1EJjfTPFoSIWly1iydNlbNr8Phl+mQGmu0St/kqjrGjERkZEmsRLktAKCiiwO8UMtl05xR8DPQLucLro6XZwobkRVVEJzg0SXj1DZPlOtGAGiqIyFk9gmnmQZtPQ3T58c4LEYrdprj9JJpMS++LxEbHuVaQDwhuLp4c5XM7JM1EmncqSSWfEM8xywjsngK3ATmvLOW4P3eRhNT3M6SKXSWMd8cnxCXHt8wXw+gJEeztov3ZJRD0bTQlTVFXMTS6TIZXM4vX58RcWk8umOVt7mMT46KwgM8JcLj3/xVTx++fi8fi5dvUCN/o6eRypU93UPR5UpQCvx8vdO7e40FRNNpt5LBDTwawGwNRouVjLyMjkQ/E/kPQk/xH/CSB3zMET/03uAAAAAElFTkSuQmCC",
+    desaturatedImageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADNElEQVR4nL2W2yusYRTGnxmfM+N8KEmRQ4p7JcWFS3Iv/jTX8g8ocrgQOSTnUwg555yzMbvf2r2Tzcwwe9tWvabvM7OeZz3rWev7fC0tLSH9UHj8GR4e/u9Azc3N8usHw//+Rmpq6l8lyszMVH19vRobG2PL+DbKy8vV3d2tsbExzczMaH9/X6HQx7b6/X4VFBSosrJSdXV1ysrK0sPDgwYGBpSQkKBgMPg52NLSkjY3N9XZ2amuri6dnp5qfHxck5OTOj4+VnZ2tioqKlRbW6vk5GT5fD47EFpcXNTd3Z08z/saGNHf328VwrqwsFDt7e1qbW3V7Oysnp6eLBnsXYRCISOyvb39O6nn6fHx8aMakcB2dnY0PT1tEhIwp5dVVVWWyAG4z+fnZyPy+vpq994S+RSMGBkZMbDz83NLCGB+fr7KysrsmkNyPldXV3V9fR3+bWJiYsScEWUk6BU9oCJ6k56eboClpaW6vb3VycmJmeTm5kbr6+t//Dbuytyww54K6ZWrkF5i9ZeXF3Ns8J0ZnNRxgZF4YmLCPg8ODsJJYV5TU6PDw0NdXFyEZXXnr8BSUlK0t7dn7Imzs7NwdVg8Ly9PDQ0NZhzmzI1ANLCoPSPS0tLsxzitqKjIhpd+YQD6RIUMdnFxsf0PAkdHRzYGSLy7u/v1yjAGAeDg4KCurq6M9dDQUDgRgBzuBwIBVVdXq6mpSW1tbebeuGR084RB+vr6tLGxYTM4Pz+v0dFRzc3NWSX0Exktqd9vsnZ0dJg6n8oIU9cDF5eXl+rp6TESVMFYsCkA5HtIWlJSYpIjNfIC2NvbGxvMVeXAAGYMSM5BUu7BHJCMjAyrbm1tTcvLy8rJyTFgDqvu/v4+NpjbEE4azOGAOVSflJRk4CxvBh1wes39lZUV6yfLOzc3NzoYErnKAOLx4YAAYaMgJRsEGXEfASFH6u2u5UkdFQx2bqZIhESAQoLtQU/YifTxqxETzG0MnMg1lQDENtna2or4UI0bjApgDhhVAYCVuZ6amgpLGm94kW669xA3LzgNA7AL/yW8aGCYAEdi8YWFhYiP+W8BCwQCVhXvI7jtu8L3k2/EvwBbW8EOFF+81AAAAABJRU5ErkJggg==",
+    defaultImageData: null,
+    isUtility: false,
+    alert: null,
+    children: null,
+    hasText: false,
+    cooldown: null,
+    categories: ["Upkeep"]
+  },
+  {
     name: "Sorrow",
     type: "PermanentBuff",
     thresholds: {

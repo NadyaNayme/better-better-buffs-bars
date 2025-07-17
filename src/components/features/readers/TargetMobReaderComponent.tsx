@@ -4,6 +4,7 @@ import useStore from '../../../store/index';
 
 import Bloated from '../../../data/images/bloated.data.png';
 import DeathMark from '../../../data/images/Death_Mark.data.png';
+import SmokeCloud from '../../../data/images/smoke_cloud.data.png';
 import Vulnerability from '../../../data/images/Vulnerability_bordered.data.png';
 import { debugLog } from '../../../lib/debugLog';
 
@@ -11,6 +12,7 @@ const enemyDebuffImages = {
   'Bloat': Bloated,
   'Death Mark': DeathMark,
   'Vulnerability': Vulnerability,
+  'Smoke Cloud': SmokeCloud,
 };
 
 const initialState = {
