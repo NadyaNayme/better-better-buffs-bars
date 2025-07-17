@@ -25,9 +25,10 @@ export const createBlankBuff = (length: number): BuffInstance => ({
     status: "Active",
     statusChangedAt: null,
     lastUpdated: null,
-    hasAlerted: false,
     activeChild: null,
     timeRemaining: 0,
     index: length,
     data: null,
+    stacks: null,
+    guaranteedActiveUntil: null
   });
