@@ -7,6 +7,7 @@ export interface Group {
     buffs: Buff[];
     buffsPerRow: number;
     enabled: boolean;
+    hideOutsideCombat: boolean;
     explicitInactive: boolean;
     overlayPosition: Coordinates;
     scale: number;

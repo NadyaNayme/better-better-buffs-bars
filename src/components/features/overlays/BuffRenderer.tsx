@@ -63,7 +63,7 @@ export function BuffRenderer({
           }
         };
 
-        if (!group.explicitInactive && buff.status === "Inactive" || !group.enabled) {
+        if (!group.explicitInactive && buff.status === "Inactive" || !group.enabled || (group.hideOutsideCombat && !inCombat)) {
           cleanup();
           return;
         }
@@ -193,7 +193,7 @@ export function BuffRenderer({
         return () => {};
       }, [
         alt1Ready, a1lib, buff.name, buff.status, buff.timeRemaining, buff.stacks,
-  buff.activeChild, group.id, drawIndex, inCombat, cooldownColor, timeRemainingColor, isUpdatingPosition, cooldownRemaining, globalTick 
+  buff.activeChild, group.id, group.overlayPosition.x, group.overlayPosition.y, drawIndex, inCombat, cooldownColor, timeRemainingColor, isUpdatingPosition, cooldownRemaining, globalTick 
       ]);
     
       return null;

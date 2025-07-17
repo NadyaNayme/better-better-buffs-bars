@@ -19,9 +19,10 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
   const [explicitInactive, setExplicitInactive] = useState(group.explicitInactive ?? false);
   const [scale, setScale] = useState(group.scale || 100);
   const [enabled, setEnabled] = useState(group.enabled);
+  const [hideOutsideCombat, setHideOutsideCombat] = useState(group.hideOutsideCombat);
 
   const handleSave = () => {
-    updateGroup(group.id, { name, buffsPerRow: Number(buffsPerRow), explicitInactive, scale: Number(scale), enabled });
+    updateGroup(group.id, { name, buffsPerRow: Number(buffsPerRow), explicitInactive, scale: Number(scale), enabled, hideOutsideCombat });
     onClose();
   };
 
@@ -55,6 +56,15 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               className="mr-2"
             />
             <label>Buffs Per Row</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={hideOutsideCombat}
+              onChange={(e) => setHideOutsideCombat(e.target.checked)}
+              className="mr-2"
+            />
+            <label>Hide outside of combat</label>
           </div>
           <div className="flex items-center">
             <input
