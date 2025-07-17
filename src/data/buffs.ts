@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 119;
+export const BUFFS_VERSION = 120;
 
 export const buffsData: BuffConfig[] = [
   {
@@ -1029,7 +1029,7 @@ export const buffsData: BuffConfig[] = [
     children: null,
     hasText: false,
     cooldown: null,
-    categories: ["Upkeep"]
+    categories: ["Weapon Special Attack", "Upkeep"]
   },
   {
     name: "Omni Guard",
