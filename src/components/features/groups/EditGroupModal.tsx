@@ -64,7 +64,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               onChange={(e) => setHideOutsideCombat(e.target.checked)}
               className="mr-2"
             />
-            <label>Hide outside of combat</label>
+            <label><strong>Hide outside of combat</strong></label>
           </div>
           <div className="flex items-center">
             <input
@@ -73,7 +73,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               onChange={(e) => setExplicitInactive(e.target.checked)}
               className="mr-2"
             />
-            <label><strong>Show Inactive Buffs</strong><br/> Inactive Buffs will show with a desaturated icon instead of disappearing.</label>
+            <label><strong>Always Show Buffs</strong><br/> Inactive Buffs will turn desaturated instead of disappearing while inactive.</label>
           </div>
           <div className="flex items-center">
             <label className="block mb-1">Scale: {scale}%</label>
