@@ -291,7 +291,7 @@ export const buffsData: BuffConfig[] = [
     children: null,
     hasText: false,
     cooldown: null,
-    categories: ["Upkeep"]
+    categories: ["Upkeep", "Necromancy"]
   },
   {
     name: "Conjure Undead Army",
