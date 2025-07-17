@@ -49,7 +49,7 @@ const SettingsPanelComponent: React.FC = () => {
           position: 'fixed',
           bottom: '1rem',
           right: '1rem',
-          zIndex: isOpen ? 1000 : 3,
+          zIndex: showPatchNotes ? 1 : isOpen ? 1000 : 3,
           backgroundColor: isOpen ? '#646cff' : '#1a1a1a'
         }}
       >
