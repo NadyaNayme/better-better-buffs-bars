@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import type { BuffInstance } from '../../../types/Buff';
 import { processNormalBuff } from '../processNormalBuff';
 
+
+// Logic is currently identical to NormalDebuffs & WeaponSpecialDebuffs
 describe('processNormalBuff', () => {
   let now: number;
   let map: Map<string, any>;

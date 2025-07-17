@@ -2,8 +2,8 @@ import type { BuffInstance, BuffStatus } from "../../types/Buff";
 import { STATE_CHANGE_FLICKER_GUARD_MS } from "./constants";
 
 export function processAbilityBuff(
-    storeBuff: BuffInstance,
-    foundPayload: BuffInstance | undefined,
+    storeBuff: BuffInstance | Partial<BuffInstance>,
+    foundPayload: BuffInstance | Partial<BuffInstance> | undefined,
     now: number,
     finalPayloadMap: Map<string, any>
 ) {
@@ -22,7 +22,7 @@ export function processAbilityBuff(
         ? Math.max(0, cooldown - Math.floor((now - cooldownStart) / 1000))
         : 0;
 
-    let nextStatus: BuffStatus | null = currentStatus;
+    let nextStatus: BuffStatus | null | undefined = currentStatus;
     let nextTimeRemaining = currentTimeRemaining;
     let nextCooldownStart = cooldownStart;
     let nextGuaranteedActiveUntil = guaranteedActiveUntil;
@@ -98,5 +98,5 @@ export function processAbilityBuff(
         finalPayload.statusChangedAt = now;
     }
 
-    finalPayloadMap.set(name, finalPayload);
+    if (name) finalPayloadMap.set(name, finalPayload);
 }
