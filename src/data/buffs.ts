@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 118;
+export const BUFFS_VERSION = 119;
 
 export const buffsData: BuffConfig[] = [
   {
