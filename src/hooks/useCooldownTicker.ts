@@ -13,7 +13,7 @@ export function useCooldownTicker() {
     if (now - lastRunRef.current < 1000) return;
     lastRunRef.current = now;
 
-    const { groups, enableAlerts, alertVolume, updateGroup } = useStore.getState();
+    const { groups, enableAlerts, alertVolume, updateGroup, alertEnabledMap, voice } = useStore.getState();
 
     groups.forEach((group) => {
       let didChange = false;
@@ -27,9 +27,10 @@ export function useCooldownTicker() {
           newBuff.timeRemaining <= (newBuff.alert?.threshold ?? 0) &&
           !newBuff.alert.hasAlerted &&
           alertsMap[newBuff.name] &&
+          alertEnabledMap[newBuff.name] &&
           enableAlerts
         ) {
-          const sound = new Audio(alertsMap[newBuff.name]);
+          const sound = new Audio(`./assets/${voice}/${alertsMap[newBuff.name]}`);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
           newBuff.alert = { ...newBuff.alert, hasAlerted: true };

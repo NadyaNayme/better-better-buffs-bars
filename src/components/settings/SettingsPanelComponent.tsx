@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import useStore from '../../store/index';
 import CheckboxSetting from './CheckboxSetting';
-import RangeSetting from './RangeSetting';
 import ColorSetting from './ColorSetting';
 import SocialButtons from '../common/SocialButtons';
+import AlertsSettings from './AlertsSettings';
 import { patchNotes } from "../../data/patchNotes";
 import { PatchNotesComponent } from './PatchNotesComponent';
 
@@ -12,14 +12,10 @@ const SettingsPanelComponent: React.FC = () => {
 
   const [showPatchNotes, setShowPatchNotes] = useState(false);
 
+  const [showAlertSettings, setShowAlertSettings] = useState(false);
+
   const combatCheck = useStore(s => s.combatCheck);
   const setEnableCombatCheck = useStore(s => s.setEnableCombatCheck);
-
-  const enableAlerts = useStore(s => s.enableAlerts);
-  const setEnableAlerts = useStore(s => s.setEnableAlerts);
-  
-  const alertVolume = useStore(s => s.alertVolume);
-  const setAlertVolume = useStore(s => s.setAlertVolume);
   
   const debugMode = useStore(s => s.debugMode);
   const setDebugMode = useStore(s => s.setDebugMode);
@@ -49,7 +45,7 @@ const SettingsPanelComponent: React.FC = () => {
           position: 'fixed',
           bottom: '1rem',
           right: '1rem',
-          zIndex: showPatchNotes ? 1 : isOpen ? 1000 : 3,
+          zIndex: showPatchNotes ? 3 : showAlertSettings ? 3 : isOpen ? 1000 : 3,
           backgroundColor: isOpen ? '#646cff' : '#1a1a1a'
         }}
       >
@@ -86,17 +82,18 @@ const SettingsPanelComponent: React.FC = () => {
           onChange={setEnableCombatCheck}
         />
 
-        <CheckboxSetting
-          label="Enable Alerts"
-          checked={enableAlerts}
-          onChange={setEnableAlerts}
-        />
+      <button
+        onClick={() => setShowAlertSettings(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Alert Settings
+      </button>
 
-        <RangeSetting
-          label="Alert Volume"
-          value={alertVolume}
-          onChange={setAlertVolume}
-        />
+      {showAlertSettings && (
+        <div className="mt-4 border p-4 rounded bg-gray-800">
+          <AlertsSettings onClose={() => setShowAlertSettings(false)} />
+        </div>
+      )}
 
         <br /><hr /><br />
 

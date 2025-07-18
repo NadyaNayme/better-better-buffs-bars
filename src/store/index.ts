@@ -6,9 +6,10 @@ import { createProfilesSlice, type ProfilesSlice } from './profilesSlice';
 import { createSettingsSlice, type SettingsSlice } from './settingsSlice';
 import { createUISlice, type UISlice } from './uiSlice';
 import { createDebugSlice, type DebugSlice } from './debugSlice';
+import { createAlertsSlice, type AlertsSlice } from './alertSlice';
 import { migrateOldStorageIfNeeded } from '../lib/dataMigration';
 
-type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice;
+type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice & AlertsSlice;
 
 migrateOldStorageIfNeeded();
 const useStore = create<StoreState>()(
@@ -19,6 +20,7 @@ const useStore = create<StoreState>()(
       ...createProfilesSlice(...state),
       ...createSettingsSlice(...state),
       ...createUISlice(...state),
+      ...createAlertsSlice(...state),
       ...createDebugSlice(...state),
     }),
     {

@@ -11,6 +11,23 @@ export interface PatchNote {
   
 export const patchNotes: PatchNote[] = [
   {
+    version: "v0.4.1",
+    date: "2025-07-18",
+    title: "That's alarming...",
+    added: [
+      `Alert settings now have toggles to enable / disable individual alerts`,
+      `Lily has been added as an option for the alert voice.`,
+    ],
+    fixes: [
+      `Buff processing has undergone yet another underhaul & rewrite and major flickering should finally be gone.`,
+    ],
+    highlights: null,
+    errors: null,
+    knownIssues: [
+      `When BBB loses track of a buff, say Overloads when they start their 10s flashing cooldown, the buff lingers at the last read value. There are plans to fix this.`,
+    ],
+  },
+  {
     version: "v0.4.0",
     date: "2025-07-14",
     title: "Dude, where's my settings?",
