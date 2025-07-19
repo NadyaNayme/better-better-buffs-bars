@@ -23,6 +23,7 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
   const playSample = (name: string) => {
     const path = `./assets/audio/${voice}/${alertsMap[name]}`;
     const audio = new Audio(path);
+    audio.volume = alertVolume / 100;
     audio.play();
   };
 

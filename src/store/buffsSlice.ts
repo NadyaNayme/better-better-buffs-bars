@@ -1,7 +1,7 @@
 import { type StateCreator } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { BUFFS_VERSION, buffsData } from '../data/buffs';
-import { isRuntimeBuff, type Buff } from '../types/Buff';
+import { type Buff } from '../types/Buff';
 import { type Store } from '../types/Store';
 import { debugLog } from '../lib/debugLog';
 

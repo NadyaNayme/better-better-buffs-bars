@@ -39,6 +39,8 @@ function App() {
   const combatCheck = useStore((state: Store) => state.combatCheck);
   const debugMode = useStore((state: Store) => state.debugMode);
 
+  useAlerts();
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
     const allGroups = useStore.getState().groups;

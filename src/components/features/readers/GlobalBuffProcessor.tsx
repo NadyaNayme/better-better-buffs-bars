@@ -7,8 +7,8 @@ import { debugLog } from '../../../lib/debugLog';
 import { isRuntimeBuff } from '../../../types/Buff';
 import { throttle } from 'lodash-es';
 
-const READ_INTERVAL = 300; // How often to read & update our data from the buffs bars
-const THROTTLE_INTERVAL = 400; // How often to process the data
+const READ_INTERVAL = 200; // How often to read & update our data from the buffs bars
+const THROTTLE_INTERVAL = 300; // How often to process the data
 const RETRY_INTERVAL = 5000; // How often to retry finding the buff & debuff bars
 type ReaderStatus = 'IDLE' | 'FOUND' | 'FAILED';
 

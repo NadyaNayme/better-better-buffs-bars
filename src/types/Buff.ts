@@ -69,6 +69,7 @@ export interface StackBuff extends BaseBuff {
 export interface AbilityBuff extends BaseBuff {
   type: 'AbilityBuff';
   timeRemaining: number;
+  alert: { condition: 'onCooldownEnd'; hasAlerted?: boolean };
   cooldown: number;
   cooldownStart: number | null;
   hasText: true;
