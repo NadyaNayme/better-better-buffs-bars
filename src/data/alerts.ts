@@ -3,6 +3,7 @@ export const alertsMap: Record<string,string> = {
     'Antifire': 'Antifire.mp3',
     'Antipoison': 'AntiPoison.mp3',
     'Aura': 'Aura.mp3',
+    'Anticipation': 'Aura.mp3',
     'Cannon Decay': 'Cannon Decay.mp3',
     'CantDrink': 'Cant Drink.mp3',
     'Darkness': 'Darkness.mp3',

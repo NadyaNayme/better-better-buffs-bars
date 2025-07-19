@@ -28,7 +28,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
 
   const updateOverlayPosition = async () => {
     if (!a1lib || !window.alt1) {
-      debugLog.error('Alt1 library not detected.');
+      debugLog.error('Alt1 library not detected.', {__tags: ['Alt1']});
       return;
     }
   

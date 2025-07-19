@@ -3,7 +3,6 @@ import useStore from './store/index';
 import a1lib from 'alt1';
 import { isAlt1Available } from "./lib/alt1Utils";
 import PopupModal from './components/common/modals/PopupModal';
-import ThresholdEditor from './components/debug/ThresholdEditor';
 import { type Group } from './types/Group';
 import GroupComponent from './components/features/groups/GroupComponent';
 import SettingsPanelComponent from './components/settings/SettingsPanelComponent';
@@ -21,6 +20,7 @@ import { TargetMobReaderComponent } from './components/features/readers/TargetMo
 import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragOverEvent } from '@dnd-kit/core';
 import { isRuntimeBuff } from './types/Buff';
 import BuffComponent from './components/features/buffs/BuffComponent';
+import { useAlerts } from './hooks/useAlerts';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -164,11 +164,11 @@ function App() {
 
   useEffect(() => {
     if (isAlt1Available()) {
-      debugLog.success("Alt1 detected and overlay permissions granted.");
+      debugLog.success("Alt1 detected and overlay permissions granted.", {__tags: ['Alt1']} );
       setAlt1Detected(true);
       window.alt1?.identifyAppUrl("./appconfig.json");
     } else {
-      debugLog.warning("Alt1 not available or permissions missing.");
+      debugLog.warning("Alt1 not available or permissions missing.", {__tags: ['Alt1']});
     }
     setBuffsFromJsonIfNewer();    
   }, []);

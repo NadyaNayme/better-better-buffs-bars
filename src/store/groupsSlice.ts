@@ -18,6 +18,7 @@ export interface GroupsSlice {
   reorderBuffsInGroup: (groupId: string, oldIndex: number, newIndex: number) => void;
   moveBuffBetweenGroups: (fromGroupId: string, toGroupId: string, buffId: string, insertAt: number) => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
+  updateBuffAlertState: (buffName: string, hasAlerted: boolean) => void;
 }
 
 export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set, get) => ({
@@ -309,4 +310,21 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       return { groups: newGroups };
     });
   },
+  updateBuffAlertState: (buffName, hasAlerted) =>
+    set((state) => ({
+      groups: state.groups.map((group) => ({
+        ...group,
+        buffs: group.buffs.map((buff) =>
+          buff.name === buffName && buff.alert
+            ? {
+                ...buff,
+                alert: {
+                  ...buff.alert,
+                  hasAlerted,
+                },
+              }
+            : buff
+        ),
+      })),
+    })),
 });

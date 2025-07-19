@@ -19,12 +19,17 @@ function createLogger(type: DebugLogType) {
     if (!state.debugMode) return;
     if (type === 'verbose' && !debug.verboseEnabled) return;
 
+    const tagsArg = args.find((a) => typeof a === 'object' && a?.__tags);
+    const tags = tagsArg?.__tags ?? [];
+    if (tagsArg) args = args.filter((a) => a !== tagsArg);
+
     console.log(prefix, ...args);
 
     debug.addDebugLog({
       timestamp,
       type,
       message: args,
+      tags,
     });
   };
 }

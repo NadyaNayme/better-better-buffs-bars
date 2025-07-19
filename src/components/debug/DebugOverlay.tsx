@@ -15,6 +15,8 @@ export function DebugOverlay() {
   const [dragging, setDragging] = useState(false);
   const dragOffset = useRef({ x: 0, y: 0 });
 
+  const [search, setSearch] = useState('');
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [logs]);
@@ -50,9 +52,13 @@ export function DebugOverlay() {
     };
   }, [dragging]);
 
-  const logsToRender = logs.filter(log =>
-    log.type !== 'verbose' || verboseEnabled
-  );
+  const logsToRender = logs.filter((log) => {
+    if (log.type === 'verbose' && !verboseEnabled) return false;
+    const searchLower = search.toLowerCase();
+    const msg = log.message.map((m) => (typeof m === 'string' ? m : JSON.stringify(m))).join(' ').toLowerCase();
+    const tagMatch = log.tags?.some(tag => tag.toLowerCase().includes(searchLower));
+    return msg.includes(searchLower) || tagMatch;
+  });
 
   return (
     <div
@@ -70,6 +76,13 @@ export function DebugOverlay() {
       >
         <span className="font-bold">🧪 Debug Logs</span>
         <div className="flex gap-2">
+          <input
+            type="text"
+            className="text-xs px-1 py-0.5 rounded text-white border-solid border-white border-2"
+            placeholder="Search logs"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <button className="text-xs underline" onClick={toggleVerbose}>
             {verboseEnabled ? 'Disable Verbose' : 'Enable Verbose'}
           </button>

@@ -33,7 +33,7 @@ type BuffType = keyof typeof buffTypes;
 /**
  * Defines the different ways an alert can be triggered.
  */
-type AlertCondition =
+export type AlertCondition =
   | "timeRemaining"
   | "stacks"
   | "onCooldownEnd"
@@ -126,7 +126,7 @@ export interface MetaBuff extends BaseBuff {
 }
 
 export type BuffConfig = {
-  alert: { condition: AlertCondition; threshold: number; hasAlerted: boolean | null } | null;
+  alert: { condition: AlertCondition; threshold: number | null; hasAlerted: boolean | null } | null;
   categories: string[] | null;
   children: string[] | null;
   cooldown: number | null;
