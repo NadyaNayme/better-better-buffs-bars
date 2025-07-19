@@ -34,8 +34,8 @@ type BuffType = keyof typeof buffTypes;
  * Defines the different ways an alert can be triggered.
  */
 export type AlertCondition =
-  | "timeRemaining"
-  | "stacks"
+  | "onTimeRemaining"
+  | "onStacks"
   | "onCooldownEnd"
   | "onActive"
   | "onInactive";
@@ -184,3 +184,14 @@ export function isRuntimeBuff(buff: Buff | BuffInstance): buff is BuffInstance {
     return false;
   }
 }
+export type OnTimeRemainingAction = (monitor: any, buffName: string, threshold: number, callback: () => void) => () => void;
+export type OnStacksAction = (monitor: any, buffName: string, threshold: number, callback: () => void) => () => void;
+export type OnStatusChangeAction = (monitor: any, buffName: string, callback: () => void) => () => void;
+
+export type ActionMap = {
+  onTimeRemaining: OnTimeRemainingAction;
+  onStacks: OnStacksAction;
+  onActive: OnStatusChangeAction;
+  onInactive: OnStatusChangeAction;
+  onCooldownEnd: OnStatusChangeAction;
+};

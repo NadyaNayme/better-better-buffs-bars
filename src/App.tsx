@@ -20,7 +20,7 @@ import { TargetMobReaderComponent } from './components/features/readers/TargetMo
 import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragOverEvent } from '@dnd-kit/core';
 import { isRuntimeBuff } from './types/Buff';
 import BuffComponent from './components/features/buffs/BuffComponent';
-import { useAlerts } from './hooks/useAlerts';
+import { GlobalAlertManager } from './components/features/alerts/GlobalAlertsManager';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -39,8 +39,6 @@ function App() {
   const hasTarget = useStore((state: Store) => state.hasTarget)
   const combatCheck = useStore((state: Store) => state.combatCheck);
   const debugMode = useStore((state: Store) => state.debugMode);
-
-  useAlerts();
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
@@ -244,6 +242,7 @@ function App() {
       <CooldownTimer/>
       <Toaster position="bottom-left" richColors />
       <GlobalBuffProcessor/>
+      <GlobalAlertManager />
       <ActionBarReaderComponent 
             debugMode={debugMode}
             a1lib={a1lib}

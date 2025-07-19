@@ -31,7 +31,7 @@ export function GlobalBuffProcessor() {
     for (const group of groups) {
       for (const buff of group.buffs) {
         if (!isRuntimeBuff(buff)) { 
-          debugLog.error(`Cannot draw buff - it is missing runtime properties. ${group.name} -> ${buff.name}`)
+          debugLog.error(`Cannot draw buff - it is missing runtime properties.`)
           continue 
         };
         names.add(buff.name);

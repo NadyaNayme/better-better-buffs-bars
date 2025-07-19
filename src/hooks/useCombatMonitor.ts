@@ -16,6 +16,7 @@ let hasRanOutOfPrayer = false;
 export function useCombatMonitor() {
   const alertVolume = useStore.getState().alertVolume;
   const isInCombat = useStore.getState().inCombat;
+  const voice = useStore.getState().voice;
   const checkCombat = useCallback((data: { hp: number; dren: number; pray: number }) => {
     const now = Date.now();
     const { hp, dren, pray } = data;
@@ -40,12 +41,12 @@ export function useCombatMonitor() {
           return;
         }
         if (data.pray === 0 && !hasRanOutOfPrayer && isInCombat) {
-          const sound = new Audio(alertsMap['Prayer (Empty)']);
+          const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Empty)']}`);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
           hasRanOutOfPrayer = true;
       } else if (data.pray <= 0.30 && !hasPotted && isInCombat) {
-          const sound = new Audio(alertsMap['Prayer (Low)']);
+          const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Low)']}`);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
           hasPotted = true;
