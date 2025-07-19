@@ -1,7 +1,7 @@
 import { type StateCreator } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { BUFFS_VERSION, buffsData } from '../data/buffs';
-import { type Buff } from '../types/Buff';
+import { isRuntimeBuff, type Buff, type BuffInstance } from '../types/Buff';
 import { type Store } from '../types/Store';
 import { debugLog } from '../lib/debugLog';
 
@@ -33,7 +33,7 @@ export const createBuffsSlice: StateCreator<
   setBuffsFromJsonIfNewer: () => {
     const version = get().version;
     const jsonVersion = BUFFS_VERSION;
-
+  
     if (jsonVersion > version) {
       const newBuffs = buffsData.map((buff: Buff) => ({
         ...buff,
@@ -48,7 +48,33 @@ export const createBuffsSlice: StateCreator<
         foundChild: null,
         hasAlerted: false,
       }));
-      set({ buffs: newBuffs, version: jsonVersion });
+  
+      const buffMap = new Map(newBuffs.map((buff) => [buff.name, buff]));
+  
+      set((state) => {
+        const updatedGroups = state.groups.map((group) => {
+          const updatedBuffs = group.buffs.map((buff) => {
+            const updated = buffMap.get(buff.name);
+            return updated
+              ? {
+                  ...updated,
+                  id: buff.id,
+                  index: buff.index,
+                  groupId: group.id,
+                }
+              : buff;
+          });
+  
+          return { ...group, buffs: updatedBuffs };
+        });
+  
+        return {
+          buffs: newBuffs,
+          groups: updatedGroups,
+          version: jsonVersion,
+        };
+      });
+  
       debugLog.info(`Buffs updated to version ${jsonVersion}`);
     }
   },
