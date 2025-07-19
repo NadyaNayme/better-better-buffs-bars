@@ -15,7 +15,7 @@ export const patchNotes: PatchNote[] = [
     date: "2025-07-18",
     title: "That's alarming...",
     added: [
-      `Alert settings now have toggles to enable / disable individual alerts`,
+      `Alert settings now have toggles to enable / disable individual alerts. Not all alerts have been fully implemented yet.`,
       `Lily has been added as an option for the alert voice.`,
     ],
     fixes: [
