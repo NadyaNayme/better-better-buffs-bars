@@ -11,7 +11,6 @@ export function onTimeRemaining(monitor: any, buffName: string, seconds: number,
     const selector = (state: Store) => {
       const buff = getBuffByName(state, buffName);
       if (!buff) return null;
-      // The selector now returns an object with all the data we need.
       return {
         timeRemaining: buff.timeRemaining,
         hasAlerted: buff.alert?.hasAlerted,
@@ -29,8 +28,7 @@ export function onTimeRemaining(monitor: any, buffName: string, seconds: number,
       }
       
       if (current.status === 'Inactive' && previous.status === 'Active') {
-        // This is an advanced concept. You'd need a store action here.
-        // useStore.getState().resetAlertStatus(buffName);
+        // TODO: useStore.getState().resetAlertStatus(buffName);
       }
     };
   

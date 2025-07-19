@@ -12,19 +12,25 @@ export interface PatchNote {
 export const patchNotes: PatchNote[] = [
   {
     version: "v0.4.1",
-    date: "2025-07-18",
-    title: "That's alarming...",
+    date: "2025-07-19",
+    title: "That's alerting...",
     added: [
-      `Alert settings now have toggles to enable / disable individual alerts. Not all alerts have been fully implemented yet.`,
-      `Lily has been added as an option for the alert voice.`,
+      `Alert settings now have toggles to enable / disable individual alerts. Note: Not all alerts have been implemented quite yet...`,
+      `You can now choose between Callum & Lily for the alert voices.`,
+      `Individual groups can now hide outside of combat for those wanting a little more control.`,
+      `The debugging console now has a search filter`,
     ],
     fixes: [
       `Buff processing has undergone yet another underhaul & rewrite and major flickering should finally be gone.`,
+      `Stale buffs with 1-59s time remaining will now clear themselves after 10-15 seconds.`,
+      `The UI is a little more colorful.`
     ],
-    highlights: null,
+    highlights: [
+      `Whether you are considered to be "in combat" or not now also makes use of an active target nameplate instead of solely relying on changes to the player's HP, Adrenaline, or Prayer.`
+    ],
     errors: null,
     knownIssues: [
-      `When BBB loses track of a buff, say Overloads when they start their 10s flashing cooldown, the buff lingers at the last read value. There are plans to fix this.`,
+      `Stale buffs with >1m time remaining are not cleared as I cannot tell '60' apart from '60' as that is all Alt1 sees when a buff has between 1:00 and 1:59 duration left. I could clear these after 2-3 minutes but that doesn't seem very helpful.`,
     ],
   },
   {
