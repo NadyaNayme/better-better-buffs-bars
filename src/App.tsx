@@ -36,6 +36,7 @@ function App() {
   const setBuffsFromJsonIfNewer = useStore((state: Store) => state.setBuffsFromJsonIfNewer);
   const rescaleAllGroups = useImageRescaler();
   const inCombat = useStore((state: Store) => state.inCombat);
+  const hasTarget = useStore((state: Store) => state.hasTarget)
   const combatCheck = useStore((state: Store) => state.combatCheck);
   const debugMode = useStore((state: Store) => state.debugMode);
 
@@ -201,7 +202,7 @@ function App() {
       >
       <div className="space-y-8 mb-8">
         {groups.map((group: any) => (
-          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat} combatCheck={combatCheck} activeBuff={activeBuff} dragOverGroupId={dragOverGroupId} />
+          <GroupComponent key={group.id} group={group} alt1Ready={alt1Ready} a1lib={a1lib} inCombat={inCombat || hasTarget} combatCheck={combatCheck} activeBuff={activeBuff} dragOverGroupId={dragOverGroupId} />
         ))}
       </div>
       <DragOverlay>

@@ -5,5 +5,7 @@ import type { SettingsSlice } from '../store/settingsSlice';
 import type { UISlice } from '../store/uiSlice';
 import type { DebugSlice } from '../store/debugSlice';
 import type { AlertsSlice } from '../store/alertSlice';
+import type { CombatSlice } from '../store/combatSlice';
 
-export type Store = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice & AlertsSlice;
+export type Store = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice & AlertsSlice & CombatSlice;
+export type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice & AlertsSlice & CombatSlice;

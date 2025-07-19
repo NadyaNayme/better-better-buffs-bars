@@ -1,15 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { createBuffsSlice, type BuffsSlice } from './buffsSlice';
-import { createGroupsSlice, type GroupsSlice } from './groupsSlice';
-import { createProfilesSlice, type ProfilesSlice } from './profilesSlice';
-import { createSettingsSlice, type SettingsSlice } from './settingsSlice';
-import { createUISlice, type UISlice } from './uiSlice';
-import { createDebugSlice, type DebugSlice } from './debugSlice';
-import { createAlertsSlice, type AlertsSlice } from './alertSlice';
 import { migrateOldStorageIfNeeded } from '../lib/dataMigration';
-
-type StoreState = BuffsSlice & GroupsSlice & ProfilesSlice & SettingsSlice & UISlice & DebugSlice & AlertsSlice;
+import type { StoreState } from '../types/Store';
+import { createBuffsSlice } from './buffsSlice';
+import { createGroupsSlice } from './groupsSlice';
+import { createProfilesSlice } from './profilesSlice';
+import { createSettingsSlice } from './settingsSlice';
+import { createUISlice } from './uiSlice';
+import { createAlertsSlice } from './alertSlice';
+import { createDebugSlice } from './debugSlice';
+import { createCombatSlice } from './combatSlice';
 
 migrateOldStorageIfNeeded();
 const useStore = create<StoreState>()(
@@ -22,6 +22,7 @@ const useStore = create<StoreState>()(
       ...createUISlice(...state),
       ...createAlertsSlice(...state),
       ...createDebugSlice(...state),
+      ...createCombatSlice(...state),
     }),
     {
       name: 'better-buffs-bars-storage',

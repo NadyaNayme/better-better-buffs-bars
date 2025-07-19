@@ -90,6 +90,9 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
     lastMobNameplatePos,
     setLastMobNameplatePos,
     syncIdentifiedBuffs,
+    setCurrentTarget,
+    setCurrentTargetHitpoints,
+    setHasTarget,
   } = useStore();
 
   const [targetData, setTargetData] = useState({ hp: 0, name: 'Not Found' });
@@ -117,6 +120,9 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
       const newPos = readerRef.current.lastpos;
       if (newPos && (!lastMobNameplatePos || newPos.x !== lastMobNameplatePos.x || newPos.y !== lastMobNameplatePos.y)) {
         setLastMobNameplatePos(newPos);
+        setCurrentTarget(result.name);
+        setCurrentTargetHitpoints(result.hp);
+        setHasTarget(true);
       }
       dispatch({ type: 'NAMEPLATE_FOUND' });
     }
@@ -129,11 +135,17 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
       const newPos = readerRef.current.lastpos;
       if (newPos && (!lastMobNameplatePos || newPos.x !== lastMobNameplatePos.x || newPos.y !== lastMobNameplatePos.y)) {
         setLastMobNameplatePos(newPos);
+        setCurrentTarget(result.name);
+        setCurrentTargetHitpoints(result.hp);
+        setHasTarget(true);
       }
     } else {
       setTargetData({ hp: 0, name: 'Not Found' });
       if (lastMobNameplatePos !== null) {
         setLastMobNameplatePos(null);
+        setCurrentTarget(null);
+        setCurrentTargetHitpoints(null);
+        setHasTarget(false);
       }
     }
     const pos = readerRef.current.lastpos ?? lastMobNameplatePos;
@@ -145,6 +157,9 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
       setTargetData({ hp: 0, name: 'Not Found' });
       if (lastMobNameplatePos !== null) {
         setLastMobNameplatePos(null);
+        setCurrentTarget(null);
+        setCurrentTargetHitpoints(null);
+        setHasTarget(false);
       }
       const cleared = clearAllDebuffs(lastDetectedRef);
       if (cleared.size > 0) syncIdentifiedBuffs(cleared);
