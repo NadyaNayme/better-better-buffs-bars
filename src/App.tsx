@@ -21,6 +21,7 @@ import { DndContext, closestCenter, DragOverlay, type DragStartEvent, type DragO
 import { isRuntimeBuff } from './types/Buff';
 import BuffComponent from './components/features/buffs/BuffComponent';
 import { GlobalAlertManager } from './components/features/alerts/GlobalAlertsManager';
+import { initializeStuckBuffMonitor } from './lib/store-monitors/stuckBuffMonitor';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -162,6 +163,10 @@ function App() {
   useEffect(() => {
     rescaleAllGroups();
   }, [groups, rescaleAllGroups]);
+
+  useEffect(() => {
+    initializeStuckBuffMonitor();
+  }, []);
 
   useEffect(() => {
     if (isAlt1Available()) {

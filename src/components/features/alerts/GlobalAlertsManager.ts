@@ -3,8 +3,8 @@ import useStore from '../../../store';
 import { isRuntimeBuff, type ActionMap, type AlertCondition } from '../../../types/Buff';
 import { debugLog } from '../../../lib/debugLog';
 import { alertsMap } from '../../../data/alerts'; 
-import { onActive, onCooldownEnd, onInactive, onStacks, onTimeRemaining } from '../../../lib/alert-monitors/buffMonitors';
 import { createStoreMonitor } from '../../../lib/storeMonitor';
+import { onTimeRemaining, onStacks, onActive, onInactive, onCooldownEnd } from '../../../lib/store-monitors/alertMonitors';
 
 const conditionToActionMap: ActionMap = {
     onTimeRemaining,

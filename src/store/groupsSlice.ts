@@ -19,6 +19,7 @@ export interface GroupsSlice {
   moveBuffBetweenGroups: (fromGroupId: string, toGroupId: string, buffId: string, insertAt: number) => void;
   syncIdentifiedBuffs: (foundBuffsMap: Map<string, any>) => void;
   updateBuffAlertState: (buffName: string, hasAlerted: boolean) => void;
+  forceDeactivateBuffs: (buffIds: string[]) => void;
 }
 
 export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set, get) => ({
@@ -310,12 +311,42 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       return { groups: newGroups };
     });
   },
+  forceDeactivateBuffs: (buffIds: string[]) => {
+    set((state) => {
+      const idsToDeactivate = new Set(buffIds);
+
+      const newGroups = state.groups.map(group => {
+        const updateBuffs = (buffs: Buff[]) => {
+          return buffs.map(buff => {
+            if (!isRuntimeBuff(buff)) return buff;
+            if (idsToDeactivate.has(buff.id)) {
+              return {
+                ...buff,
+                status: 'Inactive',
+                timeRemaining: 0,
+                guaranteedActiveUntil: 0,
+              };
+            }
+            return buff;
+          });
+        };
+        
+        return {
+          ...group,
+          buffs: updateBuffs(group.buffs),
+          children: updateBuffs(group.children),
+        };
+      });
+
+      return { groups: newGroups };
+    });
+  },
   updateBuffAlertState: (buffName, hasAlerted) =>
     set((state) => ({
       groups: state.groups.map((group) => ({
         ...group,
         buffs: group.buffs.map((buff) =>
-          buff.name === buffName && buff.alert
+          buff.name === buffName && isRuntimeBuff(buff) && buff.alert
             ? {
                 ...buff,
                 alert: {

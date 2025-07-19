@@ -1,10 +1,10 @@
-import type { Buff, BuffInstance } from './Buff';
+import type { Buff } from './Buff';
 import type { Coordinates } from './Coordinates';
 
 export interface Group {
     id: string;
     name: string;
-    buffs: BuffInstance[];
+    buffs: Buff[];
     buffsPerRow: number;
     enabled: boolean;
     hideOutsideCombat: boolean;

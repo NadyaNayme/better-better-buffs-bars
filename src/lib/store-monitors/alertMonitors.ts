@@ -39,8 +39,8 @@ export function onTimeRemaining(monitor: any, buffName: string, seconds: number,
 
 export function onStacks(monitor: any, buffName: string, stacks: number, callback: () => void) {
   return monitor.monitor(
-    state => getBuffByName(state, buffName)?.stacks,
-    (current, previous) => {
+    (state: Store) => getBuffByName(state, buffName)?.stacks,
+    (current: number, previous: number) => {
       if (current === stacks && previous !== stacks) {
         callback();
       }
@@ -50,8 +50,8 @@ export function onStacks(monitor: any, buffName: string, stacks: number, callbac
 
 export function onActive(monitor: any, buffName: string, callback: () => void) {
   return monitor.monitor(
-    state => getBuffByName(state, buffName)?.status,
-    (current, previous) => {
+    (state: Store) => getBuffByName(state, buffName)?.status,
+    (current: string, previous: string) => {
       if (current === 'Active' && previous !== 'Active') {
         callback();
       }
@@ -61,8 +61,8 @@ export function onActive(monitor: any, buffName: string, callback: () => void) {
 
 export function onInactive(monitor: any, buffName: string, callback: () => void) {
     return monitor.monitor(
-      state => getBuffByName(state, buffName)?.status,
-      (current, previous) => {
+      (state: Store) => getBuffByName(state, buffName)?.status,
+      (current: string, previous: string) => {
         if (current === 'Inactive' && previous !== 'Inactive') {
           callback();
         }
@@ -72,8 +72,8 @@ export function onInactive(monitor: any, buffName: string, callback: () => void)
 
   export function onCooldownEnd(monitor: any, buffName: string, callback: () => void) {
     return monitor.monitor(
-        state => getBuffByName(state, buffName)?.status,
-        (current, previous) => {
+      (state: Store) => getBuffByName(state, buffName)?.status,
+        (current: string, previous: string) => {
           if (current === 'Inactive' && previous === 'OnCooldown') {
             callback();
           }
