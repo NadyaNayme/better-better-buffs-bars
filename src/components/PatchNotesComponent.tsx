@@ -14,7 +14,7 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-[#364554] flex items-center justify-center">
       <div className="bg-zinc-900 text-white rounded-lg shadow-2xl w-[800px] h-[600px] flex overflow-hidden relative">
         <div className="w-1/4 bg-zinc-800 border-r border-zinc-700 p-4 overflow-y-auto">
           <h3 className="text-lg font-bold mb-3">Versions</h3>
@@ -25,8 +25,8 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
                   onClick={() => setSelectedVersion(note.version)}
                   className={`w-full text-left px-2 py-1 rounded text-sm ${
                     selectedVersion === note.version
-                      ? "bg-zinc-700 font-semibold"
-                      : "hover:bg-zinc-700"
+                      ? "bg-indigo-700 font-semibold"
+                      : "hover:bg-indigo-500"
                   }`}
                 >
                   {note.version}
@@ -74,7 +74,7 @@ export function PatchNotesComponent({ onClose }: { onClose: () => void }) {
 
         <button
           onClick={onClose}
-          className="absolute bottom-4 right-4 bg-orange-500 hover:bg-orange-600 text-white px-4 py-1 rounded"
+          className="absolute bottom-4 right-4 bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded"
         >
           Close
         </button>

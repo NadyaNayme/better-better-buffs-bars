@@ -27,8 +27,8 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-1001 bg-black bg-opacity-70 flex justify-center items-start p-6 overflow-y-auto">
-      <div className="bg-black dark:bg-zinc-900 rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
+    <div className="fixed inset-0 z-1001 bg-black/95 flex justify-center items-start p-6 overflow-y-auto">
+      <div className="bg-[#364554] dark:bg-zinc-900 rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
@@ -65,16 +65,16 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
         <div key={name} className="flex items-center gap-4">
           <span className="w-48">{name}</span>
           <button
-            className={`px-3 py-1 rounded ${alertEnabledMap[name] ? 'bg-green-500' : 'bg-gray-300'}`}
+            className={`px-3 py-1 w-[104px] rounded ${alertEnabledMap[name] ? 'bg-green-500 hover:bg-green-700' : 'bg-gray-300 hover:bg-gray-500'} ${alertEnabledMap[name] ? 'text-white' : 'text-black'}`}
             onClick={() => toggleAlert(name)}
           >
             {alertEnabledMap[name] ? 'Enabled' : 'Disabled'}
           </button>
           <button
-            className="bg-blue-500 text-white px-3 py-1 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
             onClick={() => playSample(name)}
           >
-            ▶️ Sample
+            Sample
           </button>
         </div>
       ))}

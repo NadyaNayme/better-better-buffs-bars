@@ -61,11 +61,11 @@ export function DebugOverlay() {
         left: `${position.x}px`,
         top: `${position.y}px`,
       }}
-      className="fixed w-[600px] max-h-[300px] bg-black bg-opacity-90 text-white text-sm rounded-lg shadow-xl z-50 border border-white overflow-hidden"
+      className="fixed w-[600px] max-h-[300px] bg-[#364554] bg-opacity-90 text-white text-sm rounded-lg shadow-xl z-50 border border-white overflow-hidden"
     >
       {/* Header bar (drag handle) */}
       <div
-        className="cursor-move bg-black bg-opacity-80 p-2 flex justify-between items-center border-b border-white"
+        className="cursor-move bg-[#364554] bg-opacity-80 p-2 flex justify-between items-center border-b border-white"
         onMouseDown={handleMouseDown}
       >
         <span className="font-bold">🧪 Debug Logs</span>

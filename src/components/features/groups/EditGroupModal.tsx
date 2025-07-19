@@ -33,8 +33,8 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-black p-8 rounded-lg">
+    <div className="fixed inset-0 bg-black/95 bg-opacity-50 flex items-center justify-center">
+      <div className="bg-[#364554] p-8 rounded-lg">
         <h2 className="text-2xl font-bold mb-4">Edit Group</h2>
         <div className="space-y-4">
           <div>

@@ -18,13 +18,13 @@ const ColorSetting: React.FC<ColorSettingProps> = ({ label, value, onChange }) =
   }, [onChange]);
 
   return (
-    <label style={{ display: "flex", alignItems: "center" }}>
+    <label style={{ display: "flex", alignItems: "center", flexDirection: 'row-reverse', justifyContent: 'flex-end' }}>
       {label}
       <input
         type="color"
         value={rgbToHex(value)}
         onChange={handleChange}
-        style={{ marginLeft: "8px" }}
+        style={{ marginRight: "8px" }}
       />
     </label>
   );

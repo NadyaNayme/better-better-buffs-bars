@@ -31,7 +31,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black/95 flex items-center justify-center z-50"
       onKeyDown={handleKeyDown}
       tabIndex={-1}
       role="dialog"
@@ -49,7 +49,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
           >
             {cancelLabel}
           </button>

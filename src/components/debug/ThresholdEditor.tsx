@@ -31,7 +31,7 @@ const ThresholdEditor = () => {
   };
 
   return (
-    <div className="p-4 border rounded bg-gray-100">
+    <div className="p-4 border rounded bg-zinc-800">
       <h3 className="text-lg font-semibold mb-2">Buff Threshold Overrides</h3>
 
       <form onSubmit={handleSubmit} className="flex flex-col space-y-2">

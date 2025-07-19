@@ -86,7 +86,7 @@ const ProfileManager: React.FC<ProfileManagerProps> = ({ openModalForProfile }) 
                 ) : (
                   <>
                   <span className="mr-2">{p.name}</span>
-                    <button onClick={() => handleEdit(p)} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
+                    <button onClick={() => handleEdit(p)} className="bg-slate-900 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded">
                       Rename
                     </button>
                     <button onClick={() => deleteProfile(p.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">

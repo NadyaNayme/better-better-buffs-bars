@@ -39,7 +39,7 @@ const SettingsPanelComponent: React.FC = () => {
 
   return (
     <>
-      <button
+      <button className="bg-slate-900 hover:bg-gray-700"
         onClick={togglePanel}
         style={{
           position: 'fixed',
@@ -69,11 +69,9 @@ const SettingsPanelComponent: React.FC = () => {
         }}
       >
         <h2>Settings</h2>
-        <h3 className="text-zinc-400">
-          <button onClick={() => setShowPatchNotes(true)} className="underline hover:text-white" style={{padding: 0}} title={"Read patch notes"}>
-            {patchNotes[0].version}
-          </button>
-        </h3>
+        <button onClick={() => setShowPatchNotes(true)} className="w-[154px] text-size-md px-4 py-2 mt-2 mb-4 rounded bg-blue-600 hover:bg-blue-700" style={{padding: '.25rem .5rem'}} title={"Read patch notes"}>
+          {patchNotes[0].version}
+        </button>
         {showPatchNotes && <PatchNotesComponent onClose={() => setShowPatchNotes(false)} />}
 
         <CheckboxSetting
@@ -84,7 +82,7 @@ const SettingsPanelComponent: React.FC = () => {
 
       <button
         onClick={() => setShowAlertSettings(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        className="px-4 py-2 mt-6 mb-6 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
         Alert Settings
       </button>
@@ -98,13 +96,13 @@ const SettingsPanelComponent: React.FC = () => {
         <br /><hr /><br />
 
         <ColorSetting
-          label="Time Remaining Color:"
+          label="Time Remaining Color"
           value={timeRemainingColor}
           onChange={setTimeRemainingColor}
         />
 
         <ColorSetting
-          label="Cooldown Color:"
+          label="Cooldown Color"
           value={cooldownColor}
           onChange={setCooldownColor}
         />

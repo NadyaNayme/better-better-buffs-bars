@@ -213,7 +213,7 @@ function App() {
       </DndContext>
 
       <div className="mb-8">
-        <button onClick={openModalForGroup} className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={openModalForGroup} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Create Group
         </button>
       </div>
@@ -234,7 +234,7 @@ function App() {
         <>
           <DebugOverlay />
           <Debug />
-          <ThresholdEditor/>
+          {/* <ThresholdEditor/> */}
         </>
       )}
       {/* Utility */}

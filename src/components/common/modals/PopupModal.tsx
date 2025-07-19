@@ -45,7 +45,7 @@ const PopupModal: React.FC<PopupModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-50">
       <div className="bg-gray-900 p-6 rounded shadow-lg w-80">
         <h3 className="text-xl mb-4 text-white-900">{title}</h3>
         <input
@@ -60,13 +60,13 @@ const PopupModal: React.FC<PopupModalProps> = ({
         <div className="flex justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
           >
             Create
           </button>

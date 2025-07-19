@@ -96,7 +96,7 @@ const GroupComponent: React.FC<GroupComponentProps> = ({ group, a1lib, alt1Ready
           <button onClick={() => setAddBuffModalOpen(true)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
             Add Buff
           </button>
-          <button onClick={() => setEditGroupModalOpen(true)} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+          <button onClick={() => setEditGroupModalOpen(true)} className="bg-slate-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
             ⚙ Settings
           </button>
         </div>
