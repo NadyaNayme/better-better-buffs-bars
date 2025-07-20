@@ -10,13 +10,14 @@ export function initializeStuckBuffMonitor() {
   const storeMonitor = createStoreMonitor(useStore);
   const buffHistory = new Map<string, { time: number; stuckCount: number }>();
   
-  const selector = (state: any): { id: string; name: string; timeRemaining: number | null }[] => {
+  const selector = (state: any): { id: string; name: string; type: string; timeRemaining: number | null }[] => {
     return state.groups
       .flatMap((g: any) => [...g.buffs, ...g.children])
       .filter(isRuntimeBuff)
       .map((b: BuffInstance) => ({
         id: b.id,
         name: b.name,
+        type: b.type,
         timeRemaining: b.timeRemaining,
       }));
   };
@@ -25,7 +26,8 @@ export function initializeStuckBuffMonitor() {
     const buffsToDeactivate = new Set<string>();
 
     for (const currentBuff of currentBuffs) {
-      if (typeof currentBuff.timeRemaining !== 'number' || currentBuff.timeRemaining <= 0) {
+      if (currentBuff.type === "TargetDebuff" || currentBuff.type === "PermanentBuff" || currentBuff.type === "MetaBuff" || currentBuff.type === "StackBuff") continue
+      if (typeof currentBuff.timeRemaining !== 'number' || currentBuff.timeRemaining <= 0 || currentBuff.timeRemaining === null) {
         buffHistory.delete(currentBuff.id);
         continue;
       }
