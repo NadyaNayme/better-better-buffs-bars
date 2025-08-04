@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 128;
+export const BUFFS_VERSION = 150;
 
 export const buffsData: BuffConfig[] = [
   {
@@ -1205,8 +1205,8 @@ export const buffsData: BuffConfig[] = [
     children: null,
     hasText: true,
     cooldown: null,
-    isUtility: true,
-    categories: ["Utility"]
+    isUtility: false,
+    categories: ["Potion"]
   },
   {
     name: "Prayer Renewal",
