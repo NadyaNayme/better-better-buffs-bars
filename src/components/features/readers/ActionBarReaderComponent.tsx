@@ -104,20 +104,20 @@ export function ActionBarReaderComponent({
   return (
     debugMode && (
       <>
-        <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
+        <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px', marginBottom: '20px' }}>
           <p style={{ margin: 0, fontWeight: 'bold' }}>Action Bar Reader</p>
           <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
-        </div>
-        {status === "READING" && lifeData && (
-            <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
-              <p style={{ margin: 0 }}>HP: {lifeData.hp * 100}%</p>
-              <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline * 100}%</p>
-              <p style={{ margin: 0 }}>Prayer: {lifeData.prayer * 100}%</p>
-            </div>
+          {status === "READING" && lifeData && (
+              <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
+                <p style={{ margin: 0 }}>HP: {lifeData.hp * 100}%</p>
+                <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline * 100}%</p>
+                <p style={{ margin: 0 }}>Prayer: {lifeData.prayer * 100}%</p>
+              </div>
+            )}
+          {status === "ERROR" && (
+            <div style={{ color: "red" }}>Error finding Action Bar. Please restart overlay.</div>
           )}
-        {status === "ERROR" && (
-          <div style={{ color: "red" }}>Error finding Action Bar. Please restart overlay.</div>
-        )}
+        </div>
       </>
     )
   );

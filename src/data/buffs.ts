@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 150;
+export const BUFFS_VERSION = 154;
 
 export const buffsData: BuffConfig[] = [
   {
@@ -692,6 +692,23 @@ export const buffsData: BuffConfig[] = [
     categories: ["Potion"]
   },
   {
+    name: "Elder Overload Salve",
+    type: "NormalBuff",
+    thresholds: {
+      fail: 50,
+      pass: 30
+    },
+    imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADa0lEQVR4nL2Wz28bRRTHP7O7tjcbO7ajxE6apGpJqipQpCoIqBA/RC5FPdBeqFRO3KjaG6CKAzcO/AVw4YqE1AOCQy8IRIUEFQiqoqJCrNIkuNAEOXa8Xv/a3ZlBs+mRFBuSPml2pd237/PmO2/erHj1g2nNQzLHXD6+uDGQczHrsPLFac5+9ij+bytcv3x5YNC596ewhsms01d8+sl13ihfIV+7wbBmDePckxZvfjXPh7cXubo5s78wZMzU8mmu/VkkL4L9hc29cgH6PTK6y+jRJdyZ+f2DZUrTdNcrqLAPSjH57EukSwf3HubkCnTXV+jVa9y78hH177/Edl2ENXi+A3sefO0Sqfw4FjFaC1KlWaTSCEvsPazxw1XiboCwLUovvszU8hnat28R+Y19gF37HKUE3uFFxp96gdbNb2ne+BoZbA/XQQY1d6KMZTtE/jatOyvIbmeYzxkYVj55jmi7RrS1SWv1V4pLzxO1fPqb63srY/HESUbnjxIHPmGjgez3SJemGV96Dre8R6WvNehsgdGJEm7UTbyDrQ2U42CK0LI0uSPHsEfG/p+MWthMHD/B8VNnmM/nyIUdvpN98luT+FoTdUIsbww78CkcWqC2VkF0g/8GK5RnOf/6RR4veGw06gStPsuHpgmyT/PjvS1+6TZJRTHKbLPCOO7CIr07FUS7ObyMcwWPU8eO0IoVqbSLa7qFbfNXY5sqLlbHJwyaYKfASjEyksOdPYx2PTRicJjGIr/wGC4xB7IuB/IeY/kCvVhRsz36YYglBCJtQBbOiAdhn4yTgowLu8B2kVGQyhXRSpK2QUsYz9hsmlbV69C7u4pEJWkhFUiJiiJaXTNTG4RIXg0G09DrdZJqjKUkjmOUkgitEHGUdH0ljFhGGA1xnJSu6sc7oF3sH2UUQtKp3MTzRhHCwjLZanY6vMnYBBQ29+uf5G5eGAnkkDBj9abPz7//QT5rFlzjOPddhTBH2U7wBKB3lkhoUBLC9s6zYWDV6hpvvfsea/UWM5MTZF0Xz80gtSQ2kspkihBHyZoJK50cqKITIJL1HGKfGaWqP33DpXfe5oknnyHMePj1LarNJrZjk8QzQ6pE6nZ7G1oPPgH+tRFXK7eSoe2RRCprNEth7hG0VhAZD0377iphx0fI+IGxxMP8I/4b6ZJpIUH7sC0AAAAASUVORK5CYII=",
+    desaturatedImageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAACVElEQVR4nL1WSYoqQRQMy3me3amIiOhKXLnVC3gUz+PGq3gC0YULdyqCgorzPFUTyc+PNG1p0doPqjKryHqRERn5sgylUknFH4WJt3q9/tJgm82GSqWCVquF6XSKRqPxMlCxWISiZ2bn8xnNZhMejwfr9Rp6Q9Ez+Ha7odPpYLFYfB5MVVWk02lMJhMYDIbPguXzeVyvVwEaiUTg8/k+B+ZyuTCbzQQgI5lMwu12vx/MarUKoN1uh3a7jV6vB5PJpEtO5dWBhUIBdrtdSChZsv8RsH6/j9PpJJKnUqn/RjkcDu8Ho2xkEgwGEY/HMRwOMRgMcDwe9VWQV4PSKYoi2LCCXC4XPZ/jZbBsNov9fo/tdiuAYrGYYLVard4rYyKRQCAQEMkJSEZkSUCWrreBmc1mkVgGy9S9A8PhMCwWy+9ljEajyOVyghUBaBI6kgWZ7AjCZ5qGzny2hg/B/H4/yuUyQqEQlsulkI8Vg8+j0QibzUZMgA7lhueE5vO5mIhuGbkWNAU/ppRkweSUkW4kC7Z8R4fyrPN6vTAajfrBWGgZTqdTrBlbAvDiBCQIW06Gxw9bLbCHMsrSxI+ZiMzYJxhl5TsGx/BicWbd1CpfD8FocyZhUnmssC8Tsy8T3+7ea8VDGcfjsVgHMUhRRDK2Mn5ioD4pzA/BWCnoOofDIZ7v10JK9xPYRcP+msxqtZr43+A2IEuum5T1u4TKP/ZaYJqbutvtolqtIpPJiGS0PcHv5ZTScR9yg2vF00LMo4QXZWRisuMGlm5kcDNLQz0F4w/kX8QXfpJqeCVcPLoAAAAASUVORK5CYII=",
+    defaultImageData: null,
+    isUtility: false,
+    alert: { condition: 'onTimeRemaining', threshold: 15, hasAlerted: false },
+    children: null,
+    hasText: true,
+    cooldown: null,
+    categories: ["Potion"]
+  },
+  {
     name: "Enhanced Excalibur",
     type: "NormalDebuff",
     thresholds: {
@@ -907,6 +924,23 @@ export const buffsData: BuffConfig[] = [
     defaultImageData: null,
     isUtility: false,
     alert: { condition: 'onTimeRemaining', threshold: 15, hasAlerted: false },
+    children: null,
+    hasText: true,
+    cooldown: null,
+    categories: ["Upkeep"]
+  },
+  {
+    name: "Infinite Run",
+    type: "NormalBuff",
+    thresholds: {
+      fail: 50,
+      pass: 30
+    },
+    imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAAFn0lEQVR4nL2WaWxc1RXHf/ctMx47juPxxFvGNEpiGhwDAZVQFqkERarE1koBobR8KYWgghCgIvUDQoioIDVSVxQDSfkAGEFQK8QmSiBpaQhZSAVKlDiLSR1sJxNPPB57Fr/1XnTfeBLi2IrCB470nvTue+f87zn/c/73iV/0tCm+J7P07fWHMhfnZMKVl83hJz+ez5H+MT75vEChFCKEQikxo8+aDa0VsBlNKZjmZ1mCIFCsvWsef3u6GWOOADGf5zamWP98huFTRQwBcpZaGbOCCY107hUE0QtiMkBOBoz8X5I/VOb6LsmShZVQCkXcnjm7WTNraTJobLKREhxHIgOFVILSpMArKPL7xwhtGHUFg8ezuBMelim4qquOe+5Msv75kwxnAgyDKMZ5YIahkLKyqxfXtXHH6jpwFOQVE2Wf/pM2X51I0N4eYrcX8QZLfPJFmd9uChkvwYJknHtvb+a+e0w+21nD5g8KU/HU+WDfJrelzWLf+3l2fzTOwkUxGlsN2pOw+BILlaxH2QnqmkN+dEWZq5cotu9XDOcc/r0jwx0rUwRliYFAos5QfwZM6GorEaV9TVcdCTfHhnc9Nr4VUptwWdYOm9bWUtMYUhqfoC6dQBgGHU219DzbxKN/GKPvWMjdd83HyHvsOjCJTipmCbxgGphpCoIQGuotHrm/mezpHPsOudimwnHgy+NQdOPUtMfwhECEIdIJyY1JfniV4slH0lhzDFakC/Q8nqM4rokShKEuoTi3G3Wna+toEdywNOSLfotjpwwCqSsuIpL1DsNiSPmUQBUEJ3Iez/SW2bR+lGWGz4p6j3d7R/n9XkneF1HQCOvcMirCqcbwA3ju1TxvbyuTHZPRBJhCsHzRHFrmWxHVcqjIsQGDf2QtXvnY5cPmGg4PDJFKhGzJGmSyQURLJSExHezsQt8xP7q02RZ4vmBROs6fH51LKu1SMg0W/yzF9j0B77yQi747NeLwpzGB8gUCv8J/NKcXGGr9oQbR0hPVWwg6GhSdsQmsSYUqQLFg0nn1XJ54qpVbVzZWKPAVcUtiaMmaLj3Tu/EMd3pvgcYQkey0NMdYsTjB0F6HuWkQtqB0wqehw2LNdXXcdG2a3jdj9Lw8wuCIwtR6NYtczaogpoBAKpYvEKy+1sLICHL/83FaDcxWRdDno772oNXld/fWYtlp/vhSnpFsYbaQM4PpctfEwfEFbQsMursFfcOQqBPs6Df5eFcAZsiSpMHNP3ApjpT5+ZVNHL0pwcbNGqyamrgQWGW4i5OVp5YFCWpaa/H9CWSb4IO9Ph8d9irHCXDkihp+g89Pu8ssXTg1vRfOTEUZaaB0Ks6v1tSzfFmMlAwZ2j1Oss3m2a0Bnw64kYbaBriB4D+H4JedCitu0twOyXrIFaaGeIq+6gxHYKZ2tgWOC23JOK9s6KBTlbCzZRJSciQj+fseyRufe7h+pTh+WOlcx3Ppn7AY7SvSlWjglhvSvL5lKNq4VqTzMtMDHbrQ3V3DXx5PsaycR5x22XpQ8c6BgC+HfQ5nQqR2VpXyVck1kPTsCvCCEo/9upbbbk/Q+6/K60s75xG3Yf/B/FmwB+6cy+pVMVKOR/JkkdcOhvxzt8fxsYDBUYmoHr3R6X0u6XrpdEHx1/8qGtNFbrnR46E1DVzWZbNISd7b5tB31DgL1t2sWDUvZONmh2c+9Bg3DMYLFamqnNFTgzqDKug121CUA8l7eyZZebngwRstinsk2wcddg44BFpgq2BHv3bJnBBkSoLBsl6pKkGlfWdThKrJSAYVA2OCrfsMltY7rHvf49DpEM9UMHVORmC92wK6lzg0dgJbdMrhBQG+baEOJmAoG7DuzQksoZhwdQQB4TQhzpUlD/e4mFFpqz84F29KwaRXrcf5Mc7Mmet9N4CLsQhM/0B+H/YNfA6AicnWcPgAAAAASUVORK5CYII=",
+    desaturatedImageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADbElEQVR4nL2W2y8rURTG11Spe+vWkIi4PKjgAQ8SEqJe/NceJCIi7jTu19Y1cSstSk9+69iTUTPONE6sZLRjZu9vfd/61tq14vF4Xn4pgvyZnp4uapFlWRKNRqW9vV2urq7k9PRUXl5evl0zMTHxF6wYkHw+L319fTI+Pq73RCKRkPn5ebm/v/92faAYMIAM6Pv7u2QyGXl6epKmpiapra213yspKXFd78msoqJCysvLFeDt7U0/uXK5nN6n02kF5Pvl5aU8Pz9LIBBQeXt6epTp4+OjP7DJyUnp6Oiw77PZrC6GCYmEQiFllkwmZW5uTmtWU1Mj/f390t3drXXc2dnxB1ZZWSkXFxeSSqVUIjbnf3V1dRIMBlUqmDc0NOh1fn4uDw8PcnBwIK2trcrYl4zNzc368sbGhmxtbenmkUhETQEILABHtnA4LPF4XGZmZuT29lZisZjKDTjBO8j9Ccw4jWyHhoa0BtfX1/rs9fVVvwPiNAIJIS9sR0ZGdGOSWlpa0jWEAVLgQlZVVVXS2NgoNzc3agLjQD5ZyIVJCJ4vLi7K2tqaJlFfXy+7u7uysrJig7nKaDZlM15Ge7I2UuAyamaYYpTj42PZ3t5Wk9zd3UlZWZmcnZ3pM7f4UjMYcTn1JuvR0VGVmHv6ik1JiMCl1Ncpme+mBsSpN4wAMnVFRhw4PDwsnZ2d9rtmnVe4utGZIUC4k/rgQACNGwFqa2tTVsvLy8rQJOQbjDCLYEBzm/HEJ/bHiYbNwMCAtgcu/G4+eoKZDU0jY302pH8wBIlQy5aWFjUSJwC1Xl1dLR7M2Lu6ulpdBjAsTk5OdBSZgAmNTHM7e9A3GDOOYUq/URsmA/OQuuBCp8ww7erqUiVQgcS8zrZgoWwwmZqa0oWmJmTP2Nrb27NnnjEBPUePYSCamiG8vr7+6Z0vYGyCGcbGxmwghvDR0ZHWiw29XJZIJHT94OCgupOJQqAMJBjoNlhvb6/auLS0VPuJo2F/f1+neOGZ5BbZbFY2Nzc1ScA4ZmCJSoeHh/rTwQbDbbjK9Auau802r7AsSw3FxuxDvblHGWr6aepjWRjQR36YFEb+Q17qhoEwGAMaYznPNQVjUsMOJ/0k0um0LCwsKFPPqc/ZNTs7a/9a+knkPvrTLWw3/mti/49QMH5A/kb8AfFnPAgxtzKpAAAAAElFTkSuQmCC",
+    defaultImageData: null,
+    isUtility: false,
+    alert: null,
     children: null,
     hasText: true,
     cooldown: null,
@@ -1547,6 +1581,23 @@ export const buffsData: BuffConfig[] = [
     hasText: true,
     cooldown: null,
     categories: ["Upkeep", "Magic"]
+  },
+  {
+    name: "Thermal Bath",
+    type: "NormalBuff",
+    thresholds: {
+      fail: 50,
+      pass: 30
+    },
+    imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADJUlEQVR4nL2W30tUQRTHvzN39+6aW7pe3XV1K9mCHo2ICIOIiMKHelajh8CgCI16CozwsTQFQfxJP+ihX4/1P0T1FJgm+GRGmRUR1u66985MnLm7q1K7e1fJgdndO3fO+cx35szZwzpGYgpb1TpGYoox5qkDXPfT+6P5315tiePzuiilGNpbGlAT8qEqGEDLPguhCgNdD6ah1+GheYZRqzR9SES2IxQ0UBngkLIca4CXM/nD9xQcIWByrg0dUR7NV87k1rYu1Ecj4IzDCochpQAm2v6PslQ6id7Ft5iendGg93Nz5ZiDew0O3RiDwTn2JvZASAW/37f+/WZh5ChavQMnjx0FYwwwDDi2A4Mz3G+UGBu8jZ5rVzwBi8JyDi5e6MT5s+142gCIdFqPGYYBkbExEbMRj8cwPthfElgQRoatJ46j52o3dsbj+LS4iMyPn8CKDdM0tcqh2gMUkpisdwCm8PzRw6LAotGYaNqFSF0ES9++4rGVhlgWEELC9Pv1t8EFpO3oXDIeWYHBFzamjFq4qhq1VhjPGhSEIwEKdbpnpgsTUmK4/hCk42iFUGrjsGQyhc9LXyAEQaTbpeuQQl9KAgrAJpAbrRuGpVfSUHq1ClDSXblwt5IgBFRSYnT3EYAzoERAFoVphwTI8nRjTG+flErfNVdRTtUmlJn+AFR228C565BzrUYp6bpmwKWPr7Kr2cSZUdSptQ4Ixhgkbak7sKpGlWT9G6azRrQOgYCZG3DPbJWquxsPCqONh/PzRgduFbxrBZUdbG6GVRN2U9TaqblHRoGp9NlJWgidoSLhhc+tIKzOsrAtWIEnVKL8pYwec2Mqu32K7gPuxuzyYaFQJYLBgHag75YOe7prKnd0ACNzplkyO+/cPMqDUU0xPHkP8wsLECob4tqZm0UYOBjj+R1VtBCpYC//Qvf1GwVrkoLKyKC3bxCwHa2IsgilLMcR+USh1nyKZApTl/uLFj8ly4JTc7/xwnIg0hkgk3FzIAPezc6Aca7/TDnnmLo5ULLKKgoj4zvDY+vGmjrP4OXrN+CGAc4ZuMHRNzTiqZxjW1kR/wGZRZHCynXtkQAAAABJRU5ErkJggg==",
+    desaturatedImageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAACGklEQVR4nL2WzY4BQRDHawYJie8gEonbnFxInCXax82Zh+AZvIYncBIXDhycvYEr8TGCOHBCMJuq3ZYZWWZ6WZVUpqcz3b/+V9V0t8QY0+BTxhjTJEkSckVRhMcwxjS7yMISiQQ4nU7yeDwODocD+v2+5fFCMJw8GAzSE13UZJGP9/s9XC4XsNvtIEkStUVMSFk+nydlCPJ6vXC9XqHb7f6PsuPxCMPhECaTCYGm06nIcBCCoSJZliEWixEMw/l2mMfjgVQqdQNirhC6XC6hWq1CpVJ5H6xUKkGxWIT1eg3n8/l7oCxTe7FYQCgUglqt9hosnU5DuVyGcDgM2+0WDoeDoRozmQyFcz6f0/f1ev0p7GnQo9EoBAIB2O12oKoqgXiu8ImOfTabDWazGan8szK3200ljuHDSTVNI8cfmsOy2extEWYmm5U6hk8PQkfDybFtFWQKO51OhncO46o4pFAoUA5fgvHVP+q3qsgSDHOjh+Hq0blCrmYwGLwOw6q7V4YAUUWmML/f//AYuc9PLpe7tXFHEYYpikLb1LPE64tFs5DDhzCfz0cn8mq1+rVIHvWpqioOc7lchjDe/2f3iq8/qiKRiDis0+mQKn2Y9FXIXb8Q3AQajYY4DK3ZbBrywfdCvVpueAL0er3XrgW4P242G5qMb1to4/GYjhl+oFq5ZZnC2u224T2ZTMJoNDKAWq2WKQhN+uSN+AsH8m3TcxOpQwAAAABJRU5ErkJggg==",
+    defaultImageData: null,
+    isUtility: false,
+    alert: null,
+    children: null,
+    hasText: true,
+    cooldown: null,
+    categories: ["Upkeep"]
   },
   {
     name: "Threads of Fate",

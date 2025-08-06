@@ -27,10 +27,10 @@ const initialState = {
 function reducer(state: any, action: {status?: any, error?: any, type: any}) {
   switch (action.type) {
     case 'START':
-      return { status: 'LOADING_IMAGES', error: null };
-    case 'LOADED_IMAGES':
-      return { status: 'FINDING_NAMEPLATE', error: null };
-    case 'NAMEPLATE_FOUND':
+      return { status: 'LOADING IMAGES', error: null };
+    case 'LOADED IMAGES':
+      return { status: 'FINDING NAMEPLATE', error: null };
+    case 'NAMEPLATE FOUND':
       return { status: 'READING', error: null };
     case 'ERROR':
       return { status: 'ERROR', error: action.error };
@@ -107,7 +107,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
       const map: Map<string, any> = new Map();
       Object.keys(enemyDebuffImages).forEach((name, i) => map.set(name, LOADED_IMAGES[i]));
       resolvedImagesRef.current = map;
-      dispatch({ type: 'LOADED_IMAGES' });
+      dispatch({ type: 'LOADED IMAGES' });
     } catch (err: any) {
       dispatch({ type: 'ERROR', error: err.message });
     }
@@ -124,7 +124,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
         setCurrentTargetHitpoints(result.hp);
         setHasTarget(true);
       }
-      dispatch({ type: 'NAMEPLATE_FOUND' });
+      dispatch({ type: 'NAMEPLATE FOUND' });
     }
   }, [setLastMobNameplatePos]);
 
@@ -171,9 +171,9 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
     if (status === 'START') loadImages();
   }, [status, loadImages]);
 
-  // FINDING_NAMEPLATE → start polling for nameplate
+  // FINDING NAMEPLATE → start polling for nameplate
   useEffect(() => {
-    if (status !== 'FINDING_NAMEPLATE') return;
+    if (status !== 'FINDING NAMEPLATE') return;
     const id = setInterval(findTargetPosition, 2000);
     return () => clearInterval(id);
   }, [status, findTargetPosition]);
@@ -196,7 +196,7 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
     if (lastMobNameplatePos !== null) {
       setLastMobNameplatePos(null);
     }
-    dispatch({ type: 'LOADED_IMAGES' });
+    dispatch({ type: 'LOADED IMAGES' });
     const cleared = clearAllDebuffs(lastDetectedRef);
     if (cleared.size > 0) {
       syncIdentifiedBuffs(cleared);
@@ -205,18 +205,25 @@ export const TargetMobReaderComponent = ({ readInterval = 100, debugMode, a1lib 
   };
 
   return (
-    <div>
-      <button onClick={handleScanClick}>🔍 Scan for Nameplate</button>
-      {debugMode && (
-        <>
-        <p>Be sure your Target Nameplate is <strong>locked</strong>. You can do this by unlocking your interface so that the lock icon appears on the nameplate then unlocking the nameplate and dragging it to a specific spot on your interface. Leave the Nameplate unlocked and lock your Interface to remove the lock icon from the nameplate.</p>
-          <div>Status: {status}</div>
-          <div>Name: {targetData.name}</div>
-          <div>HP: {targetData.hp}</div>
-          <div>Pos: {lastMobNameplatePos ? `(${lastMobNameplatePos.x}, ${lastMobNameplatePos.y})` : 'N/A'}</div>
-          {error && <div style={{ color: 'red' }}>Error: {error}</div>}
-        </>
-      )}
-    </div>
+    <>  
+      <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px', marginBottom: '20px' }}>
+          <p style={{ margin: 0, fontWeight: 'bold' }}>Enemy Nameplate Reader</p>
+          <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
+        {status === "FINDING NAMEPLATE" && (
+          <div style={{padding: '5px', border: '1px solid red', marginTop: '5px' }}>
+            <button onClick={handleScanClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">🔍 Scan for Nameplate</button>
+            <p>Be sure your Target Nameplate is <strong>locked</strong>. You can do this by unlocking your interface so that the lock icon appears on the nameplate then unlocking the nameplate and dragging it to a specific spot on your interface. Leave the Nameplate unlocked and lock your Interface to remove the lock icon from the nameplate.</p>
+          </div>
+        )}
+        {debugMode && (
+          <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
+            <p>Name: {targetData.name}</p>
+            <p>HP: {targetData.hp}</p>
+            <p>Pos: {lastMobNameplatePos ? `(${lastMobNameplatePos.x}, ${lastMobNameplatePos.y})` : 'N/A'}</p>
+            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+          </div>
+        )}
+      </div>
+    </>
   );
 };

@@ -27,12 +27,14 @@ export function ChatReaderComponent({
   const whiteColor = a1lib.mixColor(224, 220, 219);
   const yellowColor = a1lib.mixColor(255,255,0);
   const darkRedColor = a1lib.mixColor(235,47,47);
+  const mintGreenColor = a1lib.mixColor(153,255,153);
   const redColor = a1lib.mixColor(255, 0, 0);
   const blueColor = a1lib.mixColor(5, 103, 174);
   const purpleColor = a1lib.mixColor(112, 53, 218);
   const orangeColor = a1lib.mixColor(255,140,56);
   const goldColor = a1lib.mixColor(248, 181, 23);
   const greenColor = a1lib.mixColor(107, 165, 48);
+  const orangeTitleColor = a1lib.mixColor(237,160,17);
 
   const readChat = useCallback(async () => {
     if (isReadingRef.current) {
@@ -87,9 +89,11 @@ export function ChatReaderComponent({
                 goldColor,
                 greenColor,
                 yellowColor,
+                mintGreenColor,
                 darkRedColor,
                 orangeColor,
                 timeStampColor,
+                orangeTitleColor,
             ]
         }
         const found = reader.find();
@@ -118,10 +122,9 @@ export function ChatReaderComponent({
   return (
     debugMode && (
       <>
-        <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px' }}>
+        <div style={{ padding: '5px', border: '1px solid #555', marginTop: '5px', marginBottom: '20px' }}>
           <p style={{ margin: 0, fontWeight: 'bold' }}>ChatBox Reader</p>
           <p style={{ margin: 0, fontSize: '0.9em' }}>Status: {status}</p>
-        </div>
         {status === "READING" && chatLog && (
             <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
                 {chatLog.map((line: ChatLine, index: number) => (
@@ -132,6 +135,7 @@ export function ChatReaderComponent({
         {status === "ERROR" && (
           <div style={{ color: "red" }}>Error finding ChatBox. Please restart overlay.</div>
         )}
+        </div>
       </>
     )
   );

@@ -43,6 +43,7 @@ import DragonSlayer from './images/Dragon_Slayer.data.png';
 import DwarfWeedIncense from './images/Dwarf_Weed_Incense_Sticks.data.png';
 import EnhancedExcalibur from './images/Enhanced_Excalibur-scuffed.data.png';
 import ElderOverload from './images/Elder_Overload.data.png';
+import ElderOverloadSalve from './images/Elder_Overload_Salve.data.png';
 import ErethdorsGrimoire from './images/Erethdor\'s_grimoire.data.png';
 import FamiliarSummoned from './images/Familiar_Summoned.data.png';
 import FellstalkIncense from './images/Fellstalk_Incense_Sticks.data.png';
@@ -55,6 +56,7 @@ import GreenVirus from './images/Green_virus.data.png';
 import HydrixBakBolts from './images/hydrix_bak_bolts.data.png';
 import Immortality from './images/Immortality.data.png';
 import IngenuityOfTheHumans from './images/Ingenuity_of_the_Humans.data.png';
+import InfiniteRun from './images/Infinite_Run.data.png';
 import Instability from './images/Instability.data.png';
 import InvokeLordOfBones from './images/Invoke_Lord_of_Bones.data.png';
 import JasDragonbaneArrows from './images/jas_dragonbane.data.png';
@@ -101,6 +103,7 @@ import Sunshine from './images/Sunshine.data.png';
 import SuperAntifire from './images/Super_Anti-Fire_Active.data.png';
 import SupremeOverload from './images/supreme_overload.data.png';
 import TemporalAnomaly from './images/Temporal_Anomaly.data.png';
+import ThermalBath from './images/Thermal_Bath.data.png';
 import ThreadsOfFate from './images/Threads_of_Fate.data.png';
 import TimeRift from './images/Time_rift.data.png';
 import Torment from './images/Torment.data.png';
@@ -155,6 +158,7 @@ export const rawImageMap: Record<string, string> = {
   'Dragon Slayer': DragonSlayer,
   'Enhanced Excalibur': EnhancedExcalibur,
   'Elder Overload': ElderOverload,
+  'Elder Overload Salve': ElderOverloadSalve,
   'Erethdors Grimoire': ErethdorsGrimoire,
   'Familiar Summoned': FamiliarSummoned,
   'Freedom': Freedom,
@@ -171,6 +175,7 @@ export const rawImageMap: Record<string, string> = {
   'Incense Sticks (Kwuarm)': KwuarmIncense,
   'Incense Sticks (Lantadyme)': LantadymeIncense,
   'Instability': Instability,
+  'Infinite Run': InfiniteRun,
   'Invoke Lord of Bones': InvokeLordOfBones,
   'Jas Dragonbane Arrows': JasDragonbaneArrows,
   'Limitless': Limitless,
@@ -213,6 +218,7 @@ export const rawImageMap: Record<string, string> = {
   'Super Antifire': SuperAntifire,
   'Supreme Overload': SupremeOverload,
   'Temporal Anomaly': TemporalAnomaly,
+  'Thermal Bath': ThermalBath,
   'Threads of Fate': ThreadsOfFate,
   'Time Rift': TimeRift,
   'Torment': Torment,
