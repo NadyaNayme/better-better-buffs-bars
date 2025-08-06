@@ -3,21 +3,48 @@ import useStore from "../store";
 const lastPlayedMap: Record<string, number> = {};
 const COOLDOWN_MS = 3000;
 
-export function playAlertSound(alert: string, filename: string) {
+type QueuedAlert = { alert: string; filename: string };
+
+const alertQueue: QueuedAlert[] = [];
+let isPlaying = false;
+
+function playNextInQueue() {
+  if (isPlaying || alertQueue.length === 0) return;
+
+  const next = alertQueue.shift();
+  if (!next) return;
+
   const now = Date.now();
+  const { alert, filename } = next;
 
-  const enabledAlerts = useStore.getState().alertEnabledMap;
-  if (enabledAlerts[alert] === false) return;
+  if (lastPlayedMap[alert] && now - lastPlayedMap[alert] < COOLDOWN_MS) {
+    return playNextInQueue();
+  }
 
-  if (lastPlayedMap[alert] && now - lastPlayedMap[alert] < COOLDOWN_MS) return;
   lastPlayedMap[alert] = now;
 
-  const alertVolume = useStore.getState().alertVolume;
-  const voice = useStore.getState().voice;
+  const { alertEnabledMap, alertVolume, voice } = useStore.getState();
+  if (alertEnabledMap[alert] === false) {
+    return playNextInQueue();
+  }
 
   const audio = new Audio(`./assets/audio/${voice}/${filename}`);
   audio.volume = alertVolume / 100;
+  isPlaying = true;
+
   audio.play().catch((err) => {
     console.error("Failed to play alert sound:", err);
+    isPlaying = false;
+    playNextInQueue();
   });
+
+  audio.addEventListener("ended", () => {
+    isPlaying = false;
+    playNextInQueue();
+  });
+}
+
+export function playAlertSound(alert: string, filename: string) {
+  alertQueue.push({ alert, filename });
+  playNextInQueue();
 }
