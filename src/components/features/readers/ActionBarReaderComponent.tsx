@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import ActionbarReader from 'alt1/ability';
 import { useCombatMonitor } from '../../../hooks/useCombatMonitor';
-import { alertsMap } from '../../../data/alerts';
-import useStore from '../../../store/index';
 import { debugLog } from '../../../lib/debugLog';
 
 type ReaderStatus = "IDLE" | "FINDING ACTION BAR" | "READING" | "ERROR";
@@ -112,9 +110,9 @@ export function ActionBarReaderComponent({
         </div>
         {status === "READING" && lifeData && (
             <div style={{ marginTop: '5px', fontSize: '0.9em', borderTop: '1px solid #444', paddingTop: '5px' }}>
-              <p style={{ margin: 0 }}>HP: {lifeData.hp}</p>
-              <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline}</p>
-              <p style={{ margin: 0 }}>Prayer: {lifeData.prayer}</p>
+              <p style={{ margin: 0 }}>HP: {lifeData.hp * 100}%</p>
+              <p style={{ margin: 0 }}>Adrenaline: {lifeData.adrenaline * 100}%</p>
+              <p style={{ margin: 0 }}>Prayer: {lifeData.prayer * 100}%</p>
             </div>
           )}
         {status === "ERROR" && (

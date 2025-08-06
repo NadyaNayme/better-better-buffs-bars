@@ -22,6 +22,7 @@ import { isRuntimeBuff } from './types/Buff';
 import BuffComponent from './components/features/buffs/BuffComponent';
 import { GlobalAlertManager } from './components/features/alerts/GlobalAlertsManager';
 import { initializeStuckBuffMonitor } from './lib/store-monitors/stuckBuffMonitor';
+import { ChatReaderComponent } from './components/features/readers/ChatReaderComponent';
 
 function App() {
   const [alt1Ready, setAlt1Ready] = useState(false);
@@ -256,6 +257,10 @@ function App() {
           readInterval={100}
           debugMode={debugMode}
           a1lib={a1lib}
+      />
+      <ChatReaderComponent 
+        debugMode={debugMode} 
+        a1lib={a1lib}
       />
       <PopupModal
         isOpen={modalOpen}
