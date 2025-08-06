@@ -83,7 +83,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               onChange={(e) => { if (!explicitInactive && e.target.checked === true) setExplicitInactive(true); setOnlyShowInactive(e.target.checked)}}
               className="mr-2"
             />
-            <label><strong>Show Inactive Only</strong><br/> Only show buffs when their status is inactive. Requires `Always Show Buffs` to be enabled.</label>
+            <label><strong>Show Inactive Only</strong><br/> Only show buffs when their status is inactive. Requires <span className="text-blue-300">Always Show Buffs</span> to be enabled.</label>
           </div>
           <div className="flex items-center">
             <label className="block mb-1">Scale: {scale}%</label>
