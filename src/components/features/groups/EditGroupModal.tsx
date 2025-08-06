@@ -17,12 +17,13 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
   const [name, setName] = useState(group.name);
   const [buffsPerRow, setBuffsPerRow] = useState(group.buffsPerRow);
   const [explicitInactive, setExplicitInactive] = useState(group.explicitInactive ?? false);
+  const [onlyShowInactive, setOnlyShowInactive] = useState(group.onlyShowInactive ?? false);
   const [scale, setScale] = useState(group.scale || 100);
   const [enabled, setEnabled] = useState(group.enabled);
   const [hideOutsideCombat, setHideOutsideCombat] = useState(group.hideOutsideCombat);
 
   const handleSave = () => {
-    updateGroup(group.id, { name, buffsPerRow: Number(buffsPerRow), explicitInactive, scale: Number(scale), enabled, hideOutsideCombat });
+    updateGroup(group.id, { name, buffsPerRow: Number(buffsPerRow), explicitInactive, onlyShowInactive, scale: Number(scale), enabled, hideOutsideCombat });
     onClose();
   };
 
@@ -74,6 +75,15 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
               className="mr-2"
             />
             <label><strong>Always Show Buffs</strong><br/> Inactive Buffs will turn desaturated instead of disappearing while inactive.</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={onlyShowInactive}
+              onChange={(e) => setOnlyShowInactive(e.target.checked)}
+              className="mr-2"
+            />
+            <label><strong>Show Inactive Only</strong><br/> Only show buffs when their status is inactive.</label>
           </div>
           <div className="flex items-center">
             <label className="block mb-1">Scale: {scale}%</label>

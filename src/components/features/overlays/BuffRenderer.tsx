@@ -68,16 +68,30 @@ export function BuffRenderer({
           return;
         }
 
+        if (group.onlyShowInactive && buff.status !== "Inactive") {
+          cleanup();
+          return;
+        }
+
         const allBuffs = group.buffs; // or group.children, depending on which you're rendering
 
         // Count how many lower-indexed buffs are Inactive and should be skipped from drawing
-        const skippedBefore = allBuffs.filter(
+        let skippedBefore = allBuffs.filter(
           (b) =>
             isRuntimeBuff(b) &&
             b.index < buff.index &&
             b.status === 'Inactive' &&
             !group.explicitInactive // Only skipped if not explicitly showing them
         ).length;
+
+        if (group.onlyShowInactive) {
+          skippedBefore = allBuffs.filter(
+            (b) =>
+              isRuntimeBuff(b) &&
+              b.index < buff.index &&
+              b.status !== 'Inactive'
+          ).length;
+        }
         
         const effectiveDrawIndex = drawIndex - skippedBefore;
 

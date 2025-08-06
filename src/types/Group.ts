@@ -9,6 +9,7 @@ export interface Group {
     enabled: boolean;
     hideOutsideCombat: boolean;
     explicitInactive: boolean;
+    onlyShowInactive: boolean;
     overlayPosition: Coordinates;
     scale: number;
     children: Buff[];

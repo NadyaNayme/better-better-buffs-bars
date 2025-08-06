@@ -36,6 +36,7 @@ export const createGroupsSlice: StateCreator<Store, [], [], GroupsSlice> = (set,
       scale: 100,
       hideOutsideCombat: false,
       explicitInactive: true,
+      onlyShowInactive: false,
       enabled: true,
       children: [],
     };
