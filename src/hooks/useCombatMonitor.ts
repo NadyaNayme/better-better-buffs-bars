@@ -42,15 +42,21 @@ export function useCombatMonitor() {
           return;
         }
         if (data.pray === 0 && !hasRanOutOfPrayer && isInCombat && enabledAlerts['Prayer (Empty)']) {
-          const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Empty)']}`);
-          sound.volume = alertVolume / 100;
-          sound.play().catch(() => {});
-          hasRanOutOfPrayer = true;
+          const alert = alertsMap.find(a => a.key === 'Prayer (Empty)');
+          if (alert) {
+            const sound = new Audio(`./assets/audio/${voice}/${alert.filename}`);
+            sound.volume = alertVolume / 100;
+            sound.play().catch(() => {});
+            hasRanOutOfPrayer = true;
+          }
       } else if (data.pray <= 0.30 && !hasPotted && isInCombat && enabledAlerts['Prayer (Low)']) {
-          const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Low)']}`);
-          sound.volume = alertVolume / 100;
-          sound.play().catch(() => {});
-          hasPotted = true;
+          const alert = alertsMap.find(a => a.key === 'Prayer (Low)');
+          if (alert) {
+            const sound = new Audio(`./assets/audio/${voice}/${alert.filename}`);
+            sound.volume = alertVolume / 100;
+            sound.play().catch(() => {});
+            hasPotted = true;
+          }
       } else if (data.pray >= 0.31 && (hasPotted || hasRanOutOfPrayer)) {
           hasPotted = false;
           hasRanOutOfPrayer = false;

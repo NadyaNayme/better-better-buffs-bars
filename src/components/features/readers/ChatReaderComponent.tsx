@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ChatBoxReader, { type ChatLine } from "alt1/chatbox";
 import { debugLog } from "../../../lib/debugLog";
+import { useChatAlerts } from "../../../hooks/useChatAlerts";
 
 type ReaderStatus = "IDLE" | "FINDING CHAT" | "READING" | "ERROR";
 
@@ -22,6 +23,7 @@ export function ChatReaderComponent({
   const lastRunRef = useRef(0);
   const isReadingRef = useRef(false);
   const [chatLog, setChatLog] = useState<ChatLine[]>([]);
+  useChatAlerts(chatLog);
 
   const timeStampColor = a1lib.mixColor(127,169,255);
   const whiteColor = a1lib.mixColor(224, 220, 219);
@@ -30,7 +32,9 @@ export function ChatReaderComponent({
   const mintGreenColor = a1lib.mixColor(153,255,153);
   const redColor = a1lib.mixColor(255, 0, 0);
   const blueColor = a1lib.mixColor(5, 103, 174);
+  const nakatraBlue = a1lib.mixColor(69, 131, 145);
   const purpleColor = a1lib.mixColor(112, 53, 218);
+  const darkPurpleColor = a1lib.mixColor(111, 40, 198);
   const orangeColor = a1lib.mixColor(255,140,56);
   const goldColor = a1lib.mixColor(248, 181, 23);
   const greenColor = a1lib.mixColor(107, 165, 48);
@@ -85,7 +89,9 @@ export function ChatReaderComponent({
                 whiteColor,
                 redColor,
                 blueColor,
+                nakatraBlue,
                 purpleColor,
+                darkPurpleColor,
                 goldColor,
                 greenColor,
                 yellowColor,
