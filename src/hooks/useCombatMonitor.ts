@@ -15,6 +15,7 @@ let hasRanOutOfPrayer = false;
 
 export function useCombatMonitor() {
   const alertVolume = useStore.getState().alertVolume;
+  const enabledAlerts = useStore.getState().alertEnabledMap;
   const isInCombat = useStore.getState().inCombat;
   const voice = useStore.getState().voice;
   const checkCombat = useCallback((data: { hp: number; dren: number; pray: number }) => {
@@ -40,12 +41,12 @@ export function useCombatMonitor() {
           debugLog.error(`Discarded invalid prayer read: dropped by ${delta} (>300)`);
           return;
         }
-        if (data.pray === 0 && !hasRanOutOfPrayer && isInCombat) {
+        if (data.pray === 0 && !hasRanOutOfPrayer && isInCombat && enabledAlerts['Prayer (Empty)']) {
           const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Empty)']}`);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
           hasRanOutOfPrayer = true;
-      } else if (data.pray <= 0.30 && !hasPotted && isInCombat) {
+      } else if (data.pray <= 0.30 && !hasPotted && isInCombat && enabledAlerts['Prayer (Low)']) {
           const sound = new Audio(`./assets/audio/${voice}/${alertsMap['Prayer (Low)']}`);
           sound.volume = alertVolume / 100;
           sound.play().catch(() => {});
