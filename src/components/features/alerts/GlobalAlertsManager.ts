@@ -26,6 +26,7 @@ export function GlobalAlertManager() {
 
     const setupMonitors = useCallback(() => {    
         const allBuffs = useStore.getState().groups.flatMap(g => [...g.buffs, ...g.children]);
+        const enabledAlerts = useStore.getState().alertEnabledMap;
         
         const buffsWithAlerts = allBuffs.filter(buff => 
           isRuntimeBuff(buff) && buff.alert && alertsMap[buff.name]
@@ -35,6 +36,7 @@ export function GlobalAlertManager() {
     
         for (const buff of buffsWithAlerts) {
           if (!isRuntimeBuff(buff)) continue;
+          if (!enabledAlerts[buff.name]) continue;
           const alertConfig = buff.alert!;
           const { condition, threshold } = alertConfig;
     
