@@ -87,6 +87,7 @@ import ProtectFromRanged from './images/Protect_from_Ranged.data.png';
 import PutridZombie from './images/putrid_zombie-top.data.png';
 import RedVirus from './images/Red_virus.data.png';
 import Reflect from './images/Reflect.data.png';
+import Relentless from './images/Relentless.data.png';
 import ResidualSoul from './images/Residual_Soul.data.png';
 import Resonance from './images/Resonance.data.png';
 import RubyBakBolts from './images/ruby_bak_bolts.data.png';
@@ -202,6 +203,7 @@ export const rawImageMap: Record<string, string> = {
   'Putrid Zombie': PutridZombie,
   'Red Virus': RedVirus,
   'Reflect': Reflect,
+  'Relentless': Relentless,
   'Residual Soul': ResidualSoul,
   'Resonance': Resonance,
   'Ruby Bakriminel Bolts (e)': RubyBakBolts,

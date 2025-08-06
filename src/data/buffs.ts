@@ -1,7 +1,7 @@
 import type { BuffConfig } from "../types/Buff";
 
 
-export const BUFFS_VERSION = 154;
+export const BUFFS_VERSION = 157;
 
 export const buffsData: BuffConfig[] = [
   {
@@ -1360,6 +1360,23 @@ export const buffsData: BuffConfig[] = [
     children: null,
     hasText: true,
     categories: ["Defensive"]
+  },
+  {
+    name: "Relentless",
+    type: "NormalDebuff",
+    thresholds: {
+      fail: 200,
+      pass: 30
+    },
+    imageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAADaUlEQVR4nL2WXWxURRTHfzP3Y7e2dAHTiLClgPGjMWkMsfFF4wOJFmgxFn02agwxBgWJhBL7jB8RIxoiajQ+ih9JSwkx0fhmImiCRkmUWgVbIcFI221pd++dOWYuZcllF3aNi/9k9s6cM3N/c86dmR31LQj/k3z3063UdQcdE0HX6rRj02O83DPYuMiq6fEHH+YW1UmmmOXvYIJGSFczDmzcxhrpwrMhsbLsGTlQ9vXfu65xsBd6nyMs5RARrIJz4emU/7altzcGdmt7B2GpBSuGGJjRU+wdfr/sH1y/k1/On2wMbNOdjxALxEqY92fYc+T1VOdmljL09Ze136ogCAKuXORl2Jr8SsT6GAxWW145sjfVcWDDLiIsxtiaLE975HKLWX5zvjpsY1c/xlqHYi4sVLzgBrmRknLJrS1jDDe1LeOetfeRX9FeCROrMCrGeIZ9h95KDd7Wtx0IKKkS9aqr825CleX+7gfS+8zlNsYgCnyvMk2L4mUYYC4u1g0LCYitOzVUGrYq30GsDEpDKTOfGvT0Q1tRURMGRU6vZHDDmwupcLMUDAvRCkw2jbH/s/1J88TYcTpXrMXtn8W5HExOXkxjFMdYN1BZDn7xcQrWGq3CoLEorFIXn+W6m3c2KUapMsjp5G8/o63GE01r86LElsCmZ6axymK1sDq/ujxgy+ZnsXiUiBZKXK4XJUq2iQO6cj44lZrk5nWPJiBPIJPJXE7jdKGA9QzWCnfd0c3xE98nzgOf7rvmd3mqZxdLdAexFHlnKN03U2xJvpnSwujvv16GOVltsCJciOtfcWHQgjWagn+2wucb3y1xlAgiVyz9r775nJnSFN/9eLRumJImIiW8O/xSyr619xk8qwnEQ7s8XprApcrEmQlQR5mbu4DnecnGrCnJMstfFeZs1JpE41J46IePKmFOf54Zx/cDrK19JLmzz+2m9w6/mLLvXP88OlYICtHzjI2frn4Qu9lEUZT8vdRSf9+TzHIuZRvo2U42bsYXjVbC0E+fpPw1rwVXjcy28cHh3eX2jr4naJFWfKXwlCYOZxn941RjYHEwlWq3Re1oUcnRVwoLvDryRsUY5a5y//V2tbt3C0vi5RQpMu6P8vbIwaq3q6teeP6NcqaNs+EYrw1/eM1+DYmsHrnIEth1Jy3oHxC/VLdzlUWuAAAAAElFTkSuQmCC",
+    desaturatedImageData: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAbCAYAAACN1PRVAAACRklEQVR4nL1Wu685QRQ+xhLPQkJEodJJKCQKlSiwNij8px7xSrQqhWgVoiAErUe8bs7EzG9nzV77u9l7v2SZnZmd7/vOmTm7jlqt9oQ/goI/nU7n14mq1SqQT5NUVYV6vW6fMxny+TwEg0EghMDtdgM7QGSdlUoFAoEAbT+fT+h2u3wsm83aR6aqqnB/vV6F+0gkYk8YY7EYd/N4PGi73+/zcU3TYLfb2eMslUrxNhL2ej1RmaLAZDKxtLCiKOZk0WiUkxgdsTzqx791QAj4/X4Ih8NysnQ6TRfSh1APt9st7ZcB54VCIUgmk0KOhTAy1cPhUHi4XC5TtVbJEIlEApxOJzXxRsZcycLk8Xjo//+cN0IIOBwOoU9h+WIkRrJSqUQVIvDsNRoNYVzv9ng88qgsl0uIx+O0jfnjzu73O39gPB4Li/l8PqrQ7EIhTIw+/KvVire9Xu8/MlRk3JXsgOOCqF52IRjp6XQSROZyOWFz8TAyMgwhJnaxWEi3vxEoBkOLkRkMBm85w34Usl6vIZPJiBUEyYzl6TugYlzscrlIx5FQuGeN6XQK5/MZ5vO5ZTKWq66uUCOKxaJ0Pnd2OBwoEaq0eqaQDAXK+jFK6BpNvJEh9vs9rWlWShLOQ1Htdlv61mAba7vdmr9i8OBaISsUCm+u1NfuZZjNZsL4x88CM2BVabVaApHycssIN5uNPWTG0uV+nSUG2bEx/Qb5BP27TtM07gZDOxqNpM/8mEwPl8tFd/GnImALWbPZtDSPkuEH5F/gC1opBwdjYPL9AAAAAElFTkSuQmCC",
+    cooldown: 30,
+    defaultImageData: null,
+    isUtility: false,
+    alert: { condition: 'onActive', threshold: null, hasAlerted: false },
+    children: null,
+    hasText: true,
+    categories: ["Proc"]
   },
   {
     name: "Resonance",
