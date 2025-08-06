@@ -71,7 +71,7 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
             <input
               type="checkbox"
               checked={explicitInactive}
-              onChange={(e) => setExplicitInactive(e.target.checked)}
+              onChange={(e) => {setExplicitInactive(e.target.checked); if (e.target.checked === false) setOnlyShowInactive(false)}}
               className="mr-2"
             />
             <label><strong>Always Show Buffs</strong><br/> Inactive Buffs will turn desaturated instead of disappearing while inactive.</label>
@@ -80,10 +80,10 @@ const EditGroupModal: React.FC<EditGroupModalComponentProps> = ({ group, onClose
             <input
               type="checkbox"
               checked={onlyShowInactive}
-              onChange={(e) => setOnlyShowInactive(e.target.checked)}
+              onChange={(e) => { if (!explicitInactive && e.target.checked === true) setExplicitInactive(true); setOnlyShowInactive(e.target.checked)}}
               className="mr-2"
             />
-            <label><strong>Show Inactive Only</strong><br/> Only show buffs when their status is inactive.</label>
+            <label><strong>Show Inactive Only</strong><br/> Only show buffs when their status is inactive. Requires `Always Show Buffs` to be enabled.</label>
           </div>
           <div className="flex items-center">
             <label className="block mb-1">Scale: {scale}%</label>
