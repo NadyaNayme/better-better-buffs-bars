@@ -29,10 +29,12 @@ export function ChatReaderComponent({
   const whiteColor = a1lib.mixColor(224, 220, 219);
   const yellowColor = a1lib.mixColor(255,255,0);
   const darkRedColor = a1lib.mixColor(235,47,47);
+  const telosGreen = a1lib.mixColor(132,212,119);
   const mintGreenColor = a1lib.mixColor(153,255,153);
   const redColor = a1lib.mixColor(255, 0, 0);
   const blueColor = a1lib.mixColor(5, 103, 174);
   const nakatraBlue = a1lib.mixColor(69, 131, 145);
+  const nakatraGreen = a1lib.mixColor(67,128,142);
   const purpleColor = a1lib.mixColor(112, 53, 218);
   const darkPurpleColor = a1lib.mixColor(111, 40, 198);
   const orangeColor = a1lib.mixColor(255,140,56);
@@ -90,6 +92,8 @@ export function ChatReaderComponent({
                 redColor,
                 blueColor,
                 nakatraBlue,
+                nakatraGreen,
+                telosGreen,
                 purpleColor,
                 darkPurpleColor,
                 goldColor,
