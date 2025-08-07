@@ -58,7 +58,7 @@ export const alertsMap: AlertEntry[] = [
     { key: 'Suffer the full power of the Sanctum', filename: 'Nakatra Full Power.mp3', label: 'Nakatra - Immersive - Suffer the full power of the Sanctum', category: ['Immersive'] },
     { key: 'The Devourer will consume your soul', filename: 'Nakatra Consume.mp3', label: 'Nakatra - Immersive - The Devourer will consume your soul', category: ['Immersive'] },
     { key: 'You would have made a fine addition to our order', filename: 'Nakatra Fine Addition.mp3', label: 'Nakatra - Immersive - You would have made a fine addition to our order', category: ['Immersive'] },
-    { key: 'YOUR SOUL IS MINE', filename: 'Nakatra Devourer.mp3', label: 'Nakatra - Immersive - YOUR SOUL IS MINE!', category: ['Immersive'] },
+    { key: 'YOUR SOUL IS MINE', filename: 'Nakatra Devourer Amascut.mp3', label: 'Nakatra - Immersive - YOUR SOUL IS MINE!', category: ['Immersive'] },
     { key: 'Impossible...', filename: 'Nakatra Impossible.mp3', label: 'Nakatra - Immersive - Impossible...', category: ['Immersive'] },
     { key: 'WHAT ARE YOU', filename: 'Nakatra What Are You.mp3', label: 'Nakatra - Immersive - WHAT ARE YOU?', category: ['Immersive'] },
     { key: 'Your death is inevitable', filename: 'Nakatra Inevitable.mp3', label: 'Nakatra - Immersive - Your death is inevitable', category: ['Immersive'] },
