@@ -23,7 +23,8 @@ export const patchNotes: PatchNote[] = [
       `Alerts have been given slightly more descriptive labels.`
     ],
     highlights: [
-      `Immersive audio triggers have been added for Telos & Nakatra fights. These audio alerts are disabled by default and must be enabled in the Alert Settings found in the Settings menu.`
+      `Immersive audio triggers have been added for Telos & Nakatra fights. These audio alerts are disabled by default and must be enabled in the Alert Settings found in the Settings menu.`,
+      `Groups now have a "Only Show Inactive" setting. If you don't see a buff - it is active. Useful for upkeep buffs that you don't want cluttering your screen (except to remind you to renew it!)`
     ],
     errors: null,
     knownIssues: [
