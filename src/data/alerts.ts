@@ -2,7 +2,7 @@ export type AlertEntry = {
   key: string;
   label: string;
   filename: string;
-  category: string[] | null;
+  category: string[];
 };
 
 export const alertsMap: AlertEntry[] = [

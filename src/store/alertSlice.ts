@@ -13,7 +13,7 @@ export interface AlertsSlice {
 
 export const createAlertsSlice: StateCreator<Store, [], [], AlertsSlice> = (set) => ({
   alertEnabledMap: Object.fromEntries(
-    Object.keys(alertsMap).map((k) => [k, true])
+    alertsMap.map(({ key, category }) => [key, category.includes('Informative')])
   ),
   voice: 'Callum',
 
