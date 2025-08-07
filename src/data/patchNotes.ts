@@ -11,6 +11,26 @@ export interface PatchNote {
   
 export const patchNotes: PatchNote[] = [
   {
+    version: "v0.4.2",
+    date: "2025-08-07",
+    title: "Immersive Audio & More Buffs",
+    added: [
+      `Infinite Run, Thermal Ogre Flask, Elder Overload Salves, and Relentless have been added as trackable buffs.`,
+      `There are now buttons to disable all alerts, disable all informative alerts, and disable all immersive alerts. For people who would rather enable only what they want to hear.`,
+      `Chat reading has been implemented - allowing for far more combat-related alerts than what is possible with buff tracking alone.`,
+    ],
+    fixes: [
+      `Alerts have been given slightly more descriptive labels.`
+    ],
+    highlights: [
+      `Immersive audio triggers have been added for Telos & Nakatra fights. These audio alerts are disabled by default and must be enabled in the Alert Settings found in the Settings menu.`
+    ],
+    errors: null,
+    knownIssues: [
+      `Many alerts are still not implemented but are there to Preview & Enable/Disable. That way when they are implemented you can already have it configured how you want it.`
+    ],
+  },
+  {
     version: "v0.4.1",
     date: "2025-07-19",
     title: "That's alerting...",
