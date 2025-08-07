@@ -26,6 +26,35 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
     audio.play();
   };
 
+  const setAlertEnabled = (key: string, value: boolean) => {
+    const currentlyEnabled = alertEnabledMap[key];
+    if (currentlyEnabled !== value) {
+      toggleAlert(key);
+    }
+  };
+
+  const areAllInCategoryDisabled = (category: string) => {
+    return alertsMap.filter((entry) => entry.category?.includes(category)).every((entry) => !alertEnabledMap[entry.key]);
+  };
+
+  const areAllDisabled = () => {
+    return alertsMap.every((entry) => !alertEnabledMap[entry.key]);
+  };
+
+  const setAllByCategory = (category: string, value: boolean) => {
+    alertsMap.forEach((entry) => {
+      if (entry.category?.includes(category)) {
+        setAlertEnabled(entry.key, value);
+      }
+    });
+  };
+
+  const setAll = (value: boolean) => {
+    alertsMap.forEach((entry) => {
+      setAlertEnabled(entry.key, value);
+    });
+  };
+
   return (
     <div className="fixed inset-0 z-1001 bg-black/95 flex justify-center items-start p-6 overflow-y-auto">
       <div className="bg-[#364554] dark:bg-zinc-900 rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
@@ -62,8 +91,29 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
             </select>
           </div>
 
+          <div className="flex flex-wrap gap-4">
+            <button
+              onClick={() => setAllByCategory("Immersive", areAllInCategoryDisabled("Immersive"))}
+              className="bg-yellow-500 hover:bg-yellow-700 text-white px-3 py-1 rounded"
+            >
+              {areAllInCategoryDisabled("Immersive") ? "Enable Immersive" : "Disable Immersive"}
+            </button>
+            <button
+              onClick={() => setAllByCategory("Informative", areAllInCategoryDisabled("Informative"))}
+              className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
+            >
+              {areAllInCategoryDisabled("Informative") ? "Enable Informative" : "Disable Informative"}
+            </button>
+            <button
+              onClick={() => setAll(areAllDisabled())}
+              className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded"
+            >
+              {areAllDisabled() ? "Enable All" : "Disable All"}
+            </button>
+          </div>
+
           {alertsMap
-            .slice() // ensure we don't mutate original
+            .slice()
             .sort((a, b) => a.label.localeCompare(b.label))
             .map(({ key, label, filename }) => (
               <div key={key} className="flex items-center gap-4">
