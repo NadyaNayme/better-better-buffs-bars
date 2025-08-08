@@ -8,36 +8,42 @@ export type AlertEntry = {
 
 export const alertsMap: AlertEntry[] = [
     // Buff Alerts
-    { key: 'Animate Dead', filename: 'Animate Dead.mp3', label: 'Animate Dead expired', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Antifire', filename: 'Antifire.mp3', label: 'Antifire expired', category: ['Informative'] , collection: 'Buff'},
-    { key: 'Antipoison', filename: 'AntiPoison.mp3', label: 'Antipoison expired', category: ['Informative'] , collection: 'Buff'},
-    { key: 'Aura', filename: 'Aura.mp3', label: 'Aura expired', category: ['Informative'] , collection: 'Unimplemented'},
+    { key: 'Antipoison', filename: 'AntiPoison.mp3', label: 'Antipoison expired', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Cannon Decay', filename: 'Cannon Decay.mp3', label: 'Cannon Decay', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'CantDrink', filename: 'Cant Drink.mp3', label: 'Can\'t Drink Potion', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Darkness', filename: 'Darkness.mp3', label: 'Darkness expired', category: ['Informative'] , collection: 'Buff'},
     { key: 'Divine Charge', filename: 'Divine Charge.mp3', label: 'Out of Divine Charges', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Ectoplasm', filename: 'Ectoplasm.mp3', label: 'Out of Ectoplasm', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Familiar Summoned', filename: 'Familiar.mp3', label: 'Familiar Summoned', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'God Book', filename: 'God Book.mp3', label: 'God Book', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Health (Low)', filename: 'Health Low.mp3', label: 'Health (Low)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Relentless', filename: 'ImRelentless.mp3', label: 'Relentless Procced', category: ['Informative'] , collection: 'Buff'},
-    { key: 'Incense Sticks (Kwuarm)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Kwuarm)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Incense Sticks (Lantadyme)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Lantadyme)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Incense Sticks (Fellstalk)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Fellstalk)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Incense Sticks (Dwarf Weed)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Dwarf Weed)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Incense Sticks (Ranarr)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Ranarr)', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'No Runes', filename: 'NoRunes.mp3', label: 'Out of runes', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Overload', filename: 'Overload.mp3', label: 'Overload expired', category: ['Informative'] , collection: 'Buff'},
-    { key: 'Supreme Overload', filename: 'Overload.mp3', label: 'Supreme Overload expired', category: ['Informative'] , collection: 'Buff'},
-    { key: 'Elder Overload', filename: 'Overload.mp3', label: 'Elder Overload expired', category: ['Informative'] , collection: 'Buff'},
     { key: 'Payment', filename: 'Payment.mp3', label: 'Ability needs additional payment', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Prayer Renewal', filename: 'Prayer Renewal.mp3', label: 'Prayer Renewal expired', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Runes', filename: 'Runes.mp3', label: 'Runes', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Scream', filename: 'Scream.mp3', label: 'Scream', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Sip Prayer', filename: 'Sip Prayer.mp3', label: 'Sip Prayer', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Strike Again', filename: 'Strike Again.mp3', label: 'Strike Again', category: ['Informative'] , collection: 'Unimplemented'},
     { key: 'Summoning Points', filename: 'Summoning Points.mp3', label: 'Out of Summoning Points', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Weapon Poison', filename: 'Weapon Poison.mp3', label: 'Weapon Poison expired', category: ['Informative'] , collection: 'Buff'},
+
+    // Alerts when Buff is about to expire
+    { key: 'Animate Dead', filename: 'Animate Dead.mp3', label: 'Animate Dead', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Antifire', filename: 'Antifire.mp3', label: 'Antifire', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Aura', filename: 'Aura.mp3', label: 'Aura', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Darkness', filename: 'Darkness.mp3', label: 'Darkness', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Incense Sticks (Kwuarm)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Kwuarm)', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Incense Sticks (Lantadyme)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Lantadyme)', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Incense Sticks (Fellstalk)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Fellstalk)', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Incense Sticks (Dwarf Weed)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Dwarf Weed)', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Incense Sticks (Ranarr)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Ranarr)', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Overload', filename: 'Overload.mp3', label: 'Overload', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Supreme Overload', filename: 'Overload.mp3', label: 'Supreme Overload', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Elder Overload', filename: 'Overload.mp3', label: 'Elder Overload', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Prayer Renewal', filename: 'Prayer Renewal.mp3', label: 'Prayer Renewal', category: ['Informative'] , collection: 'Buff Expiring'},
+    { key: 'Weapon Poison', filename: 'Weapon Poison.mp3', label: 'Weapon Poison', category: ['Informative'] , collection: 'Buff Expiring'},
+
+     // Alerts when buff becomes active
+    { key: 'Relentless', filename: 'ImRelentless.mp3', label: 'Relentless', category: ['Informative'] , collection: 'On Active'},
+
+    // Combat Related Alerts
     { key: 'Prayer (Empty)', filename: 'Prayer Empty.mp3', label: 'Out of prayer points', category: ['Informative'] , collection: 'Combat'},
     { key: 'Prayer (Low)', filename: 'Prayer Low.mp3', label: 'Prayer points are low', category: ['Informative'] , collection: 'Combat'},
 
