@@ -1,5 +1,5 @@
 type Category = 'Informative' | 'Immersive';
-type Collection = 'Unimplemented' | 'Buff Expiring Soon' | 'On Active' | 'Combat' | 'Nakatra' | 'Telos';
+type Collection = 'Unimplemented' | 'Buff Expiring Soon' | 'On Active' | 'Combat' | 'Information' | 'Invalid Action' | 'Nakatra' | 'Telos';
 
 export type AlertEntry = {
   key: string;
@@ -11,26 +11,13 @@ export type AlertEntry = {
 
 export const alertsMap: AlertEntry[] = [
     // Buff Alerts
-    { key: 'Antipoison', filename: 'AntiPoison.mp3', label: 'Antipoison expired', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Cannon Decay', filename: 'Cannon Decay.mp3', label: 'Cannon Decay', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'CantDrink', filename: 'Cant Drink.mp3', label: 'Can\'t Drink Potion', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Divine Charge', filename: 'Divine Charge.mp3', label: 'Out of Divine Charges', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Ectoplasm', filename: 'Ectoplasm.mp3', label: 'Out of Ectoplasm', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Familiar Summoned', filename: 'Familiar.mp3', label: 'Familiar Summoned', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'God Book', filename: 'God Book.mp3', label: 'God Book', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Health (Low)', filename: 'Health Low.mp3', label: 'Health (Low)', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'No Runes', filename: 'NoRunes.mp3', label: 'Out of runes', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Payment', filename: 'Payment.mp3', label: 'Ability needs additional payment', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Runes', filename: 'Runes.mp3', label: 'Runes', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Scream', filename: 'Scream.mp3', label: 'Scream', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Sip Prayer', filename: 'Sip Prayer.mp3', label: 'Sip Prayer', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Strike Again', filename: 'Strike Again.mp3', label: 'Strike Again', category: ['Informative'] , collection: 'Unimplemented'},
-    { key: 'Summoning Points', filename: 'Summoning Points.mp3', label: 'Out of Summoning Points', category: ['Informative'] , collection: 'Unimplemented'},
+    // { key: 'Scream', filename: 'Scream.mp3', label: 'Scream', category: ['Informative'] , collection: 'Unimplemented'},
+    // { key: 'Strike Again', filename: 'Strike Again.mp3', label: 'Strike Again', category: ['Informative'] , collection: 'Unimplemented'},
+    // { key: 'Summoning Points', filename: 'Summoning Points.mp3', label: 'Out of Summoning Points', category: ['Informative'] , collection: 'Unimplemented'},
 
     // Alerts when Buff is about to expire
     { key: 'Animate Dead', filename: 'Animate Dead.mp3', label: 'Animate Dead', category: ['Informative'] , collection: 'Buff Expiring Soon'},
     { key: 'Antifire', filename: 'Antifire.mp3', label: 'Antifire', category: ['Informative'] , collection: 'Buff Expiring Soon'},
-    { key: 'Aura', filename: 'Aura.mp3', label: 'Aura', category: ['Informative'] , collection: 'Buff Expiring Soon'},
     { key: 'Darkness', filename: 'Darkness.mp3', label: 'Darkness', category: ['Informative'] , collection: 'Buff Expiring Soon'},
     { key: 'Incense Sticks (Kwuarm)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Kwuarm)', category: ['Informative'] , collection: 'Buff Expiring Soon'},
     { key: 'Incense Sticks (Lantadyme)', filename: 'Incense Sticks.mp3', label: 'Incense Sticks (Lantadyme)', category: ['Informative'] , collection: 'Buff Expiring Soon'},
@@ -47,10 +34,27 @@ export const alertsMap: AlertEntry[] = [
     { key: 'Relentless', filename: 'ImRelentless.mp3', label: 'Relentless', category: ['Informative'] , collection: 'On Active'},
 
     // Combat Related Alerts
-    { key: 'Prayer (Empty)', filename: 'Prayer Empty.mp3', label: 'Out of prayer points', category: ['Informative'] , collection: 'Combat'},
-    { key: 'Prayer (Low)', filename: 'Prayer Low.mp3', label: 'Prayer points are low', category: ['Informative'] , collection: 'Combat'},
+    { key: 'Prayer (Empty)', filename: 'Prayer Empty.mp3', label: 'Prayer points are ~0', category: ['Informative'] , collection: 'Combat'},
+    { key: 'Prayer (Low)', filename: 'Prayer Low.mp3', label: 'Prayer points are <30%', category: ['Informative'] , collection: 'Combat'},
+    { key: 'Sip Prayer', filename: 'Sip Prayer.mp3', label: 'Prayer points are <45%', category: ['Informative'] , collection: 'Combat'},
+    { key: 'Health (Low)', filename: 'Health Low.mp3', label: 'Lifepoints are <15%', category: ['Informative'] , collection: 'Combat'},
 
     // Chat Alerts found below this point
+
+    { key: 'Your aura has depleted', filename: 'Aura.mp3', label: 'Aura', category: ['Informative'] , collection: 'Buff Expiring Soon'},
+    { key: 'Your immunity to poison is about to expire', filename: 'AntiPoison.mp3', label: 'Your immunity to poison is about to expire', category: ['Informative'] , collection: 'Buff Expiring Soon'},
+
+    { key: 'You can\'t drink', filename: 'Cant Drink.mp3', label: 'You can\'t drink', category: ['Informative'] , collection: 'Invalid Action'},
+    { key: 'You don\'t have any left', filename: 'Cant Drink.mp3', label: 'You don\'t have any left', category: ['Informative'] , collection: 'Invalid Action'},
+    { key: 'You already have full adrenaline', filename: 'Cant Drink.mp3', label: 'You already have full adrenaline', category: ['Informative'] , collection: 'Invalid Action'},
+    
+    { key: 'Your god', filename: 'God Book.mp3', label: 'Your god book is no longer active', category: ['Informative'] , collection: 'Information'},
+    { key: 'Your cannon has almost decayed', filename: 'Cannon Decay.mp3', label: 'Your cannon has almost decayed', category: ['Informative'] , collection: 'Information'},
+    { key: 'You have 30 seconds before your', filename: 'Familiar.mp3', label: 'You have 30 seconds before your familiar vanishes', category: ['Informative'] , collection: 'Information'},
+    { key: 'This incantation requires additional payment', filename: 'Payment.mp3', label: 'This incantation requires additional payment', category: ['Informative'] , collection: 'Information'},
+    { key: 'This ability requires additional payment', filename: 'Ectoplasm.mp3', label: 'This ability requires additional payment', category: ['Informative'] , collection: 'Information'},
+    { key: 'You have fewer than 30 minutes of charge remaining in your charge pack', filename: 'Divine Charge.mp3', label: 'You have fewer than 30 minutes of charge remaining in your charge pack', category: ['Informative'] , collection: 'Information'},
+    { key: 'runes to cast this spell', filename: 'NoRunes.mp3', label: 'runes to cast this spell', category: ['Informative'] , collection: 'Information'},
 
     // Nakatra
     { key: 'Nakatra, Devourer Eternal: Prepare for death', filename: 'Nakatra Prepare.mp3', label: 'Prepare for death...', category: ['Immersive'] , collection: 'Nakatra'},

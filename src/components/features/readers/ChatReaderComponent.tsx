@@ -30,6 +30,7 @@ export function ChatReaderComponent({
   const yellowColor = a1lib.mixColor(255,255,0);
   const darkRedColor = a1lib.mixColor(235,47,47);
   const telosGreen = a1lib.mixColor(132,212,119);
+  const godBookColor = a1lib.mixColor(252,202,0);
   const mintGreenColor = a1lib.mixColor(153,255,153);
   const redColor = a1lib.mixColor(255, 0, 0);
   const blueColor = a1lib.mixColor(5, 103, 174);
@@ -97,6 +98,7 @@ export function ChatReaderComponent({
                 purpleColor,
                 darkPurpleColor,
                 goldColor,
+                godBookColor,
                 greenColor,
                 yellowColor,
                 mintGreenColor,

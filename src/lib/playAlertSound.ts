@@ -1,4 +1,5 @@
 import useStore from "../store";
+import { debugLog } from "./debugLog";
 
 const lastPlayedMap: Record<string, number> = {};
 const COOLDOWN_MS = 3000;
@@ -8,7 +9,7 @@ type QueuedAlert = { alert: string; filename: string };
 const alertQueue: QueuedAlert[] = [];
 let isPlaying = false;
 
-function playNextInQueue() {
+async function playNextInQueue() {
   if (isPlaying || alertQueue.length === 0) return;
 
   const next = alertQueue.shift();
@@ -32,11 +33,13 @@ function playNextInQueue() {
   audio.volume = alertVolume / 100;
   isPlaying = true;
 
-  audio.play().catch((err) => {
+  await audio.play().catch((err) => {
     console.error("Failed to play alert sound:", err);
     isPlaying = false;
     playNextInQueue();
   });
+
+  debugLog.info(`Triggered alert for ${alerts[alert]}`);
 
   audio.addEventListener("ended", () => {
     isPlaying = false;
