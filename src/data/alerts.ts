@@ -1,9 +1,12 @@
+type Category = 'Informative' | 'Immersive';
+type Collection = 'Unimplemented' | 'Buff Expiring Soon' | 'On Active' | 'Combat' | 'Nakatra' | 'Telos';
+
 export type AlertEntry = {
   key: string;
   label: string;
   filename: string;
-  category: string[];
-  collection: string;
+  category: Category[];
+  collection: Collection;
 };
 
 export const alertsMap: AlertEntry[] = [
