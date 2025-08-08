@@ -17,8 +17,6 @@ export default function AlertsManager(): JSX.Element {
   const setAlertVolume = useStore((s) => s.setAlertVolume);
 
   const [search, setSearch] = useState('');
-
-  const allCategories = useMemo(() => Array.from(new Set(ALERTS.flatMap(a => a.category ?? []))), []);
   const allCollections = useMemo(() => Array.from(new Set(ALERTS.map(a => a.collection).filter(Boolean) as string[])), []);
 
   const alertEnabledMap = useStore(state => state.alerts);
@@ -26,7 +24,6 @@ export default function AlertsManager(): JSX.Element {
   const toggleCollection = useStore(state => state.toggleCollection);
   const toggleAll = useStore(state => state.toggleAll);
 
-  const [selectedCategories] = useState(() => new Set(allCategories));
   const [selectedCollections] = useState(() => new Set(allCollections));
 
   const groupByCollection = useMemo(() => {
