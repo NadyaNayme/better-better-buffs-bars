@@ -53,7 +53,7 @@ export default function AlertsManager(): JSX.Element {
     const allEnabled = visibleItems.every(i => alertEnabledMap[i.key]);
 
     return (
-      <div className="card" key={groupName}>
+      <div className="card -scale-x-100" key={groupName}>
         <div className="card-header">
           <div className="left">
             <div className="title">{groupName}</div>
@@ -80,7 +80,7 @@ export default function AlertsManager(): JSX.Element {
                 <div
                   className="alert-name"
                   title={a.label}
-                  onClick={() => playPreview(a.filename)}
+                  onClick={() => playPreview(a.filename, voice, alertVolume)}
                 >
                   {a.label}
                 </div>
@@ -180,7 +180,7 @@ export default function AlertsManager(): JSX.Element {
           <div className="muted">Header switch toggles entire collection. Click alert name to play an audio sample.</div>
         </div>
 
-        <div className="cards-grid">
+        <div className="cards-grid -scale-x-100">
           {Array.from(groupByCollection.entries()).map(([k, v]) => renderGroupCard(k, v))}
         </div>
       </main>
