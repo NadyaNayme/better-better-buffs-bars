@@ -46,14 +46,13 @@ export default function AlertsManager(): JSX.Element {
     return item.label.toLowerCase().includes(s) || item.key.toLowerCase().includes(s);
   }
 
-  function renderGroupCard(groupName: string, items: AlertEntry[]) {
-    const visibleItems = items.filter(i => itemVisible(i, search));
-    if (!visibleItems.length) return null;
+function renderGroupCard(groupName: string, items: AlertEntry[]) {
+  const anyVisible = items.some(i => itemVisible(i, search));
+  const groupStyle = { display: anyVisible ? 'block' : 'none' };
+  const allEnabled = items.filter(i => itemVisible(i, search)).every(i => alertEnabledMap[i.key]);
 
-    const allEnabled = visibleItems.every(i => alertEnabledMap[i.key]);
-
-    return (
-      <div className="card -scale-x-100" key={groupName}>
+  return (
+      <div className="card -scale-x-100" key={groupName} style={groupStyle}>
         <div className="card-header">
           <div className="left">
             <div className="title">{groupName}</div>
@@ -74,34 +73,37 @@ export default function AlertsManager(): JSX.Element {
         </div>
 
         <div className="alert-list">
-          {visibleItems.map(a => (
-            <div className="alert-row" key={a.key} data-key={a.key}>
-              <div className="alert-left">
-                <div
-                  className="alert-name"
-                  title={a.label}
-                  onClick={() => playPreview(a.filename, voice, alertVolume)}
-                >
-                  {a.label}
+          {items.map(a => {
+          const isVisible = itemVisible(a, search);
+            return (
+              <div className="alert-row" key={a.key} data-key={a.key} style={{ display: isVisible ? 'flex' : 'none' }}>
+                <div className="alert-left">
+                  <div
+                    className="alert-name"
+                    title={a.label}
+                    onClick={() => playPreview(a.filename, voice, alertVolume)}
+                  >
+                    {a.label}
+                  </div>
                 </div>
-              </div>
 
-              <div className="alert-toggle">
-                {(a.category ?? []).length > 0 && <div className="pill">{(a.category ?? []).join(', ')}</div>}
-                <div
-                  role="button"
-                  tabIndex={0}
-                  className={`switch ${alertEnabledMap[a.key] ? 'on' : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleAlert(a.key);
-                  }}
-                >
-                  <div className="knob" />
+                <div className="alert-toggle">
+                  {(a.category ?? []).length > 0 && <div className="pill">{(a.category ?? []).join(', ')}</div>}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className={`switch ${alertEnabledMap[a.key] ? 'on' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleAlert(a.key);
+                    }}
+                  >
+                    <div className="knob" />
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     );
@@ -142,21 +144,7 @@ export default function AlertsManager(): JSX.Element {
         </div>
 
         <div className="filter-group">
-          <div className="muted">Categories</div>
-          <div>
-            {allCategories.map(cat => (
-              <label key={cat} style={{ display: 'block', marginBottom: 6 }}>
-                <input type="checkbox" defaultChecked onChange={(e) => {
-                  if (!e.target.checked) selectedCategories.delete(cat); else selectedCategories.add(cat);
-                }} />
-                {' '}{cat}
-              </label>
-            ))}
-          </div>
-        </div>
-
-        <div className="filter-group">
-          <div className="muted">Collections</div>
+          <div className="muted">Collections (filter view)</div>
           <div>
             {allCollections.map(col => (
               <label key={col} style={{ display: 'block', marginBottom: 6 }}>

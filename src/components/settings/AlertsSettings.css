@@ -35,7 +35,7 @@
 .cards-main { flex:1; min-width:0; }
 .topControls { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .topControls .muted{ color:var(--muted); font-size:13px; flex:1; }
-.cards-grid { display:flex; flex-direction: row-reverse; flex-wrap: wrap; gap:12px; overflow: scroll; max-height: 100vh; padding-right:1rem; }
+.cards-grid { display:flex; flex-direction: row-reverse; flex-wrap: wrap; gap:12px; overflow-y: auto; max-height: 100vh; padding-right:1rem; }
 .card { background:var(--card); border:1px solid var(--card-border); border-radius:8px; display:flex; flex-direction:column; min-height:160px; width: calc(50% - 12px); }
 .card-header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-top-left-radius:8px; border-top-right-radius:8px; background:var(--nav-accent); color:#eaf6ff; }
 .card-header .left { display:flex; align-items:center; gap:10px; }
@@ -45,7 +45,7 @@
 .switch .knob { position:absolute; top:3px; left:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:all .15s; }
 .switch.on { background:var(--on); }
 .switch.on .knob { left:25px; }
-.alert-list { padding:10px; display:flex; flex-direction:column; gap:6px; flex:1; overflow:auto; max-height: 18rem; }
+.alert-list { padding:10px; display:flex; flex-direction:column; gap:6px; flex:1; overflow-y:auto; max-height: 18rem; }
 .alert-row { display:flex; align-items:center; justify-content:space-between; padding:8px; border-radius:6px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.01); cursor:default; }
 .alert-left { display:flex; gap:10px; align-items:center; min-width:0; }
 .alert-name { color:#dbeefb; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
