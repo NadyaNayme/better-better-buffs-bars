@@ -12,8 +12,10 @@ export function useChatAlerts(chatLog: ChatLine[]) {
       const text = line.text.trim();
       const match = alertsMap.find((entry) => text.includes(entry.key));
       if (match) {
-        debugLog.success(`Triggering alert for "${match.label}"`, { __tags: ['chat', 'alert'] });
-        playAlertSound(match.key, match.filename);
+        if (match.category.includes('Chat')) {
+          debugLog.success(`Triggering alert for "${match.label}"`, { __tags: ['chat', 'alert'] });
+          playAlertSound(match.key, match.filename);
+        }
       }
     });
   }, [chatLog]);
