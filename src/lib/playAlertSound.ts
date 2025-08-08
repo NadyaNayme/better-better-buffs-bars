@@ -23,8 +23,8 @@ function playNextInQueue() {
 
   lastPlayedMap[alert] = now;
 
-  const { alertEnabledMap, alertVolume, voice } = useStore.getState();
-  if (alertEnabledMap[alert] === false) {
+  const { alerts, alertVolume, voice } = useStore.getState();
+  if (alerts[alert] === false) {
     return playNextInQueue();
   }
 

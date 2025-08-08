@@ -81,16 +81,14 @@ const SettingsPanelComponent: React.FC = () => {
         />
 
       <button
-        onClick={() => setShowAlertSettings(true)}
+        onClick={() => setShowAlertSettings(!showAlertSettings)}
         className="px-4 py-2 mt-6 mb-6 bg-blue-600 text-white rounded hover:bg-blue-700"
       >
-        Alert Settings
+        {!showAlertSettings ? 'Manage Alerts' : 'Close Alert Settings'}
       </button>
 
       {showAlertSettings && (
-        <div className="mt-4 border p-4 rounded bg-gray-800">
           <AlertsSettings onClose={() => setShowAlertSettings(false)} />
-        </div>
       )}
 
         <br /><hr /><br />

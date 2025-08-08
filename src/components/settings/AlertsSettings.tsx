@@ -1,15 +1,12 @@
-import { alertsMap } from "../../data/alerts";
-import useStore from "../../store";
-import CheckboxSetting from "./CheckboxSetting";
-import RangeSetting from "./RangeSetting";
+import { useMemo, useState, type JSX } from 'react';
+import useStore from '../../store'; // <-- adjust this import to your app's store entry
+import { alertsMap as ALERTS, type AlertEntry } from '../../data/alerts';
+import { playPreview } from '../../lib/playPreview';
+import './AlertsSettings.css';
+import CheckboxSetting from './CheckboxSetting';
+import RangeSetting from './RangeSetting';
 
-interface AlertSettingsProps {
-  onClose: () => void;
-}
-
-const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
-  const alertEnabledMap = useStore((s) => s.alertEnabledMap);
-  const toggleAlert = useStore((s) => s.toggleAlert);
+export default function AlertsManager(): JSX.Element {
   const voice = useStore((s) => s.voice);
   const setVoice = useStore((s) => s.setVoice);
 
@@ -19,56 +16,104 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
   const alertVolume = useStore((s) => s.alertVolume);
   const setAlertVolume = useStore((s) => s.setAlertVolume);
 
-  const playSample = (filename: string) => {
-    const path = `./assets/audio/${voice}/${filename}`;
-    const audio = new Audio(path);
-    audio.volume = alertVolume / 100;
-    audio.play();
-  };
+  const [search, setSearch] = useState('');
 
-  const setAlertEnabled = (key: string, value: boolean) => {
-    const currentlyEnabled = alertEnabledMap[key];
-    if (currentlyEnabled !== value) {
-      toggleAlert(key);
-    }
-  };
+  const allCategories = useMemo(() => Array.from(new Set(ALERTS.flatMap(a => a.category ?? []))), []);
+  const allCollections = useMemo(() => Array.from(new Set(ALERTS.map(a => a.collection).filter(Boolean) as string[])), []);
 
-  const areAllInCategoryDisabled = (category: string) => {
-    return alertsMap.filter((entry) => entry.category?.includes(category)).every((entry) => !alertEnabledMap[entry.key]);
-  };
+  const alertEnabledMap = useStore(state => state.alerts);
+  const toggleAlert = useStore(state => state.toggleAlert);
+  const toggleCollection = useStore(state => state.toggleCollection);
+  const toggleAll = useStore(state => state.toggleAll);
 
-  const areAllDisabled = () => {
-    return alertsMap.every((entry) => !alertEnabledMap[entry.key]);
-  };
+  const [selectedCategories] = useState(() => new Set(allCategories));
+  const [selectedCollections] = useState(() => new Set(allCollections));
 
-  const setAllByCategory = (category: string, value: boolean) => {
-    alertsMap.forEach((entry) => {
-      if (entry.category?.includes(category)) {
-        setAlertEnabled(entry.key, value);
-      }
+  const groupByCollection = useMemo(() => {
+    const map = new Map<string, AlertEntry[]>();
+    ALERTS.forEach(a => {
+      const col = a.collection ?? 'Misc';
+      if (!map.has(col)) map.set(col, []);
+      map.get(col)!.push(a);
     });
-  };
+    return map;
+  }, []);
 
-  const setAll = (value: boolean) => {
-    alertsMap.forEach((entry) => {
-      setAlertEnabled(entry.key, value);
-    });
-  };
+  function itemVisible(item: AlertEntry, q: string) {
+    if (item.collection && !selectedCollections.has(item.collection)) return false;
+    if (!q) return true;
+    const s = q.toLowerCase();
+    return item.label.toLowerCase().includes(s) || item.key.toLowerCase().includes(s);
+  }
+
+  function renderGroupCard(groupName: string, items: AlertEntry[]) {
+    const visibleItems = items.filter(i => itemVisible(i, search));
+    if (!visibleItems.length) return null;
+
+    const allEnabled = visibleItems.every(i => alertEnabledMap[i.key]);
+
+    return (
+      <div className="card" key={groupName}>
+        <div className="card-header">
+          <div className="left">
+            <div className="title">{groupName}</div>
+          </div>
+
+          <div className="group-toggle">
+            <div
+              role="button"
+              tabIndex={0}
+              className={`switch ${allEnabled ? 'on' : ''}`}
+              onClick={() => {
+                toggleCollection(groupName);
+              }}
+            >
+              <div className="knob" />
+            </div>
+          </div>
+        </div>
+
+        <div className="alert-list">
+          {visibleItems.map(a => (
+            <div className="alert-row" key={a.key} data-key={a.key}>
+              <div className="alert-left">
+                <div
+                  className="alert-name"
+                  title={a.label}
+                  onClick={() => playPreview(a.filename)}
+                >
+                  {a.label}
+                </div>
+              </div>
+
+              <div className="alert-toggle">
+                {(a.category ?? []).length > 0 && <div className="pill">{(a.category ?? []).join(', ')}</div>}
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className={`switch ${alertEnabledMap[a.key] ? 'on' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleAlert(a.key);
+                  }}
+                >
+                  <div className="knob" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="fixed inset-0 z-1001 bg-black/95 flex justify-center items-start p-6 overflow-y-auto">
-      <div className="bg-[#364554] dark:bg-zinc-900 rounded-xl shadow-xl w-full max-w-3xl p-6 relative">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-sm px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Close
-        </button>
+    <div className="alerts-app">
+      <aside className="alerts-sidenav" style={{position: 'relative'}}>
 
-        <h2 className="text-2xl font-bold mb-4">Alert Settings</h2>
         <div className="space-y-4">
           <CheckboxSetting
-            label="Enable Alerts"
+            label="Enable Alert System"
             checked={enableAlerts}
             onChange={setEnableAlerts}
           />
@@ -79,8 +124,8 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
             onChange={setAlertVolume}
           />
 
-          <div className="flex gap-4 items-center">
-            <label>Voice:</label>
+          <div className="flex gap-4 items-center mb-[16px]">
+            <label>Voice Pack</label>
             <select
               value={voice}
               onChange={(e) => setVoice(e.target.value as any)}
@@ -90,63 +135,55 @@ const AlertsSettings: React.FC<AlertSettingsProps> = ({ onClose }) => {
               <option value="Lily">Female (Lily)</option>
             </select>
           </div>
-
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => setAllByCategory("Immersive", areAllInCategoryDisabled("Immersive"))}
-              className="bg-yellow-500 hover:bg-yellow-700 text-white px-3 py-1 rounded"
-            >
-              {areAllInCategoryDisabled("Immersive") ? "Enable Immersive" : "Disable Immersive"}
-            </button>
-            <button
-              onClick={() => setAllByCategory("Informative", areAllInCategoryDisabled("Informative"))}
-              className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
-            >
-              {areAllInCategoryDisabled("Informative") ? "Enable Informative" : "Disable Informative"}
-            </button>
-            <button
-              onClick={() => setAll(areAllDisabled())}
-              className="bg-red-500 hover:bg-red-700 text-white px-3 py-1 rounded"
-            >
-              {areAllDisabled() ? "Enable All" : "Disable All"}
-            </button>
-          </div>
-
-          {alertsMap
-            .slice()
-            .sort((a, b) => a.label.localeCompare(b.label))
-            .map(({ key, label, filename }) => (
-              <div key={key} className="flex items-center gap-4">
-                <span className="w-48">{label}</span>
-                <button
-                  className={`px-3 py-1 w-[104px] rounded ${
-                    alertEnabledMap[key]
-                      ? "bg-green-500 hover:bg-green-700 text-white"
-                      : "bg-gray-300 hover:bg-gray-500 text-black"
-                  }`}
-                  onClick={() => toggleAlert(key)}
-                >
-                  {alertEnabledMap[key] ? "Enabled" : "Disabled"}
-                </button>
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white px-3 py-1 rounded"
-                  onClick={() => playSample(filename)}
-                >
-                  Sample
-                </button>
-              </div>
-            ))}
-
-          <button
-            onClick={onClose}
-            className="text-sm px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Close
-          </button>
         </div>
-      </div>
+
+        <div className="searchBox">
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search alerts..." />
+        </div>
+
+        <div className="filter-group">
+          <div className="muted">Categories</div>
+          <div>
+            {allCategories.map(cat => (
+              <label key={cat} style={{ display: 'block', marginBottom: 6 }}>
+                <input type="checkbox" defaultChecked onChange={(e) => {
+                  if (!e.target.checked) selectedCategories.delete(cat); else selectedCategories.add(cat);
+                }} />
+                {' '}{cat}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className="filter-group">
+          <div className="muted">Collections</div>
+          <div>
+            {allCollections.map(col => (
+              <label key={col} style={{ display: 'block', marginBottom: 6 }}>
+                <input type="checkbox" defaultChecked onChange={(e) => {
+                  if (!e.target.checked) selectedCollections.delete(col); else selectedCollections.add(col);
+                }} />
+                {' '}{col}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ marginTop: 8 }} className="controls-row">
+          <button className="btn" onClick={() => toggleAll(true)}>Enable All</button>
+          <button className="btn ghost" onClick={() => toggleAll(false)}>Disable All</button>
+        </div>
+      </aside>
+
+      <main className="cards-main">
+        <div className="topControls">
+          <div className="muted">Header switch toggles entire collection. Click alert name to play an audio sample.</div>
+        </div>
+
+        <div className="cards-grid">
+          {Array.from(groupByCollection.entries()).map(([k, v]) => renderGroupCard(k, v))}
+        </div>
+      </main>
     </div>
   );
-};
-
-export default AlertsSettings;
+}

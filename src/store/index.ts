@@ -40,7 +40,7 @@ const useStore = create<StoreState>()(
         debugMode: state.debugMode,
         combatCheck: state.combatCheck,
         lastMobNameplatePos: state.lastMobNameplatePos,
-        alertEnabledMap: state.alertEnabledMap,
+        alerts: state.alerts,
         voice: state.voice,
       }),
     }
