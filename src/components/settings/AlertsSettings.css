@@ -24,7 +24,7 @@
     background-color: #1d4ed8;
 }
 
-.alerts-app { display:flex; gap:16px; padding:18px; background:var(--bg); color:#e6eef6; min-height:100vh; box-sizing:border-box; position: fixed; top: 0; left: 0; width: calc(100vw - 300px); }
+.alerts-app { display:flex; gap:16px; padding:18px; background:var(--bg); color:#e6eef6; min-height:100vh; box-sizing:border-box; position: fixed; top: 0; left: 0; width: calc(100vw - 300px); max-height: 100vh; overflow-y: scroll; }
 .alerts-sidenav { width:260px; background:var(--nav); border:1px solid var(--nav-accent); border-radius:8px; padding:12px; box-sizing:border-box; }
 .viewToggle { display:flex; gap:8px; margin-bottom:10px; }
 .viewToggle button { flex:1; padding:8px; border-radius:6px; border:1px solid #1f2e33; background:transparent; color:#cfe8ff; cursor:pointer; }
@@ -35,7 +35,7 @@
 .cards-main { flex:1; min-width:0; }
 .topControls { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .topControls .muted{ color:var(--muted); font-size:13px; flex:1; }
-.cards-grid { display:flex; flex-direction: row-reverse; flex-wrap: wrap; gap:12px; overflow-y: auto; max-height: 100vh; padding-right:1rem; }
+.cards-grid { display:flex; flex-direction: row; flex-wrap: wrap; gap:12px; }
 .card { background:var(--card); border:1px solid var(--card-border); border-radius:8px; display:flex; flex-direction:column; min-height:160px; width: calc(50% - 12px); }
 .card-header { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-top-left-radius:8px; border-top-right-radius:8px; background:var(--nav-accent); color:#eaf6ff; }
 .card-header .left { display:flex; align-items:center; gap:10px; }

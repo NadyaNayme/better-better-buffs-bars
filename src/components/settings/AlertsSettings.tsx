@@ -49,7 +49,7 @@ function renderGroupCard(groupName: string, items: AlertEntry[]) {
   const allEnabled = items.filter(i => itemVisible(i, search)).every(i => alertEnabledMap[i.key]);
 
   return (
-      <div className="card -scale-x-100" key={groupName} style={groupStyle}>
+      <div className="card" key={groupName} style={groupStyle}>
         <div className="card-header">
           <div className="left">
             <div className="title">{groupName}</div>
@@ -107,8 +107,8 @@ function renderGroupCard(groupName: string, items: AlertEntry[]) {
   }
 
   return (
-    <div className="alerts-app">
-      <aside className="alerts-sidenav" style={{position: 'relative'}}>
+    <div className="alerts-app -scale-x-100">
+      <aside className="alerts-sidenav -scale-x-100" style={{position: 'relative'}}>
 
         <div className="space-y-4">
           <CheckboxSetting
@@ -160,12 +160,12 @@ function renderGroupCard(groupName: string, items: AlertEntry[]) {
         </div>
       </aside>
 
-      <main className="cards-main">
+      <main className="cards-main -scale-x-100">
         <div className="topControls">
           <div className="muted">Header switch toggles entire collection. Click alert name to play an audio sample.</div>
         </div>
 
-        <div className="cards-grid -scale-x-100">
+        <div className="cards-grid">
           {Array.from(groupByCollection.entries()).map(([k, v]) => renderGroupCard(k, v))}
         </div>
       </main>
