@@ -41,6 +41,7 @@ import DiamondBakBolts from './images/diamond_bak_bolts.data.png';
 import Divert from './images/Divert.data.png';
 import DragonSlayer from './images/Dragon_Slayer.data.png';
 import DwarfWeedIncense from './images/Dwarf_Weed_Incense_Sticks.data.png';
+import EmbodimentOfLight from './images/Embodiment_of_Light.data.png';
 import EnhancedExcalibur from './images/Enhanced_Excalibur-scuffed.data.png';
 import ElderOverload from './images/Elder_Overload.data.png';
 import ElderOverloadSalve from './images/Elder_Overload_Salve.data.png';
@@ -157,6 +158,7 @@ export const rawImageMap: Record<string, string> = {
   'Diamond Bakriminel Bolts (e)': DiamondBakBolts,
   'Divert': Divert,
   'Dragon Slayer': DragonSlayer,
+  'Embodiment of Light': EmbodimentOfLight,
   'Enhanced Excalibur': EnhancedExcalibur,
   'Elder Overload': ElderOverload,
   'Elder Overload Salve': ElderOverloadSalve,

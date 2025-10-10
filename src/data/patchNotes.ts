@@ -11,6 +11,18 @@ export interface PatchNote {
   
 export const patchNotes: PatchNote[] = [
   {
+    version: "v0.4.3",
+    date: "2025-10-10",
+    title: "Embodiment of Light added",
+    added: [
+      `Embodiment of Light, the 5-piece Tumeken's Equipment buff, has been added for testing.`,
+    ],
+    fixes: null,
+    highlights: null,
+    errors: null,
+    knownIssues: null
+  },
+  {
     version: "v0.4.2",
     date: "2025-08-07",
     title: "Immersive Audio & More Buffs",
