@@ -99,7 +99,7 @@ import SkeletonWarrior from './images/skeleton_warrior-top.data.png';
 import Sorrow from './images/Sorrow.data.png';
 import SoulSplit from './images/Soul_Split.data.png';
 import SplitSoul from './images/Split_Soul.data.png';
-import SplitSoulECB from './images/split_soul_ecb.data.png';
+import SplitSoulECB from './images/Split_Soul.data.png'; // Now uses the same icon as Necromancy
 import Stunned from './images/Stunned.data.png';
 import Sunshine from './images/Sunshine.data.png';
 import SuperAntifire from './images/Super_Anti-Fire_Active.data.png';
